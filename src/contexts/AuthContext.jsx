@@ -11,14 +11,31 @@ export const useAuth = () => {
   return context
 }
 
+// Supabase設定の有効性をチェック
+const hasValidSupabaseConfig = () => {
+  const url = import.meta.env.VITE_SUPABASE_URL
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY
+  return url && key && url.startsWith('https://') && url.includes('supabase')
+}
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const isSupabaseConfigured = hasValidSupabaseConfig()
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      console.warn('Supabase未設定のため、認証機能は利用できません')
+      setLoading(false)
+      return
+    }
+
     // 現在のセッションを確認
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
+      setLoading(false)
+    }).catch(err => {
+      console.error('Supabase接続エラー:', err)
       setLoading(false)
     })
 
@@ -27,42 +44,77 @@ export const AuthProvider = ({ children }) => {
       setUser(session?.user ?? null)
     })
 
-    return () => subscription.unsubscribe()
+    return () => subscription?.unsubscribe()
   }, [])
 
   const signUp = async (email, password) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-    return { data, error }
+    if (!isSupabaseConfigured) {
+      return { data: null, error: new Error('Supabaseが設定されていません。.envファイルを確認してください。') }
+    }
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      return { data, error }
+    } catch (err) {
+      return { data: null, error: err }
+    }
   }
 
   const signIn = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    return { data, error }
+    if (!isSupabaseConfigured) {
+      return { data: null, error: new Error('Supabaseが設定されていません。.envファイルを確認してください。') }
+    }
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      return { data, error }
+    } catch (err) {
+      return { data: null, error: err }
+    }
   }
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    return { error }
+    if (!isSupabaseConfigured) {
+      return { error: null }
+    }
+    try {
+      const { error } = await supabase.auth.signOut()
+      return { error }
+    } catch (err) {
+      return { error: err }
+    }
   }
 
   const resetPassword = async (email) => {
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    })
-    return { data, error }
+    if (!isSupabaseConfigured) {
+      return { data: null, error: new Error('Supabaseが設定されていません。.envファイルを確認してください。') }
+    }
+    try {
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      })
+      return { data, error }
+    } catch (err) {
+      return { data: null, error: err }
+    }
   }
 
   const updatePassword = async (newPassword) => {
-    const { data, error } = await supabase.auth.updateUser({
-      password: newPassword
-    })
-    return { data, error }
+    if (!isSupabaseConfigured) {
+      return { data: null, error: new Error('Supabaseが設定されていません。.envファイルを確認してください。') }
+    }
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        password: newPassword
+      })
+      return { data, error }
+    } catch (err) {
+      return { data: null, error: err }
+    }
   }
 
   const value = {
