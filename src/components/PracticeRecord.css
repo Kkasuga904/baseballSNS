@@ -1,0 +1,152 @@
+.practice-record {
+  background: #f8fbf8;
+  border: 2px solid #e0f0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.practice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.practice-category {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #2e7d46;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.category-icon {
+  font-size: 1.2rem;
+}
+
+.practice-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.practice-condition {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.condition-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.condition-stars {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.condition-stars .star {
+  font-size: 1rem;
+  color: #ddd;
+}
+
+.condition-stars .star.filled {
+  color: #ffb400;
+}
+
+.practice-menu {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.practice-menu h4 {
+  color: #2e7d46;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-list .menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.menu-list .menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-name {
+  color: #333;
+}
+
+.menu-count {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.menu-count strong {
+  color: #2e7d46;
+  font-size: 1.1rem;
+}
+
+.menu-summary {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 2px solid #e0e0e0;
+  text-align: right;
+  font-weight: bold;
+  color: #2e7d46;
+}
+
+.practice-note {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.practice-note h4 {
+  color: #2e7d46;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.practice-note p {
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 768px) {
+  .practice-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .practice-meta {
+    align-items: flex-start;
+  }
+  
+  .practice-category {
+    align-self: flex-start;
+  }
+}

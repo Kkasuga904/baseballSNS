@@ -1,0 +1,196 @@
+.practice-form {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.practice-form h3 {
+  color: #2e7d46;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  color: #2e7d46;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.note-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.note-textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.category-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+
+.category-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-button:hover {
+  border-color: #2e7d46;
+  background-color: #f0f8f0;
+}
+
+.category-button.active {
+  border-color: #2e7d46;
+  background-color: #e8f5e8;
+}
+
+.category-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.category-label {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menu-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 100px 40px;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.menu-name {
+  flex: 2;
+}
+
+.menu-value {
+  flex: 1;
+}
+
+.menu-unit {
+  width: 100px;
+}
+
+.remove-button {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ff4458;
+  border-radius: 8px;
+  background: white;
+  color: #ff4458;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.remove-button:hover {
+  background-color: #ff4458;
+  color: white;
+}
+
+.add-menu-button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px dashed #2e7d46;
+  border-radius: 8px;
+  background: white;
+  color: #2e7d46;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.add-menu-button:hover {
+  background-color: #e8f5e8;
+}
+
+.note-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #2e7d46, #3a9855);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .practice-form {
+    padding: 1rem;
+  }
+  
+  .menu-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .menu-name,
+  .menu-value,
+  .menu-unit,
+  .remove-button {
+    width: 100%;
+  }
+  
+  .category-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

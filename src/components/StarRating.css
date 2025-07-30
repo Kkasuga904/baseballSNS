@@ -1,0 +1,40 @@
+.star-rating {
+  margin-bottom: 1rem;
+}
+
+.star-rating-label {
+  display: block;
+  font-weight: bold;
+  color: #2e7d46;
+  margin-bottom: 0.5rem;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.star {
+  font-size: 1.5rem;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.1s;
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.star:hover {
+  transform: scale(1.2);
+}
+
+.star.filled {
+  color: #ffb400;
+}
+
+.condition-text {
+  margin-left: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}

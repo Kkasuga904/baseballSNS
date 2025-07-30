@@ -1,0 +1,60 @@
+.post-type-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.type-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.type-button:hover {
+  border-color: #2e7d46;
+  background-color: #f0f8f0;
+}
+
+.type-button.active {
+  border-color: #2e7d46;
+  background: linear-gradient(135deg, #2e7d46, #3a9855);
+  color: white;
+}
+
+.type-icon {
+  font-size: 1.3rem;
+}
+
+.type-label {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .post-type-selector {
+    padding: 0.75rem;
+  }
+  
+  .type-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .type-icon {
+    font-size: 1.1rem;
+  }
+}

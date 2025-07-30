@@ -1,4 +1,5 @@
 import React from 'react'
+import PracticeRecord from './PracticeRecord'
 import './PostItem.css'
 
 function PostItem({ post }) {
@@ -15,15 +16,26 @@ function PostItem({ post }) {
     return `${days}日前`
   }
 
+  const isPracticePost = post.type === 'practice'
+
   return (
-    <div className="post-item">
+    <div className={`post-item ${isPracticePost ? 'practice-post' : ''}`}>
       <div className="post-header">
-        <span className="post-author">{post.author}</span>
+        <span className="post-author">
+          {isPracticePost && <span className="post-type-icon">📝</span>}
+          {post.author}
+        </span>
         <span className="post-time">{formatDate(post.timestamp)}</span>
       </div>
-      <div className="post-content">
-        {post.content}
-      </div>
+      
+      {isPracticePost ? (
+        <PracticeRecord practiceData={post.practiceData} />
+      ) : (
+        <div className="post-content">
+          {post.content}
+        </div>
+      )}
+      
       <div className="post-actions">
         <button className="action-button">
           <span className="heart">♥</span> {post.likes}
