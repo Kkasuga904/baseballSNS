@@ -11,7 +11,7 @@
 
 .mypage-layout {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 280px;
   gap: 2rem;
   align-items: start;
 }
@@ -29,15 +29,15 @@
 
 .calendar-section {
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
+  border-radius: 8px;
+  padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .calendar-section h3 {
   color: #2e7d46;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
