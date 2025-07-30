@@ -2,7 +2,7 @@ import React from 'react'
 import './ScheduleItem.css'
 
 function ScheduleItem({ schedule }) {
-  const { title, type, startDate, endDate, startTime, endTime, location, description, reminder, isMultiDay, isAllDay, date } = schedule
+  const { title, type, startDate, endDate, startTime, endTime, location, description, isMultiDay, isAllDay, date } = schedule
 
   const scheduleTypes = {
     practice: { label: '練習予定', icon: '🏋️', color: '#2e7d46' },
@@ -57,12 +57,6 @@ function ScheduleItem({ schedule }) {
       {description && (
         <div className="schedule-description">
           {description}
-        </div>
-      )}
-
-      {reminder && (
-        <div className="reminder-badge">
-          🔔 リマインダー設定済み
         </div>
       )}
     </div>

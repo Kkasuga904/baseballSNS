@@ -6,14 +6,16 @@ import MealForm from './MealForm'
 import SupplementForm from './SupplementForm'
 import GoalsForm from './GoalsForm'
 import SleepForm from './SleepForm'
-import ReminderSettings from './ReminderSettings'
 import BodyMetricsForm from './BodyMetricsForm'
+import RoutineSettings from './RoutineSettings'
+import QuickPracticeForm from './QuickPracticeForm'
 import './DailyRecordTabs.css'
 
 function DailyRecordTabs({ selectedDate, onAddPractice, onAddVideo, onAddSchedule, onAddMeal, onAddSupplement, onAddSleep, onAddBodyMetrics }) {
   const [activeTab, setActiveTab] = useState('practice')
 
   const tabs = [
+    { id: 'quick', label: 'クイック記録', icon: '⚡' },
     { id: 'practice', label: '練習記録', icon: '📝' },
     { id: 'video', label: '動画記録', icon: '🎬' },
     { id: 'schedule', label: '予定', icon: '📅' },
@@ -21,8 +23,8 @@ function DailyRecordTabs({ selectedDate, onAddPractice, onAddVideo, onAddSchedul
     { id: 'supplement', label: 'サプリ', icon: '💊' },
     { id: 'sleep', label: '睡眠', icon: '😴' },
     { id: 'bodyMetrics', label: '体重・体脂肪', icon: '💪' },
-    { id: 'goals', label: '目標設定', icon: '🎯' },
-    { id: 'reminder', label: 'リマインダー', icon: '🔔' }
+    { id: 'routine', label: 'ルーティーン', icon: '✅' },
+    { id: 'goals', label: '目標設定', icon: '🎯' }
   ]
 
   return (
@@ -44,6 +46,18 @@ function DailyRecordTabs({ selectedDate, onAddPractice, onAddVideo, onAddSchedul
       </div>
 
       <div className="tab-content">
+        {activeTab === 'quick' && (
+          <div className="simplified-form">
+            <QuickPracticeForm 
+              onSubmit={(data) => onAddPractice({
+                ...data,
+                date: selectedDate,
+                isPrivate: true
+              })}
+            />
+          </div>
+        )}
+        
         {activeTab === 'practice' && (
           <div className="simplified-form">
             <PracticeForm 
@@ -120,15 +134,15 @@ function DailyRecordTabs({ selectedDate, onAddPractice, onAddVideo, onAddSchedul
           </div>
         )}
         
-        {activeTab === 'goals' && (
+        {activeTab === 'routine' && (
           <div className="simplified-form">
-            <GoalsForm />
+            <RoutineSettings />
           </div>
         )}
         
-        {activeTab === 'reminder' && (
+        {activeTab === 'goals' && (
           <div className="simplified-form">
-            <ReminderSettings />
+            <GoalsForm />
           </div>
         )}
       </div>

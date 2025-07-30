@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PracticeRecord from './PracticeRecord'
 import VideoPost from './VideoPost'
 import ScheduleItem from './ScheduleItem'
+import GameResultForm from './GameResultForm'
+import { useAuth } from '../App'
 import './DailyRecords.css'
 
 function DailyRecords({ date, practices, videos, schedules, meals = [], supplements = [], sleep = [] }) {
+  const { user } = useAuth()
+  const [showGameResultForm, setShowGameResultForm] = useState(false)
+  const [selectedGame, setSelectedGame] = useState(null)
   const hasRecords = practices.length > 0 || videos.length > 0 || schedules.length > 0 || meals.length > 0 || supplements.length > 0 || sleep.length > 0
 
   if (!hasRecords) {
@@ -21,7 +26,43 @@ function DailyRecords({ date, practices, videos, schedules, meals = [], suppleme
         <div className="record-section">
           <h4>📅 予定</h4>
           {schedules.map(schedule => (
-            <ScheduleItem key={schedule.id} schedule={schedule} />
+            <div key={schedule.id} className="schedule-with-result">
+              <ScheduleItem schedule={schedule} />
+              {schedule.type === 'game' && (
+                <>
+                  {schedule.gameResult ? (
+                    <div className="game-result-summary">
+                      <div className="result-badge">
+                        {schedule.gameResult.teamResult.result === 'win' ? '🎉 勝利' :
+                         schedule.gameResult.teamResult.result === 'lose' ? '😔 敗北' : '🤝 引分'}
+                        <span className="score">
+                          {schedule.gameResult.teamResult.ourScore} - {schedule.gameResult.teamResult.opponentScore}
+                        </span>
+                      </div>
+                      <button 
+                        className="edit-result-btn"
+                        onClick={() => {
+                          setSelectedGame(schedule)
+                          setShowGameResultForm(true)
+                        }}
+                      >
+                        結果を編集
+                      </button>
+                    </div>
+                  ) : (
+                    <button 
+                      className="add-result-btn"
+                      onClick={() => {
+                        setSelectedGame(schedule)
+                        setShowGameResultForm(true)
+                      }}
+                    >
+                      + 試合結果を入力
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
           ))}
         </div>
       )}
@@ -112,6 +153,40 @@ function DailyRecords({ date, practices, videos, schedules, meals = [], suppleme
               {record.memo && <p className="sleep-memo">{record.memo}</p>}
             </div>
           ))}
+        </div>
+      )}
+      
+      {showGameResultForm && selectedGame && (
+        <div className="modal-overlay" onClick={() => setShowGameResultForm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <GameResultForm
+              gameSchedule={selectedGame}
+              onSubmit={(resultData) => {
+                // 試合結果を保存
+                const userKey = user?.email || 'guest'
+                const resultsKey = `baseballSNSGameResults_${userKey}`
+                const savedResults = localStorage.getItem(resultsKey)
+                const allResults = savedResults ? JSON.parse(savedResults) : []
+                
+                // 既存の結果を更新または新規追加
+                const existingIndex = allResults.findIndex(r => r.gameId === resultData.gameId)
+                if (existingIndex >= 0) {
+                  allResults[existingIndex] = resultData
+                } else {
+                  allResults.push(resultData)
+                }
+                
+                localStorage.setItem(resultsKey, JSON.stringify(allResults))
+                
+                // スケジュールにも結果を保存
+                selectedGame.gameResult = resultData
+                
+                setShowGameResultForm(false)
+                window.location.reload() // 画面更新
+              }}
+              onClose={() => setShowGameResultForm(false)}
+            />
+          </div>
         </div>
       )}
     </div>

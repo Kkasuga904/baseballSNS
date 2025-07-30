@@ -362,6 +362,18 @@
 .routine-option-title {
   color: #333;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.custom-badge {
+  background: #ff9800;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  font-weight: 600;
 }
 
 .close-selector-btn {

@@ -464,36 +464,43 @@
   }
   
   .profile-header {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   .profile-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
   .profile-content,
   .profile-edit {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   .profile-avatar-section {
     flex-direction: column;
     text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
   }
   
   .profile-avatar,
   .profile-avatar-preview,
   .avatar-placeholder {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
   }
   
   .avatar-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .profile-name h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .profile-name p {
+    font-size: 0.9rem;
   }
   
   .avatar-upload-section {
@@ -513,33 +520,113 @@
     width: 100%;
   }
   
-  .profile-field {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+  /* 2列レイアウト用のセクション調整 */
+  .profile-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .profile-section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+  }
+  
+  /* 基本情報・野球情報・身体情報のフィールドを2列に */
+  .profile-section:not(:last-child) .profile-field {
+    display: block;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .profile-section:not(:last-child) .profile-field:nth-child(odd):not(:last-child) {
+    float: left;
+    width: 48%;
+    margin-right: 4%;
+  }
+  
+  .profile-section:not(:last-child) .profile-field:nth-child(even) {
+    float: left;
+    width: 48%;
+  }
+  
+  /* clearfixのため */
+  .profile-section:not(:last-child)::after {
+    content: "";
+    display: table;
+    clear: both;
   }
   
   .profile-field label {
-    flex: none;
+    display: block;
+    font-size: 0.75rem;
+    color: #666;
+    margin-bottom: 0.2rem;
+    font-weight: 600;
   }
   
+  .field-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  /* 年齢表示の調整 */
+  .profile-field .field-value.age-display {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .profile-field .field-value.age-display::before {
+    font-size: 1rem;
+  }
+  
+  /* 出身校情報は1列のまま */
+  .profile-section:last-child .profile-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+  }
+  
+  .profile-section:last-child .profile-field label {
+    flex: 0 0 40%;
+    margin-bottom: 0;
+  }
+  
+  /* フォーム要素の調整 */
   .position-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
   
-  .radio-group,
+  .pitch-types-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .radio-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
   .pitcher-types {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
   }
   
   .profile-actions {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
   }
   
   .btn-primary,
   .btn-secondary {
-    width: 100%;
+    flex: 1;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
   }
   
   .school-input-group {
@@ -550,6 +637,30 @@
   
   .privacy-toggle {
     align-self: flex-start;
+  }
+  
+  /* フォームフィールドの調整 */
+  .form-field {
+    margin-bottom: 1rem;
+  }
+  
+  .form-field label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .form-field input[type="text"],
+  .form-field input[type="number"],
+  .form-field input[type="date"],
+  .form-field select {
+    padding: 0.6rem;
+    font-size: 0.95rem;
+  }
+  
+  .checkbox-label,
+  .radio-label {
+    font-size: 0.85rem;
+    padding: 0.3rem;
   }
 }
 

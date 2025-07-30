@@ -191,6 +191,29 @@
   padding: 0;
 }
 
+/* クイック記録スタイル */
+.practice-record.quick-record {
+  background: linear-gradient(135deg, #fff9e6 0%, #fffbf2 100%);
+  border-left: 4px solid #ffd43b;
+}
+
+.quick-badge {
+  background: #ffd43b;
+  color: #333;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.quick-message {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
 @media (max-width: 768px) {
   .practice-header {
     flex-direction: column;

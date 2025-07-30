@@ -9,6 +9,7 @@ import NutritionChart from '../components/NutritionChart'
 import ScheduleItem from '../components/ScheduleItem'
 import RoutineTracker from '../components/RoutineTracker'
 import BodyMetricsChart from '../components/BodyMetricsChart'
+import MonthlyStats from '../components/MonthlyStats'
 import './MyPage.css'
 
 function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate }) {
@@ -112,6 +113,8 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           <PracticeStats practices={posts} />
           
           <BodyMetricsChart />
+          
+          <MonthlyStats />
           
           {((myPageData.meals && myPageData.meals.length > 0) || 
             (myPageData.supplements && myPageData.supplements.length > 0)) && (

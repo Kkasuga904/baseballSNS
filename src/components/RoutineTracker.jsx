@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useAuth } from '../App'
 import './RoutineTracker.css'
 
 function RoutineTracker() {
-  // ユーザーごとのキーを作成
-  const userKey = localStorage.getItem('baseballSNSUserKey') || 'guest'
+  const { user } = useAuth()
+  const userKey = user?.email || 'guest'
   
   const [selectedRoutines, setSelectedRoutines] = useState(() => {
     const saved = localStorage.getItem(`baseballSNSRoutines_${userKey}`)
@@ -56,15 +57,19 @@ function RoutineTracker() {
   ]
 
   const categoryLabels = {
+    morning: '朝',
     warmup: 'ウォームアップ',
     practice: '練習',
     training: 'トレーニング',
     nutrition: '栄養',
+    meal: '食事',
     record: '記録',
     health: '健康管理',
     mental: 'メンタル',
     analysis: '分析',
-    recovery: 'リカバリー'
+    recovery: 'リカバリー',
+    evening: '夜',
+    other: 'その他'
   }
 
   // ルーティンを保存
@@ -151,9 +156,23 @@ function RoutineTracker() {
     return streak
   }
   
+  // カスタムルーティンと固定ルーティンを統合
+  const [allRoutines, setAllRoutines] = useState(fixedRoutines)
+  
+  // カスタムルーティンを読み込む
+  useEffect(() => {
+    const savedCustomRoutines = localStorage.getItem(`baseballSNSRoutines_${userKey}`)
+    if (savedCustomRoutines) {
+      const customRoutines = JSON.parse(savedCustomRoutines)
+      // アクティブなルーティンのみ表示
+      const activeCustomRoutines = customRoutines.filter(r => r.isActive !== false)
+      setAllRoutines([...fixedRoutines, ...activeCustomRoutines])
+    }
+  }, [userKey])
+  
   // 選択されたルーティンの詳細を取得
   const getSelectedRoutineDetails = () => {
-    return fixedRoutines.filter(r => selectedRoutines.includes(r.id))
+    return allRoutines.filter(r => selectedRoutines.includes(r.id))
   }
 
   // 時間設定を保存
@@ -167,37 +186,6 @@ function RoutineTracker() {
     setShowTimeSettings(false)
   }
 
-  // 現在時刻をチェックして通知すべきルーティンがあるかチェック
-  useEffect(() => {
-    const checkRoutineTimes = () => {
-      const now = new Date()
-      const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
-      
-      selectedRoutines.forEach(routineId => {
-        const scheduledTime = routineSchedules[routineId]
-        if (scheduledTime === currentTime && !completedToday.includes(routineId)) {
-          const routine = fixedRoutines.find(r => r.id === routineId)
-          if (routine) {
-            // 通知を表示
-            if ('Notification' in window && Notification.permission === 'granted') {
-              new Notification('⚾ ルーティーン通知', {
-                body: `${routine.title}の時間です！`,
-                icon: '/favicon.ico',
-                tag: `routine-${routineId}`,
-                requireInteraction: true
-              })
-            }
-          }
-        }
-      })
-    }
-
-    // 1分ごとにチェック
-    const interval = setInterval(checkRoutineTimes, 60000)
-    checkRoutineTimes() // 初回実行
-
-    return () => clearInterval(interval)
-  }, [selectedRoutines, routineSchedules, completedToday])
 
   // 時間順にソートされたルーティンを取得
   const getSortedRoutines = () => {
@@ -288,7 +276,7 @@ function RoutineTracker() {
           <h4>日課を選択</h4>
           <div className="routine-categories">
             {Object.entries(categoryLabels).map(([categoryId, categoryLabel]) => {
-              const categoryRoutines = fixedRoutines.filter(r => r.category === categoryId)
+              const categoryRoutines = allRoutines.filter(r => r.category === categoryId)
               if (categoryRoutines.length === 0) return null
               
               return (
@@ -303,7 +291,10 @@ function RoutineTracker() {
                           onChange={() => toggleRoutine(routine.id)}
                         />
                         <span className="routine-option-checkbox"></span>
-                        <span className="routine-option-title">{routine.title}</span>
+                        <span className="routine-option-title">
+                          {routine.title}
+                          {routine.isCustom && <span className="custom-badge">カスタム</span>}
+                        </span>
                       </label>
                     ))}
                   </div>

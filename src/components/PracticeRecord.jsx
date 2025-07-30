@@ -3,7 +3,7 @@ import PitchingChart from './PitchingChart'
 import './PracticeRecord.css'
 
 function PracticeRecord({ practiceData }) {
-  const { date, startTime, endTime, category, trainingPart, condition, intensity, menu, note, videoData } = practiceData
+  const { date, startTime, endTime, category, trainingPart, condition, intensity, menu, note, videoData, quickEntry } = practiceData
 
   const categoryIcons = {
     batting: '🏏',
@@ -11,6 +11,9 @@ function PracticeRecord({ practiceData }) {
     fielding: '🧤',
     running: '🏃',
     training: '💪',
+    stretch: '🧘',
+    catch: '🤾',
+    game: '⚔️',
     rest: '😴'
   }
 
@@ -20,6 +23,9 @@ function PracticeRecord({ practiceData }) {
     fielding: '守備練習',
     running: '走塁練習',
     training: 'トレーニング',
+    stretch: 'ストレッチ',
+    catch: 'キャッチボール',
+    game: '試合',
     rest: '休養日'
   }
 
@@ -80,6 +86,27 @@ function PracticeRecord({ practiceData }) {
             <p>{note}</p>
           </div>
         )}
+      </div>
+    )
+  }
+
+  // クイック記録の場合
+  if (quickEntry) {
+    return (
+      <div className="practice-record quick-record">
+        <div className="practice-header">
+          <div className="practice-category">
+            <span className="category-icon">{categoryIcons[category]}</span>
+            <span className="category-name">{categoryLabels[category]}</span>
+            <span className="quick-badge">⚡ クイック記録</span>
+          </div>
+          <div className="practice-meta">
+            <span className="practice-date">{date}</span>
+          </div>
+        </div>
+        <div className="quick-message">
+          <p>この日に{categoryLabels[category]}を行いました</p>
+        </div>
       </div>
     )
   }

@@ -1,0 +1,328 @@
+.game-result-form {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-header h3 {
+  margin: 0 0 0.5rem 0;
+  color: #2e7d46;
+  font-size: 1.4rem;
+}
+
+.game-info {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.result-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  color: #666;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab-button:hover {
+  color: #2e7d46;
+}
+
+.tab-button.active {
+  color: #2e7d46;
+  border-bottom-color: #2e7d46;
+}
+
+/* チーム結果セクション */
+.team-result-section {
+  padding: 1rem 0;
+}
+
+.score-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.team-score {
+  text-align: center;
+}
+
+.team-score label {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.score-field {
+  width: 80px;
+  height: 60px;
+  font-size: 2rem;
+  text-align: center;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.score-field:focus {
+  border-color: #2e7d46;
+  outline: none;
+}
+
+.vs-separator {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #999;
+}
+
+.result-display {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.result-display.win {
+  background: #e8f5e9;
+  color: #2e7d46;
+}
+
+.result-display.lose {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.result-display.draw {
+  background: #fff3cd;
+  color: #856404;
+}
+
+/* 成績入力グリッド */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-input label {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.stat-input input {
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.stat-input input:focus {
+  border-color: #2e7d46;
+  outline: none;
+}
+
+/* 打撃成績セクション */
+.batting-stats-section {
+  padding: 1rem 0;
+}
+
+.batting-summary,
+.pitching-summary {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.summary-stat {
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2e7d46;
+}
+
+/* 投手成績セクション */
+.pitching-stats-section {
+  padding: 1rem 0;
+}
+
+.pitcher-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+.pitcher-toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.pitcher-results {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pitcher-results label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.pitcher-results input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* 共通フォーム要素 */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2e7d46;
+  outline: none;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* フォームアクション */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.submit-btn,
+.cancel-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn {
+  background: #2e7d46;
+  color: white;
+}
+
+.submit-btn:hover {
+  background: #1e5c32;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 125, 70, 0.3);
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.cancel-btn:hover {
+  background: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .game-result-form {
+    padding: 1rem;
+  }
+  
+  .score-input {
+    gap: 1rem;
+  }
+  
+  .score-field {
+    width: 60px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .result-tabs {
+    font-size: 0.9rem;
+  }
+  
+  .tab-button {
+    padding: 0.5rem;
+  }
+}

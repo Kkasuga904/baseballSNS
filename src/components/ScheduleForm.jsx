@@ -11,7 +11,7 @@ function ScheduleForm({ selectedDate, onSubmit }) {
     endTime: '',
     location: '',
     description: '',
-    reminder: true,
+    opponent: '',
     isMultiDay: false,
     isAllDay: false
   })
@@ -64,7 +64,7 @@ function ScheduleForm({ selectedDate, onSubmit }) {
       endTime: '',
       location: '',
       description: '',
-      reminder: true,
+      opponent: '',
       isMultiDay: false,
       isAllDay: false
     })
@@ -241,6 +241,19 @@ END:VCALENDAR`
         />
       </div>
 
+      {formData.type === 'game' && (
+        <div className="form-group">
+          <label>対戦相手（任意）</label>
+          <input
+            type="text"
+            value={formData.opponent}
+            onChange={(e) => handleInputChange('opponent', e.target.value)}
+            placeholder="例: 〇〇高校"
+            maxLength={50}
+          />
+        </div>
+      )}
+
       <div className="form-group">
         <label>メモ（任意）</label>
         <textarea
@@ -250,19 +263,6 @@ END:VCALENDAR`
           rows="3"
           maxLength={200}
         />
-      </div>
-
-      <div className="form-group checkbox-group">
-        <label>
-          <input
-            type="checkbox"
-            checked={formData.reminder}
-            onChange={(e) => handleInputChange('reminder', e.target.checked)}
-          />
-          <span className="checkbox-label">
-            🔔 リマインダーを設定（カレンダーアプリに通知）
-          </span>
-        </label>
       </div>
 
       <div className="form-actions">

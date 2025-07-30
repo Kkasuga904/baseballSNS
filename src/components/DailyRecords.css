@@ -194,6 +194,92 @@
   color: #666;
 }
 
+/* 試合結果関連 */
+.schedule-with-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.add-result-btn,
+.edit-result-btn {
+  align-self: flex-start;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-result-btn {
+  background: #2e7d46;
+  color: white;
+}
+
+.add-result-btn:hover {
+  background: #1e5c32;
+  transform: translateY(-1px);
+}
+
+.edit-result-btn {
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #e0e0e0;
+}
+
+.edit-result-btn:hover {
+  background: #e0e0e0;
+}
+
+.game-result-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f8f8f8;
+  border-radius: 6px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.result-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+
+.result-badge .score {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* モーダル */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
 @media (max-width: 768px) {
   .daily-records {
     padding: 1rem;
