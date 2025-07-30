@@ -1,0 +1,107 @@
+.goals-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-description {
+  background: #e8f5e9;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.form-description p {
+  margin: 0;
+  color: #2e7d46;
+  font-weight: 500;
+}
+
+.goals-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.goal-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.goal-item label {
+  font-weight: bold;
+  color: #333;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.goal-icon {
+  font-size: 1.2rem;
+}
+
+.goal-item textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+  min-height: 80px;
+}
+
+.goal-item textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.goal-item textarea::placeholder {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.goals-tips {
+  background: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.goals-tips h4 {
+  color: #2e7d46;
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+}
+
+.goals-tips ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.goals-tips li {
+  margin: 0.5rem 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+.nutrition-section {
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .goals-grid {
+    gap: 1rem;
+  }
+  
+  .goal-item textarea {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    min-height: 60px;
+  }
+  
+  .goals-tips {
+    padding: 1rem;
+  }
+}

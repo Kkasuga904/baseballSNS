@@ -1,0 +1,489 @@
+.routine-tracker {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.tracker-header h3 {
+  color: #2e7d46;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.tracker-stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2e7d46;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #2e7d46);
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.routines-list {
+  margin-bottom: 1rem;
+}
+
+.routine-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+}
+
+.routine-item:hover {
+  border-color: #2e7d46;
+  background: #fafafa;
+}
+
+.routine-item.completed {
+  background: #e8f5e9;
+  border-color: #4caf50;
+}
+
+.routine-label {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+}
+
+.routine-label input[type="checkbox"] {
+  display: none;
+}
+
+.routine-checkbox {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #666;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.routine-item.completed .routine-checkbox {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+.routine-item.completed .routine-checkbox::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+}
+
+.routine-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.routine-title {
+  color: #333;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.routine-time {
+  font-size: 0.85rem;
+  color: #1565c0;
+  font-weight: 500;
+}
+
+.no-time {
+  color: #999;
+  font-style: italic;
+}
+
+.routine-item.completed .routine-title {
+  text-decoration: line-through;
+  color: #666;
+}
+
+.routine-item.completed .routine-time {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.time-setting-btn {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #1565c0;
+  background: white;
+  color: #1565c0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-setting-btn:hover {
+  background: #1565c0;
+  color: white;
+  transform: scale(1.1);
+}
+
+.add-routine-form {
+  margin-top: 1rem;
+}
+
+.add-routine-form input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  margin-bottom: 0.5rem;
+}
+
+.add-routine-form input:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.save-btn,
+.cancel-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-btn {
+  background: #2e7d46;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #1e5d36;
+}
+
+.cancel-btn {
+  background: white;
+  color: #666;
+  border: 2px solid #e0e0e0;
+}
+
+.cancel-btn:hover {
+  background: #f5f5f5;
+}
+
+.add-routine-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px dashed #2e7d46;
+  background: white;
+  color: #2e7d46;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-routine-btn:hover {
+  background: #e8f5e9;
+}
+
+.completion-message {
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #4caf50, #2e7d46);
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 1rem;
+  animation: celebration 0.5s ease;
+}
+
+@keyframes celebration {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.no-routines-message {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+.routine-selector {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.routine-selector h4 {
+  color: #2e7d46;
+  margin: 0 0 1rem 0;
+}
+
+.routine-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.routine-category h5 {
+  color: #666;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.routine-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.routine-option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.routine-option:hover {
+  border-color: #2e7d46;
+  background: #fafafa;
+}
+
+.routine-option input[type="checkbox"] {
+  display: none;
+}
+
+.routine-option-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #666;
+  border-radius: 4px;
+  margin-right: 0.75rem;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.routine-option input[type="checkbox"]:checked ~ .routine-option-checkbox {
+  background: #2e7d46;
+  border-color: #2e7d46;
+}
+
+.routine-option input[type="checkbox"]:checked ~ .routine-option-checkbox::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.routine-option-title {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.close-selector-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #2e7d46;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-selector-btn:hover {
+  background: #1e5d36;
+}
+
+@media (max-width: 768px) {
+  .routine-tracker {
+    padding: 1rem;
+  }
+  
+  .tracker-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .routine-item {
+    padding: 0.5rem;
+  }
+  
+  .routine-categories {
+    max-height: 300px;
+  }
+}
+
+.time-setting-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1001;
+  min-width: 300px;
+  text-align: center;
+}
+
+.modal-content h4 {
+  color: #2e7d46;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.1rem;
+}
+
+.modal-content input[type="time"] {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s;
+}
+
+.modal-content input[type="time"]:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.time-setting-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.clear-time-btn,
+.close-time-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-time-btn {
+  background: #ff6b6b;
+  color: white;
+}
+
+.clear-time-btn:hover {
+  background: #ff5252;
+}
+
+.close-time-btn {
+  background: #2e7d46;
+  color: white;
+}
+
+.close-time-btn:hover {
+  background: #1e5d36;
+}

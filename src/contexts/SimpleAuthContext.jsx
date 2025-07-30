@@ -62,6 +62,8 @@ export const AuthProvider = ({ children }) => {
     // 現在のユーザーとして設定
     setUser(newUser)
     localStorage.setItem('baseballSNSUser', JSON.stringify(newUser))
+    // ユーザー識別用キーも保存
+    localStorage.setItem('baseballSNSUserKey', newUser.email)
 
     return { data: { user: newUser }, error: null }
   }
@@ -80,6 +82,8 @@ export const AuthProvider = ({ children }) => {
     const { password: _, ...userWithoutPassword } = user
     setUser(userWithoutPassword)
     localStorage.setItem('baseballSNSUser', JSON.stringify(userWithoutPassword))
+    // ユーザー識別用キーも保存
+    localStorage.setItem('baseballSNSUserKey', userWithoutPassword.email)
 
     return { data: { user: userWithoutPassword }, error: null }
   }
@@ -87,6 +91,7 @@ export const AuthProvider = ({ children }) => {
   const signOut = async () => {
     setUser(null)
     localStorage.removeItem('baseballSNSUser')
+    localStorage.removeItem('baseballSNSUserKey')
     return { error: null }
   }
 

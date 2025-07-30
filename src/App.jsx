@@ -6,28 +6,36 @@ import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './
 
 // 環境に応じて適切な認証システムを選択
 const hasSupabaseConfig = import.meta.env.VITE_SUPABASE_URL && 
-  import.meta.env.VITE_SUPABASE_URL !== 'https://placeholder.supabase.co'
+  import.meta.env.VITE_SUPABASE_URL !== 'https://xyzcompanyprojectid.supabase.co'
 
 export const AuthProvider = hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider
 export const useAuth = hasSupabaseConfig ? useSupabaseAuth : useSimpleAuth
 import Navigation from './components/Navigation'
 import Timeline from './pages/Timeline'
 import MyPage from './pages/MyPage'
+import CalendarView from './pages/CalendarView'
+import Profile from './pages/Profile'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import ProfileSetup from './components/ProfileSetup'
 import ForgotPassword from './components/ForgotPassword'
 import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
 function AppContent() {
   const { user } = useAuth()
-  // マイページ専用データ
+  const [selectedDate, setSelectedDate] = useState(null)
+  // マイページ専用データ（ユーザーごとに分離）
   const [myPageData, setMyPageData] = useState(() => {
-    const savedData = localStorage.getItem('baseballSNSMyPageData')
+    const userKey = user?.email || 'guest'
+    const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
     return savedData ? JSON.parse(savedData) : {
       practices: [],
       videos: [],
-      schedules: []
+      schedules: [],
+      meals: [],
+      supplements: [],
+      sleep: []
     }
   })
   
@@ -80,8 +88,9 @@ function AppContent() {
   }, [posts])
   
   useEffect(() => {
-    localStorage.setItem('baseballSNSMyPageData', JSON.stringify(myPageData))
-  }, [myPageData])
+    const userKey = user?.email || 'guest'
+    localStorage.setItem(`baseballSNSMyPageData_${userKey}`, JSON.stringify(myPageData))
+  }, [myPageData, user])
 
   const addPost = (content) => {
     const newPost = {
@@ -147,7 +156,11 @@ function AppContent() {
           <p>野球ファンのためのコミュニティ</p>
         </header>
         
-        <Navigation />
+        <Navigation 
+          posts={posts} 
+          onDateClick={setSelectedDate} 
+          schedules={myPageData.schedules || []} 
+        />
         
         <main className="app-main">
           <Routes>
@@ -171,12 +184,39 @@ function AppContent() {
                     posts={posts.filter(post => post.type === 'practice' && post.userId === user?.id)}
                     myPageData={myPageData}
                     setMyPageData={setMyPageData}
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
                   />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/calendar" 
+              element={
+                <ProtectedRoute>
+                  <CalendarView 
+                    posts={posts.filter(post => post.type === 'practice')}
+                    myPageData={myPageData}
+                    setMyPageData={setMyPageData}
+                  />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/profile" 
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               } 
             />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/profile-setup" element={
+              <ProtectedRoute>
+                <ProfileSetup />
+              </ProtectedRoute>
+            } />
             <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </main>

@@ -1,0 +1,245 @@
+.nutrition-targets {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.targets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.targets-header h3 {
+  color: #2e7d46;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.targets-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-btn,
+.reset-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.edit-btn:hover {
+  background: #bbdefb;
+}
+
+.reset-btn {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.reset-btn:hover {
+  background: #ffe0b2;
+}
+
+.profile-info {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  align-items: center;
+}
+
+.profile-info span {
+  color: #666;
+}
+
+.custom-badge {
+  background: #4caf50;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.no-profile-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.no-profile-data p {
+  margin: 0.5rem 0;
+}
+
+.targets-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.target-item {
+  background: #f0f7f4;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.target-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.target-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2e7d46;
+}
+
+.edit-form {
+  margin-bottom: 1.5rem;
+}
+
+.edit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.edit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-item label {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.edit-item input {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.edit-item input:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.recommended {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #2e7d46, #3a9855);
+  color: white;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cancel-btn {
+  background: white;
+  border: 2px solid #e0e0e0;
+  color: #666;
+}
+
+.cancel-btn:hover {
+  border-color: #999;
+  background: #f5f5f5;
+}
+
+.calculation-note {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.calculation-note p {
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.calculation-note ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.calculation-note li {
+  margin: 0.25rem 0;
+}
+
+@media (max-width: 768px) {
+  .nutrition-targets {
+    padding: 1rem;
+  }
+  
+  .targets-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .targets-actions {
+    flex-direction: column;
+  }
+  
+  .targets-display {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .edit-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .target-value {
+    font-size: 1.2rem;
+  }
+}

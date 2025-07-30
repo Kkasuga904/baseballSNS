@@ -1,46 +1,25 @@
 .mypage {
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .mypage > h2 {
   color: #2e7d46;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-size: 1.8rem;
 }
 
+
 .mypage-layout {
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 2rem;
-  align-items: start;
+  display: block;
+  max-width: 100%;
 }
 
 .mypage-main {
   min-width: 0;
-}
-
-.mypage-sidebar {
-  position: sticky;
-  top: 80px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-.calendar-section {
-  background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.calendar-section h3 {
-  color: #2e7d46;
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  position: relative;
+  z-index: 10;
 }
 
 .goals-section {
@@ -159,15 +138,8 @@
 }
 
 @media (max-width: 1200px) {
-  .mypage-layout {
-    grid-template-columns: 1fr;
-  }
-  
-  .mypage-sidebar {
-    position: relative;
-    top: auto;
-    max-height: none;
-    order: -1;
+  .mypage-main {
+    width: 100%;
   }
 }
 
@@ -179,8 +151,7 @@
   
   .selected-date-records,
   .recent-practices,
-  .goals-section,
-  .calendar-section {
+  .goals-section {
     padding: 1rem;
   }
   
@@ -192,4 +163,53 @@
     font-size: 0.9rem;
     padding: 0.5rem;
   }
+}
+
+.upcoming-schedules {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.upcoming-schedules h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.no-schedules {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.schedule-list-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.schedule-date {
+  min-width: 100px;
+  padding: 0.5rem;
+  background: #e8f5e9;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #2e7d46;
+  font-weight: 500;
+}
+
+.schedule-list-item .schedule-item {
+  flex: 1;
 }

@@ -185,6 +185,12 @@
   white-space: pre-wrap;
 }
 
+/* 投球チャートのコンテナスタイル */
+.practice-record .pitching-chart {
+  margin-top: 0;
+  padding: 0;
+}
+
 @media (max-width: 768px) {
   .practice-header {
     flex-direction: column;

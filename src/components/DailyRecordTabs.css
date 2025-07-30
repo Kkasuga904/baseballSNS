@@ -4,6 +4,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 5;
 }
 
 .tabs-header {
@@ -20,18 +22,19 @@
 .tabs-nav {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .tab-button {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  gap: 0.3rem;
+  padding: 0.4rem 0.8rem;
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -52,11 +55,14 @@
 
 .tab-content {
   padding: 1.5rem;
+  background: white;
+  position: relative;
+  z-index: 15;
 }
 
 .simplified-form {
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 800px;
+  margin: 0;
 }
 
 @media (max-width: 768px) {

@@ -77,6 +77,12 @@
   align-items: center;
 }
 
+.schedule-options {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
 .checkbox-group input[type="checkbox"] {
   width: auto;
   margin-right: 0.5rem;
@@ -151,5 +157,10 @@
   
   .form-actions {
     flex-direction: column;
+  }
+  
+  .schedule-options {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }

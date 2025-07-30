@@ -1,0 +1,357 @@
+.meal-form {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.meal-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.meal-form .form-group label {
+  display: block;
+  font-weight: bold;
+  color: #2e7d46;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.meal-form input,
+.meal-form select,
+.meal-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.meal-form input:focus,
+.meal-form select:focus,
+.meal-form textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.meal-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.nutrition-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.nutrition-inputs .form-group {
+  margin-bottom: 0;
+}
+
+.nutrition-inputs input {
+  padding: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.meal-form .submit-button {
+  background: linear-gradient(135deg, #2e7d46, #3a9855);
+  color: white;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.meal-form .submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.food-input-wrapper {
+  position: relative;
+}
+
+.food-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.food-suggestion-item {
+  padding: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.food-suggestion-item:hover {
+  background-color: #e8f5e9;
+}
+
+.food-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.food-suggestion-item .food-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.food-suggestion-item .food-nutrition {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.selected-foods {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.selected-foods h4 {
+  margin: 0 0 0.75rem 0;
+  color: #2e7d46;
+  font-size: 0.95rem;
+}
+
+.selected-food-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.selected-food-item:last-child {
+  margin-bottom: 0;
+}
+
+.selected-food-item .food-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.quantity-input {
+  width: 60px;
+  padding: 0.25rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.unit {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.remove-food-btn {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ff4458;
+  border-radius: 50%;
+  background: white;
+  color: #ff4458;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.remove-food-btn:hover {
+  background: #ff4458;
+  color: white;
+}
+
+.image-upload-area {
+  border: 2px dashed #2e7d46;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #f8fbf8;
+  margin-bottom: 1rem;
+}
+
+.image-input {
+  display: none;
+}
+
+.image-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.image-label:hover {
+  transform: scale(1.02);
+}
+
+.upload-icon {
+  font-size: 2rem;
+}
+
+.upload-text {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #2e7d46;
+}
+
+.upload-hint {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.image-preview {
+  position: relative;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ff4458;
+  color: #ff4458;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.remove-image-btn:hover {
+  background: #ff4458;
+  color: white;
+}
+
+.quick-select-section {
+  margin-bottom: 1rem;
+}
+
+.quick-select-toggle {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #2e7d46;
+  border-radius: 8px;
+  background: white;
+  color: #2e7d46;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+}
+
+.quick-select-toggle:hover {
+  background: #e8f5e9;
+}
+
+.quick-food-categories {
+  background: #f8f8f8;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.food-category {
+  margin-bottom: 1.5rem;
+}
+
+.food-category:last-child {
+  margin-bottom: 0;
+}
+
+.food-category h5 {
+  color: #2e7d46;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.quick-food-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.quick-food-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-food-item:hover {
+  background: #e8f5e9;
+  border-color: #2e7d46;
+}
+
+.quick-food-item .food-name {
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.quick-food-item .food-calories {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .meal-form {
+    padding: 1rem;
+  }
+  
+  .nutrition-inputs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .selected-food-item {
+    flex-wrap: wrap;
+  }
+  
+  .selected-food-item .food-name {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}

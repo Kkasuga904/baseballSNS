@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react'
 import StarRating from './StarRating'
+import PitchingPracticeForm from './PitchingPracticeForm'
+import PitchingChart from './PitchingChart'
 import './PracticeForm.css'
 
 function PracticeForm({ onSubmit }) {
@@ -12,6 +14,7 @@ function PracticeForm({ onSubmit }) {
     condition: 3,
     intensity: 3,
     menu: [{ name: '', value: '', unit: '回' }],
+    pitchingData: [],
     note: '',
     videoFile: null,
     videoUrl: null
@@ -24,6 +27,10 @@ function PracticeForm({ onSubmit }) {
     fielding: { label: '守備練習', icon: '🧤' },
     running: { label: '走塁練習', icon: '🏃' },
     training: { label: 'トレーニング', icon: '💪' },
+    stretch: { label: 'ストレッチ', icon: '🧘' },
+    mbthrow: { label: 'MBスロー', icon: '🏐' },
+    plyometrics: { label: 'プライオメトリックス', icon: '🦘' },
+    sprint: { label: 'スプリント', icon: '💨' },
     rest: { label: '休養日', icon: '😴' }
   }
 
@@ -119,10 +126,19 @@ function PracticeForm({ onSubmit }) {
         endTime: '00:00'
       })
     } else {
-      const validMenu = formData.menu.filter(item => item.name && item.value)
-      if (validMenu.length === 0) {
-        alert('練習メニューを少なくとも1つ入力してください')
-        return
+      let validMenu = []
+      
+      if (formData.category === 'pitching') {
+        if (formData.pitchingData.length === 0 || formData.pitchingData.every(d => d.total === 0)) {
+          alert('投球データを入力してください')
+          return
+        }
+      } else {
+        validMenu = formData.menu.filter(item => item.name && item.value)
+        if (validMenu.length === 0) {
+          alert('練習メニューを少なくとも1つ入力してください')
+          return
+        }
       }
 
       if (!formData.startTime || !formData.endTime) {
@@ -132,7 +148,7 @@ function PracticeForm({ onSubmit }) {
 
       onSubmit({
         ...formData,
-        menu: validMenu,
+        menu: formData.category === 'pitching' ? formData.pitchingData : validMenu,
         videoData: formData.videoFile ? {
           url: formData.videoUrl,
           fileName: formData.videoFile.name,
@@ -150,9 +166,11 @@ function PracticeForm({ onSubmit }) {
       startTime: '',
       endTime: '',
       category: 'batting',
+      trainingPart: '',
       condition: 3,
       intensity: 3,
       menu: [{ name: '', value: '', unit: '回' }],
+      pitchingData: [],
       note: '',
       videoFile: null,
       videoUrl: null
@@ -180,22 +198,20 @@ function PracticeForm({ onSubmit }) {
         {formData.category !== 'rest' && (
         <>
         <div className="form-group">
-          <label>開始時間</label>
+          <label>開始時間（任意）</label>
           <input
             type="time"
             value={formData.startTime}
             onChange={(e) => handleInputChange('startTime', e.target.value)}
-            required
           />
         </div>
         
         <div className="form-group">
-          <label>終了時間</label>
+          <label>終了時間（任意）</label>
           <input
             type="time"
             value={formData.endTime}
             onChange={(e) => handleInputChange('endTime', e.target.value)}
-            required
           />
         </div>
         </>
@@ -292,29 +308,40 @@ function PracticeForm({ onSubmit }) {
           </div>
         </div>
         
-        <div className="form-group">
-          <label>練習メニュー</label>
-        <div className="menu-items">
-          {formData.menu.map((item, index) => (
-            <div key={index} className="menu-item">
-              <input
-                type="text"
-                placeholder="メニュー名"
-                value={item.name}
-                onChange={(e) => handleMenuChange(index, 'name', e.target.value)}
-                className="menu-name"
-              />
-              <input
-                type="number"
-                placeholder="数値"
-                value={item.value}
-                onChange={(e) => handleMenuChange(index, 'value', e.target.value)}
-                className="menu-value"
-                min="0"
-              />
-              <select
-                value={item.unit}
-                onChange={(e) => handleMenuChange(index, 'unit', e.target.value)}
+        {formData.category === 'pitching' ? (
+          <>
+            <PitchingPracticeForm
+              pitchingData={formData.pitchingData}
+              onChange={(data) => handleInputChange('pitchingData', data)}
+            />
+            {formData.pitchingData && formData.pitchingData.length > 0 && (
+              <PitchingChart pitchingData={formData.pitchingData} />
+            )}
+          </>
+        ) : (
+          <div className="form-group">
+            <label>練習メニュー</label>
+            <div className="menu-items">
+              {formData.menu.map((item, index) => (
+                <div key={index} className="menu-item">
+                  <input
+                    type="text"
+                    placeholder="メニュー名"
+                    value={item.name}
+                    onChange={(e) => handleMenuChange(index, 'name', e.target.value)}
+                    className="menu-name"
+                  />
+                  <input
+                    type="number"
+                    placeholder="数値"
+                    value={item.value}
+                    onChange={(e) => handleMenuChange(index, 'value', e.target.value)}
+                    className="menu-value"
+                    min="0"
+                  />
+                  <select
+                    value={item.unit}
+                    onChange={(e) => handleMenuChange(index, 'unit', e.target.value)}
                 className="menu-unit"
               >
                 {commonUnits.map(unit => (
@@ -332,15 +359,16 @@ function PracticeForm({ onSubmit }) {
               )}
             </div>
           ))}
-        </div>
-        <button
-          type="button"
-          onClick={addMenuItem}
-          className="add-menu-button"
-        >
-          + メニューを追加
-        </button>
-        </div>
+            </div>
+            <button
+              type="button"
+              onClick={addMenuItem}
+              className="add-menu-button"
+            >
+              + メニューを追加
+            </button>
+          </div>
+        )}
         </>
       )}
 

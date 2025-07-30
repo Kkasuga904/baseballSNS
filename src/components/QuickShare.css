@@ -1,0 +1,164 @@
+.quick-share-container {
+  margin-bottom: 1.5rem;
+}
+
+.quick-share-button {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #2e7d46, #3a9855);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(46, 125, 70, 0.3);
+}
+
+.quick-share-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 125, 70, 0.4);
+}
+
+.quick-share-form {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.share-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.share-type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.share-type-btn:hover {
+  border-color: #2e7d46;
+  background: #f0f8f0;
+}
+
+.share-type-btn.active {
+  border-color: #2e7d46;
+  background: #e8f5e9;
+}
+
+.type-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.type-label {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.share-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+  margin-bottom: 1rem;
+}
+
+.share-textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.templates {
+  margin-bottom: 1rem;
+}
+
+.templates-label {
+  margin: 0 0 0.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.template-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.template-chip {
+  padding: 0.5rem 1rem;
+  background: #e8f5e9;
+  border: 1px solid #4caf50;
+  border-radius: 20px;
+  color: #2e7d46;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.template-chip:hover {
+  background: #4caf50;
+  color: white;
+}
+
+.share-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.share-submit,
+.share-cancel {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.share-submit {
+  background: #2e7d46;
+  color: white;
+}
+
+.share-submit:hover {
+  background: #1e5d36;
+}
+
+.share-cancel {
+  background: white;
+  color: #666;
+  border: 2px solid #e0e0e0;
+}
+
+.share-cancel:hover {
+  background: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+  .share-types {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .template-chips {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+}

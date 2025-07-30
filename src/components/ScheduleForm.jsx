@@ -5,11 +5,15 @@ function ScheduleForm({ selectedDate, onSubmit }) {
   const [formData, setFormData] = useState({
     title: '',
     type: 'practice',
+    startDate: selectedDate,
+    endDate: selectedDate,
     startTime: '',
     endTime: '',
     location: '',
     description: '',
-    reminder: true
+    reminder: true,
+    isMultiDay: false,
+    isAllDay: false
   })
 
   const scheduleTypes = {
@@ -17,6 +21,9 @@ function ScheduleForm({ selectedDate, onSubmit }) {
     game: { label: '試合', icon: '⚾', color: '#ff6b6b' },
     meeting: { label: 'ミーティング', icon: '👥', color: '#4c6ef5' },
     event: { label: 'イベント', icon: '🎉', color: '#fab005' },
+    study: { label: '学業・仕事', icon: '📚', color: '#7950f2' },
+    personal: { label: 'プライベート', icon: '🏠', color: '#f06595' },
+    medical: { label: '通院・健康', icon: '🏥', color: '#20c997' },
     other: { label: 'その他', icon: '📌', color: '#868e96' }
   }
 
@@ -35,14 +42,14 @@ function ScheduleForm({ selectedDate, onSubmit }) {
       return
     }
 
-    if (!formData.startTime) {
+    if (!formData.isMultiDay && !formData.isAllDay && !formData.startTime) {
       alert('開始時間を入力してください')
       return
     }
 
     onSubmit({
       ...formData,
-      date: selectedDate,
+      date: formData.startDate,
       id: Date.now(),
       createdAt: new Date().toISOString()
     })
@@ -51,20 +58,33 @@ function ScheduleForm({ selectedDate, onSubmit }) {
     setFormData({
       title: '',
       type: 'practice',
+      startDate: selectedDate,
+      endDate: selectedDate,
       startTime: '',
       endTime: '',
       location: '',
       description: '',
-      reminder: true
+      reminder: true,
+      isMultiDay: false,
+      isAllDay: false
     })
   }
 
   const generateICalEvent = () => {
     const event = formData
-    const startDateTime = new Date(`${selectedDate}T${formData.startTime}`)
-    const endDateTime = formData.endTime 
-      ? new Date(`${selectedDate}T${formData.endTime}`)
-      : new Date(startDateTime.getTime() + 60 * 60 * 1000) // 1時間後
+    const startDateTime = formData.isAllDay || !formData.startTime
+      ? new Date(`${formData.startDate}T00:00:00`)
+      : new Date(`${formData.startDate}T${formData.startTime}`)
+    
+    const endDateTime = formData.isMultiDay
+      ? formData.endTime
+        ? new Date(`${formData.endDate}T${formData.endTime}`)
+        : new Date(`${formData.endDate}T23:59:59`)
+      : formData.isAllDay
+        ? new Date(`${formData.startDate}T23:59:59`)
+        : formData.endTime 
+          ? new Date(`${formData.startDate}T${formData.endTime}`)
+          : new Date(startDateTime.getTime() + 60 * 60 * 1000) // 1時間後
 
     const icalContent = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -124,26 +144,91 @@ END:VCALENDAR`
         </div>
       </div>
 
+      <div className="schedule-options">
+        <div className="form-group checkbox-group">
+          <label>
+            <input
+              type="checkbox"
+              checked={formData.isAllDay}
+              onChange={(e) => {
+                handleInputChange('isAllDay', e.target.checked)
+                if (e.target.checked) {
+                  handleInputChange('isMultiDay', false)
+                }
+              }}
+            />
+            <span className="checkbox-label">
+              ☀️ 終日予定
+            </span>
+          </label>
+        </div>
+
+        <div className="form-group checkbox-group">
+          <label>
+            <input
+              type="checkbox"
+              checked={formData.isMultiDay}
+              onChange={(e) => {
+                handleInputChange('isMultiDay', e.target.checked)
+                if (e.target.checked) {
+                  handleInputChange('isAllDay', false)
+                }
+              }}
+            />
+            <span className="checkbox-label">
+              📅 日をまたぐ予定（合宿・遠征など）
+            </span>
+          </label>
+        </div>
+      </div>
+
       <div className="form-row">
         <div className="form-group">
-          <label>開始時間</label>
+          <label>{formData.isMultiDay ? '開始日' : '日付'}</label>
           <input
-            type="time"
-            value={formData.startTime}
-            onChange={(e) => handleInputChange('startTime', e.target.value)}
+            type="date"
+            value={formData.startDate}
+            onChange={(e) => handleInputChange('startDate', e.target.value)}
             required
           />
         </div>
         
-        <div className="form-group">
-          <label>終了時間（任意）</label>
-          <input
-            type="time"
-            value={formData.endTime}
-            onChange={(e) => handleInputChange('endTime', e.target.value)}
-          />
-        </div>
+        {formData.isMultiDay && (
+          <div className="form-group">
+            <label>終了日</label>
+            <input
+              type="date"
+              value={formData.endDate}
+              onChange={(e) => handleInputChange('endDate', e.target.value)}
+              min={formData.startDate}
+              required
+            />
+          </div>
+        )}
       </div>
+
+      {!formData.isAllDay && (
+        <div className="form-row">
+          <div className="form-group">
+            <label>開始時間{formData.isMultiDay ? '（任意）' : ''}</label>
+            <input
+              type="time"
+              value={formData.startTime}
+              onChange={(e) => handleInputChange('startTime', e.target.value)}
+              required={!formData.isMultiDay && !formData.isAllDay}
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>{formData.isMultiDay ? '終了時間（最終日・任意）' : '終了時間（任意）'}</label>
+            <input
+              type="time"
+              value={formData.endTime}
+              onChange={(e) => handleInputChange('endTime', e.target.value)}
+            />
+          </div>
+        </div>
+      )}
 
       <div className="form-group">
         <label>場所（任意）</label>
@@ -185,7 +270,7 @@ END:VCALENDAR`
           予定を保存
         </button>
         
-        {formData.title && formData.startTime && (
+        {formData.title && (formData.startTime || formData.isMultiDay || formData.isAllDay) && (
           <button
             type="button"
             onClick={generateICalEvent}

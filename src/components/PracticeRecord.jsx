@@ -1,4 +1,5 @@
 import React from 'react'
+import PitchingChart from './PitchingChart'
 import './PracticeRecord.css'
 
 function PracticeRecord({ practiceData }) {
@@ -129,23 +130,27 @@ function PracticeRecord({ practiceData }) {
         )}
       </div>
 
-      <div className="practice-menu">
-        <h4>練習メニュー</h4>
-        <ul className="menu-list">
-          {menu.map((item, index) => (
-            <li key={index} className="menu-item">
-              <span className="menu-name">{item.name}</span>
-              <span className="menu-count">
-                <strong>{item.value}</strong> {item.unit}
-              </span>
-            </li>
-          ))}
-        </ul>
-        <div className="menu-summary">
-          合計: {menu.reduce((sum, item) => sum + parseInt(item.value || 0), 0)} 
-          {menu.length === 1 ? ` ${menu[0].unit}` : ' 項目'}
+      {category === 'pitching' && menu[0]?.pitchType ? (
+        <PitchingChart pitchingData={menu} />
+      ) : (
+        <div className="practice-menu">
+          <h4>練習メニュー</h4>
+          <ul className="menu-list">
+            {menu.map((item, index) => (
+              <li key={index} className="menu-item">
+                <span className="menu-name">{item.name}</span>
+                <span className="menu-count">
+                  <strong>{item.value}</strong> {item.unit}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="menu-summary">
+            合計: {menu.reduce((sum, item) => sum + parseInt(item.value || 0), 0)} 
+            {menu.length === 1 ? ` ${menu[0].unit}` : ' 項目'}
+          </div>
         </div>
-      </div>
+      )}
 
       {videoData && (
         <div className="practice-video">

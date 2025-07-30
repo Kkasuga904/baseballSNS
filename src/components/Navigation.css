@@ -51,6 +51,48 @@
   gap: 1rem;
 }
 
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #2e7d46;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.nav-user-avatar:hover {
+  transform: scale(1.05);
+}
+
+.nav-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #2e7d46;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.nav-avatar-placeholder:hover {
+  transform: scale(1.05);
+}
+
+.nav-avatar-icon {
+  font-size: 1.2rem;
+  color: #2e7d46;
+}
+
 .user-email {
   font-size: 0.9rem;
   color: #666;
@@ -93,6 +135,63 @@
   box-shadow: 0 2px 8px rgba(46, 125, 70, 0.3);
 }
 
+.nav-auth {
+  position: relative;
+}
+
+.nav-calendar {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 200;
+  width: 300px;
+}
+
+.calendar-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.nav-calendar h3 {
+  color: #2e7d46;
+  margin: 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.calendar-minimize-btn {
+  background: none;
+  border: none;
+  color: #2e7d46;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-weight: bold;
+}
+
+.calendar-minimize-btn:hover {
+  background-color: #e8f5e9;
+  transform: scale(1.1);
+}
+
+.calendar-header-clickable:hover {
+  background-color: #e8f5e9;
+  padding: 0.2rem 0.4rem;
+  margin: -0.2rem -0.4rem 0.3rem -0.4rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
 @media (max-width: 768px) {
   .navigation {
     padding: 0.75rem 1rem;
@@ -115,7 +214,25 @@
     font-size: 1.5rem;
   }
 
+  .user-info {
+    gap: 0.5rem;
+  }
+  
+  .nav-user-avatar,
+  .nav-avatar-placeholder {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .nav-avatar-icon {
+    font-size: 1rem;
+  }
+
   .user-email {
     display: none;
+  }
+  
+  .nav-calendar {
+    width: 280px;
   }
 }

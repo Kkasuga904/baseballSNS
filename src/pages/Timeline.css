@@ -13,3 +13,29 @@
   font-weight: 500;
   margin: 0;
 }
+
+.show-full-form-btn,
+.hide-full-form-btn {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 2px dashed #2e7d46;
+  background: white;
+  color: #2e7d46;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.show-full-form-btn:hover,
+.hide-full-form-btn:hover {
+  background: #e8f5e9;
+}
+
+.hide-full-form-btn {
+  border-style: solid;
+  background: #f0f8f0;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}

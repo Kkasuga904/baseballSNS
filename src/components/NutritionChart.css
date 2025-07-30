@@ -1,0 +1,189 @@
+.nutrition-chart {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.nutrition-chart h3 {
+  color: #2e7d46;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nutrition-summary {
+  margin-bottom: 2rem;
+}
+
+.summary-item {
+  background: #f8f8f8;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.summary-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.summary-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2e7d46;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.progress-bar-background {
+  flex: 1;
+  height: 20px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #666;
+  min-width: 40px;
+  text-align: right;
+}
+
+.nutrition-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.pfc-chart {
+  text-align: center;
+}
+
+.pfc-chart h4,
+.nutrition-details h4 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.pfc-chart svg {
+  margin: 0 auto 1rem;
+}
+
+.pfc-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.legend-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.no-data {
+  color: #999;
+  padding: 3rem;
+  text-align: center;
+}
+
+.nutrition-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.nutrient-item {
+  background: #f8f8f8;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.nutrient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.nutrient-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.nutrient-value {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.nutrition-advice {
+  background: #e8f5e9;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.nutrition-advice h4 {
+  color: #2e7d46;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.nutrition-advice p {
+  margin: 0.5rem 0;
+  color: #333;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.nutrition-advice p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .nutrition-chart {
+    padding: 1rem;
+  }
+  
+  .nutrition-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .pfc-legend {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}

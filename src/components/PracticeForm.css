@@ -4,6 +4,9 @@
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 20;
+  isolation: isolate;
 }
 
 .practice-form h3 {
@@ -54,7 +57,7 @@
 
 .category-selector {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   gap: 0.5rem;
 }
 
@@ -62,12 +65,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   background: white;
   cursor: pointer;
   transition: all 0.2s;
+  font-size: 0.85rem;
 }
 
 .category-button:hover {
@@ -86,8 +90,9 @@
 }
 
 .category-label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #333;
+  text-align: center;
 }
 
 .menu-items {

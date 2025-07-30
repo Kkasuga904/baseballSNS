@@ -1,22 +1,20 @@
 import React, { useState, useMemo } from 'react'
+import { useAuth } from '../App'
 import PracticeStats from '../components/PracticeStats'
-import PracticeCalendar from '../components/PracticeCalendar'
 import PracticeRecord from '../components/PracticeRecord'
 import WeeklySummary from '../components/WeeklySummary'
 import DailyRecordTabs from '../components/DailyRecordTabs'
 import DailyRecords from '../components/DailyRecords'
+import NutritionChart from '../components/NutritionChart'
+import ScheduleItem from '../components/ScheduleItem'
+import RoutineTracker from '../components/RoutineTracker'
 import './MyPage.css'
 
-function MyPage({ posts, myPageData, setMyPageData }) {
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
-  const [goals, setGoals] = useState(() => {
-    const savedGoals = localStorage.getItem('baseballSNSGoals')
-    return savedGoals ? JSON.parse(savedGoals) : {
-      shortTerm: '',
-      longTerm: '',
-      dailyPractice: ''
-    }
-  })
+function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate }) {
+  const { user } = useAuth()
+  if (!selectedDate) {
+    setSelectedDate(new Date().toISOString().split('T')[0])
+  }
 
   const practicesOnSelectedDate = selectedDate
     ? posts.filter(post => 
@@ -27,12 +25,15 @@ function MyPage({ posts, myPageData, setMyPageData }) {
   
   // マイページ専用データの日付別フィルタリング
   const selectedDateData = useMemo(() => {
-    if (!selectedDate) return { practices: [], videos: [], schedules: [] }
+    if (!selectedDate) return { practices: [], videos: [], schedules: [], meals: [], supplements: [], sleep: [] }
     
     return {
       practices: myPageData.practices.filter(p => p.date === selectedDate),
       videos: myPageData.videos.filter(v => v.date === selectedDate),
-      schedules: myPageData.schedules.filter(s => s.date === selectedDate)
+      schedules: myPageData.schedules.filter(s => s.date === selectedDate),
+      meals: (myPageData.meals || []).filter(m => m.date === selectedDate),
+      supplements: (myPageData.supplements || []).filter(s => s.date === selectedDate),
+      sleep: (myPageData.sleep || []).filter(s => s.date === selectedDate)
     }
   }, [selectedDate, myPageData])
   
@@ -56,11 +57,26 @@ function MyPage({ posts, myPageData, setMyPageData }) {
       schedules: [...prev.schedules, scheduleData]
     }))
   }
-
-  const handleGoalChange = (type, value) => {
-    const newGoals = { ...goals, [type]: value }
-    setGoals(newGoals)
-    localStorage.setItem('baseballSNSGoals', JSON.stringify(newGoals))
+  
+  const handleAddMeal = (mealData) => {
+    setMyPageData(prev => ({
+      ...prev,
+      meals: [...(prev.meals || []), { ...mealData, id: Date.now() }]
+    }))
+  }
+  
+  const handleAddSupplement = (supplementData) => {
+    setMyPageData(prev => ({
+      ...prev,
+      supplements: [...(prev.supplements || []), { ...supplementData, id: Date.now() }]
+    }))
+  }
+  
+  const handleAddSleep = (sleepData) => {
+    setMyPageData(prev => ({
+      ...prev,
+      sleep: [...(prev.sleep || []), { ...sleepData, id: Date.now() }]
+    }))
   }
 
   return (
@@ -69,38 +85,7 @@ function MyPage({ posts, myPageData, setMyPageData }) {
       
       <div className="mypage-layout">
         <div className="mypage-main">
-          <div className="goals-section">
-            <h3>🎯 目標設定</h3>
-            <div className="goals-grid">
-              <div className="goal-item">
-                <label>短期目標（1ヶ月）</label>
-                <textarea
-                  value={goals.shortTerm}
-                  onChange={(e) => handleGoalChange('shortTerm', e.target.value)}
-                  placeholder="例：素振りを毎日200回、打率3割達成"
-                  rows="2"
-                />
-              </div>
-              <div className="goal-item">
-                <label>長期目標（1年）</label>
-                <textarea
-                  value={goals.longTerm}
-                  onChange={(e) => handleGoalChange('longTerm', e.target.value)}
-                  placeholder="例：レギュラー獲得、県大会出場"
-                  rows="2"
-                />
-              </div>
-              <div className="goal-item">
-                <label>毎日の練習目標</label>
-                <textarea
-                  value={goals.dailyPractice}
-                  onChange={(e) => handleGoalChange('dailyPractice', e.target.value)}
-                  placeholder="例：素振り、ティーバッティング、ランニング"
-                  rows="2"
-                />
-              </div>
-            </div>
-          </div>
+          <RoutineTracker />
           
           {selectedDate && (
             <DailyRecordTabs
@@ -108,12 +93,23 @@ function MyPage({ posts, myPageData, setMyPageData }) {
               onAddPractice={handleAddPractice}
               onAddVideo={handleAddVideo}
               onAddSchedule={handleAddSchedule}
+              onAddMeal={handleAddMeal}
+              onAddSupplement={handleAddSupplement}
+              onAddSleep={handleAddSleep}
             />
           )}
           
           <WeeklySummary practices={posts} />
           
           <PracticeStats practices={posts} />
+          
+          {((myPageData.meals && myPageData.meals.length > 0) || 
+            (myPageData.supplements && myPageData.supplements.length > 0)) && (
+            <NutritionChart 
+              meals={myPageData.meals || []} 
+              supplements={myPageData.supplements || []} 
+            />
+          )}
           
           {selectedDate && (
             <div className="selected-date-records">
@@ -123,9 +119,52 @@ function MyPage({ posts, myPageData, setMyPageData }) {
                 practices={selectedDateData.practices}
                 videos={selectedDateData.videos}
                 schedules={selectedDateData.schedules}
+                meals={selectedDateData.meals}
+                supplements={selectedDateData.supplements}
+                sleep={selectedDateData.sleep}
               />
             </div>
           )}
+          
+          <div className="upcoming-schedules">
+            <h3>📅 今後の予定</h3>
+            {(() => {
+              const today = new Date()
+              today.setHours(0, 0, 0, 0)
+              const upcomingSchedules = myPageData.schedules
+                .filter(schedule => {
+                  const scheduleDate = new Date(schedule.date || schedule.startDate)
+                  return scheduleDate >= today
+                })
+                .sort((a, b) => {
+                  const dateA = new Date(a.date || a.startDate)
+                  const dateB = new Date(b.date || b.startDate)
+                  return dateA - dateB
+                })
+                .slice(0, 10)
+              
+              if (upcomingSchedules.length === 0) {
+                return <p className="no-schedules">予定がありません</p>
+              }
+              
+              return (
+                <div className="schedule-list">
+                  {upcomingSchedules.map(schedule => (
+                    <div key={schedule.id} className="schedule-list-item">
+                      <div className="schedule-date">
+                        {new Date(schedule.date || schedule.startDate).toLocaleDateString('ja-JP', {
+                          month: 'long',
+                          day: 'numeric',
+                          weekday: 'short'
+                        })}
+                      </div>
+                      <ScheduleItem schedule={schedule} />
+                    </div>
+                  ))}
+                </div>
+              )
+            })()}
+          </div>
           
           <div className="recent-practices">
             <h3>最近の練習記録</h3>
@@ -142,16 +181,6 @@ function MyPage({ posts, myPageData, setMyPageData }) {
                 タイムラインから練習記録を投稿してみましょう！
               </p>
             )}
-          </div>
-        </div>
-        
-        <div className="mypage-sidebar">
-          <div className="calendar-section">
-            <h3>📅 練習カレンダー</h3>
-            <PracticeCalendar 
-              practices={posts} 
-              onDateClick={setSelectedDate}
-            />
           </div>
         </div>
       </div>
