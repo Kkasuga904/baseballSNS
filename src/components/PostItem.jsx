@@ -1,5 +1,6 @@
 import React from 'react'
 import PracticeRecord from './PracticeRecord'
+import VideoPost from './VideoPost'
 import './PostItem.css'
 
 function PostItem({ post }) {
@@ -18,20 +19,31 @@ function PostItem({ post }) {
   }
 
   const isPracticePost = post.type === 'practice'
+  const isVideoPost = post.type === 'video'
+
+  const getPostTypeIcon = () => {
+    if (isPracticePost) return '📝'
+    if (isVideoPost) return '🎬'
+    return null
+  }
 
   return (
-    <div className={`post-item ${isPracticePost ? 'practice-post' : ''}`}>
+    <div className={`post-item ${isPracticePost ? 'practice-post' : ''} ${isVideoPost ? 'video-post' : ''}`}>
       <div className="post-header">
         <span className="post-author">
-          {isPracticePost && <span className="post-type-icon">📝</span>}
+          {getPostTypeIcon() && <span className="post-type-icon">{getPostTypeIcon()}</span>}
           {post.author}
         </span>
         <span className="post-time">{formatDate(post.timestamp)}</span>
       </div>
       
-      {isPracticePost ? (
+      {isPracticePost && (
         <PracticeRecord practiceData={post.practiceData} />
-      ) : (
+      )}
+      {isVideoPost && (
+        <VideoPost videoData={post.videoData} />
+      )}
+      {!isPracticePost && !isVideoPost && (
         <div className="post-content">
           {post.content}
         </div>

@@ -80,6 +80,19 @@ function App() {
     setPosts([newPost, ...posts])
   }
 
+  const addVideoPost = (videoData) => {
+    const newPost = {
+      id: Date.now(),
+      type: 'video',
+      author: 'ゲストユーザー',
+      timestamp: new Date().toISOString(),
+      likes: 0,
+      comments: 0,
+      videoData
+    }
+    setPosts([newPost, ...posts])
+  }
+
   return (
     <Router>
       <div className="app">
@@ -99,6 +112,7 @@ function App() {
                   posts={posts}
                   addPost={addPost}
                   addPracticeRecord={addPracticeRecord}
+                  addVideoPost={addVideoPost}
                 />
               } 
             />
