@@ -1,12 +1,102 @@
 .mypage {
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
-.mypage h2 {
+.mypage > h2 {
   color: #2e7d46;
   margin-bottom: 2rem;
   font-size: 1.8rem;
+}
+
+.mypage-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.mypage-main {
+  min-width: 0;
+}
+
+.mypage-sidebar {
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.calendar-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.calendar-section h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.goals-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.goals-section h3 {
+  color: #2e7d46;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.goals-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.goal-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.goal-item label {
+  font-weight: bold;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.goal-item textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+  min-height: 60px;
+}
+
+.goal-item textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.goal-item textarea::placeholder {
+  color: #999;
+  font-size: 0.9rem;
 }
 
 .selected-date-records {
@@ -68,14 +158,38 @@
   line-height: 1.6;
 }
 
+@media (max-width: 1200px) {
+  .mypage-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .mypage-sidebar {
+    position: relative;
+    top: auto;
+    max-height: none;
+    order: -1;
+  }
+}
+
 @media (max-width: 768px) {
-  .mypage h2 {
+  .mypage > h2 {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
   }
   
-  .selected-date-practices,
-  .recent-practices {
+  .selected-date-records,
+  .recent-practices,
+  .goals-section,
+  .calendar-section {
     padding: 1rem;
+  }
+  
+  .goals-grid {
+    gap: 1rem;
+  }
+  
+  .goal-item textarea {
+    font-size: 0.9rem;
+    padding: 0.5rem;
   }
 }
