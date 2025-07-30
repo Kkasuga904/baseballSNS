@@ -1,0 +1,89 @@
+.post-item {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.post-author {
+  font-weight: bold;
+  color: #2e7d46;
+  font-size: 1.1rem;
+}
+
+.post-time {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.post-content {
+  color: #333;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.post-actions {
+  display: flex;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: background-color 0.2s, color 0.2s;
+  color: #666;
+}
+
+.action-button:hover {
+  background-color: #e8f5e8;
+  color: #2e7d46;
+}
+
+.heart {
+  color: #ff4458;
+  font-size: 1.2rem;
+}
+
+.comment {
+  font-size: 1.1rem;
+}
+
+.share {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .post-item {
+    padding: 1rem;
+  }
+  
+  .post-actions {
+    gap: 0.5rem;
+  }
+  
+  .action-button {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
