@@ -14,6 +14,8 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     const saved = localStorage.getItem('baseballSNSCalendarMinimized')
     return saved ? JSON.parse(saved) : false
   })
+  const [showInstallButton, setShowInstallButton] = useState(false)
+  const [deferredPrompt, setDeferredPrompt] = useState(null)
   
   useEffect(() => {
     if (user) {
@@ -25,6 +27,29 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     }
   }, [user, location.pathname]) // location.pathnameを追加して、ページ遷移時に更新
 
+  useEffect(() => {
+    // PWAインストール可能かチェック
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+      setShowInstallButton(true)
+    }
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+
+    // iOSかどうかチェック
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+    const isInStandalone = window.matchMedia('(display-mode: standalone)').matches
+    
+    if (isIOS && !isInStandalone) {
+      setShowInstallButton(true)
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+    }
+  }, [])
+
   const handleSignOut = async () => {
     await signOut()
     navigate('/login')
@@ -34,6 +59,23 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     const newState = !isCalendarMinimized
     setIsCalendarMinimized(newState)
     localStorage.setItem('baseballSNSCalendarMinimized', JSON.stringify(newState))
+  }
+
+  const handleInstallClick = async () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+    
+    if (isIOS) {
+      alert('iOSでのインストール:\n1. Safari下部の共有ボタンをタップ\n2. 「ホーム画面に追加」を選択\n3. 「追加」をタップ')
+    } else if (deferredPrompt) {
+      deferredPrompt.prompt()
+      const { outcome } = await deferredPrompt.userChoice
+      
+      if (outcome === 'accepted') {
+        setShowInstallButton(false)
+      }
+      
+      setDeferredPrompt(null)
+    }
   }
 
   return (
@@ -66,6 +108,12 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
         )}
       </div>
       <div className="nav-auth">
+        {showInstallButton && (
+          <button onClick={handleInstallClick} className="nav-install-button">
+            <span className="install-icon">📲</span>
+            <span className="install-label">アプリ</span>
+          </button>
+        )}
         {user ? (
           <>
             <div className="user-info">

@@ -1,0 +1,161 @@
+.pwa-install-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 500px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  z-index: 1000;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%) translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.banner-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.banner-text {
+  flex: 1;
+}
+
+.banner-text h3 {
+  margin: 0 0 0.25rem 0;
+  color: #2e7d46;
+  font-size: 1.1rem;
+}
+
+.banner-text p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.banner-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.install-button {
+  background: #2e7d46;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.install-button:hover {
+  background: #236135;
+  transform: scale(1.05);
+}
+
+.dismiss-button {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dismiss-button:hover {
+  background: #f0f0f0;
+  color: #666;
+}
+
+/* モバイルでより目立つデザイン */
+@media (max-width: 768px) {
+  .pwa-install-banner {
+    bottom: 70px; /* ナビゲーションバーの上に表示 */
+    width: calc(100% - 20px);
+    margin: 0 10px;
+  }
+
+  .banner-content {
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .banner-icon {
+    display: none;
+  }
+
+  .banner-text {
+    flex: none;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .banner-text h3 {
+    font-size: 1.2rem;
+  }
+
+  .banner-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .install-button {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* より目立つスタイル（初回表示時） */
+.pwa-install-banner.first-time {
+  background: linear-gradient(135deg, #2e7d46 0%, #4caf50 100%);
+  color: white;
+}
+
+.pwa-install-banner.first-time .banner-text h3,
+.pwa-install-banner.first-time .banner-text p {
+  color: white;
+}
+
+.pwa-install-banner.first-time .install-button {
+  background: white;
+  color: #2e7d46;
+}
+
+.pwa-install-banner.first-time .dismiss-button {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pwa-install-banner.first-time .dismiss-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}

@@ -23,6 +23,7 @@ import ForgotPassword from './components/ForgotPassword'
 import ProtectedRoute from './components/ProtectedRoute'
 import InstallPWA from './components/InstallPWA'
 import Footer from './components/Footer'
+import PWAInstallBanner from './components/PWAInstallBanner'
 import './App.css'
 
 function AppContent() {
@@ -227,6 +228,7 @@ function AppContent() {
         
         <Footer />
         <InstallPWA />
+        <PWAInstallBanner />
     </div>
   )
 }
