@@ -1,0 +1,15 @@
+.view-only-notice {
+  background: linear-gradient(135deg, #fff8e1 0%, #fffde7 100%);
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.view-only-notice p {
+  color: #f57c00;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}

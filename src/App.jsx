@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider, useAuth } from './contexts/AuthContext'
 import Navigation from './components/Navigation'
 import Timeline from './pages/Timeline'
 import MyPage from './pages/MyPage'
+import Login from './components/Login'
+import Signup from './components/Signup'
+import ForgotPassword from './components/ForgotPassword'
+import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
-function App() {
+function AppContent() {
+  const { user } = useAuth()
   // マイページ専用データ
   const [myPageData, setMyPageData] = useState(() => {
     const savedData = localStorage.getItem('baseballSNSMyPageData')
@@ -73,7 +79,8 @@ function App() {
       id: Date.now(),
       type: 'normal',
       content,
-      author: 'ゲストユーザー',
+      author: user?.email || 'ゲストユーザー',
+      userId: user?.id || null,
       timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0
@@ -85,7 +92,8 @@ function App() {
     const newPost = {
       id: Date.now(),
       type: 'practice',
-      author: 'ゲストユーザー',
+      author: user?.email || 'ゲストユーザー',
+      userId: user?.id || null,
       timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0,
@@ -98,7 +106,8 @@ function App() {
     const newPost = {
       id: Date.now(),
       type: 'video',
-      author: 'ゲストユーザー',
+      author: user?.email || 'ゲストユーザー',
+      userId: user?.id || null,
       timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0,
@@ -108,8 +117,7 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="app">
+    <div className="app">
         <header className="app-header">
           <h1>⚾ 野球SNS</h1>
           <p>野球ファンのためのコミュニティ</p>
@@ -133,16 +141,31 @@ function App() {
             <Route 
               path="/mypage" 
               element={
-                <MyPage 
-                  posts={posts.filter(post => post.type === 'practice' && post.author === 'ゲストユーザー')}
-                  myPageData={myPageData}
-                  setMyPageData={setMyPageData}
-                />
+                <ProtectedRoute>
+                  <MyPage 
+                    posts={posts.filter(post => post.type === 'practice' && post.userId === user?.id)}
+                    myPageData={myPageData}
+                    setMyPageData={setMyPageData}
+                  />
+                </ProtectedRoute>
               } 
             />
           </Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+          </Routes>
         </main>
-      </div>
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </Router>
   )
 }

@@ -1,13 +1,18 @@
 .navigation {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
   background: white;
-  padding: 1rem;
+  padding: 1rem 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.navigation > div:first-child {
+  display: flex;
+  gap: 2rem;
 }
 
 .nav-link {
@@ -40,10 +45,62 @@
   font-size: 0.95rem;
 }
 
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-email {
+  font-size: 0.9rem;
+  color: #666;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logout-button {
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 2px solid #2e7d46;
+  color: #2e7d46;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-button:hover {
+  background: #2e7d46;
+  color: white;
+}
+
+.login-link {
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(135deg, #2e7d46, #3a9855);
+  color: white;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.login-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(46, 125, 70, 0.3);
+}
+
 @media (max-width: 768px) {
   .navigation {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+  }
+
+  .navigation > div:first-child {
     gap: 1rem;
-    padding: 0.75rem;
   }
   
   .nav-link {
@@ -56,5 +113,9 @@
   
   .nav-icon {
     font-size: 1.5rem;
+  }
+
+  .user-email {
+    display: none;
   }
 }
