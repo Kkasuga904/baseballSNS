@@ -6,6 +6,11 @@
   margin-top: 0.5rem;
 }
 
+.practice-record.rest-record {
+  background: #e3f2fd;
+  border-color: #90caf9;
+}
+
 .practice-header {
   display: flex;
   justify-content: space-between;
@@ -38,30 +43,54 @@
   color: #666;
 }
 
-.practice-condition {
+.practice-stats {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  gap: 2rem;
   margin-bottom: 1rem;
 }
 
-.condition-label {
+.practice-condition,
+.practice-intensity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.condition-label,
+.intensity-label {
   font-weight: bold;
   color: #333;
 }
 
-.condition-stars {
+.rest-message {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1.1rem;
+  color: #1976d2;
+}
+
+.rest-message p {
+  margin: 0;
+}
+
+.condition-stars,
+.intensity-stars {
   display: flex;
   gap: 0.2rem;
 }
 
-.condition-stars .star {
+.condition-stars .star,
+.intensity-stars .star {
   font-size: 1rem;
   color: #ddd;
 }
 
 .condition-stars .star.filled {
   color: #ffb400;
+}
+
+.intensity-stars .star.filled {
+  color: #ff6b6b;
 }
 
 .practice-menu {

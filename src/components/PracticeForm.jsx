@@ -9,6 +9,7 @@ function PracticeForm({ onSubmit }) {
     endTime: '',
     category: 'batting',
     condition: 3,
+    intensity: 3,
     menu: [{ name: '', value: '', unit: '回' }],
     note: ''
   })
@@ -18,7 +19,8 @@ function PracticeForm({ onSubmit }) {
     pitching: { label: '投球練習', icon: '⚾' },
     fielding: { label: '守備練習', icon: '🧤' },
     running: { label: '走塁練習', icon: '🏃' },
-    training: { label: 'トレーニング', icon: '💪' }
+    training: { label: 'トレーニング', icon: '💪' },
+    rest: { label: '休養日', icon: '😴' }
   }
 
   const commonUnits = ['回', '球', '本', '分', 'セット']
@@ -59,21 +61,31 @@ function PracticeForm({ onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     
-    const validMenu = formData.menu.filter(item => item.name && item.value)
-    if (validMenu.length === 0) {
-      alert('練習メニューを少なくとも1つ入力してください')
-      return
+    if (formData.category === 'rest') {
+      onSubmit({
+        ...formData,
+        menu: [],
+        startTime: '00:00',
+        endTime: '00:00'
+      })
+    } else {
+      const validMenu = formData.menu.filter(item => item.name && item.value)
+      if (validMenu.length === 0) {
+        alert('練習メニューを少なくとも1つ入力してください')
+        return
+      }
+
+      if (!formData.startTime || !formData.endTime) {
+        alert('練習時間を入力してください')
+        return
+      }
+
+      onSubmit({
+        ...formData,
+        menu: validMenu
+      })
     }
 
-    if (!formData.startTime || !formData.endTime) {
-      alert('練習時間を入力してください')
-      return
-    }
-
-    onSubmit({
-      ...formData,
-      menu: validMenu
-    })
 
     setFormData({
       date: new Date().toISOString().split('T')[0],
@@ -81,6 +93,7 @@ function PracticeForm({ onSubmit }) {
       endTime: '',
       category: 'batting',
       condition: 3,
+      intensity: 3,
       menu: [{ name: '', value: '', unit: '回' }],
       note: ''
     })
@@ -88,7 +101,7 @@ function PracticeForm({ onSubmit }) {
 
   return (
     <form className="practice-form" onSubmit={handleSubmit}>
-      <h3>📝 練習記録</h3>
+      <h3>📝 練習・休養記録</h3>
       
       <div className="form-row">
         <div className="form-group">
@@ -101,6 +114,8 @@ function PracticeForm({ onSubmit }) {
           />
         </div>
         
+        {formData.category !== 'rest' && (
+        <>
         <div className="form-group">
           <label>開始時間</label>
           <input
@@ -120,6 +135,8 @@ function PracticeForm({ onSubmit }) {
             required
           />
         </div>
+        </>
+        )}
       </div>
 
       <div className="form-group">
@@ -145,8 +162,17 @@ function PracticeForm({ onSubmit }) {
         onChange={(value) => handleInputChange('condition', value)}
       />
 
-      <div className="form-group">
-        <label>練習メニュー</label>
+      {formData.category !== 'rest' && (
+        <StarRating
+          label="練習強度"
+          value={formData.intensity}
+          onChange={(value) => handleInputChange('intensity', value)}
+        />
+      )}
+
+      {formData.category !== 'rest' && (
+        <div className="form-group">
+          <label>練習メニュー</label>
         <div className="menu-items">
           {formData.menu.map((item, index) => (
             <div key={index} className="menu-item">
@@ -193,7 +219,8 @@ function PracticeForm({ onSubmit }) {
         >
           + メニューを追加
         </button>
-      </div>
+        </div>
+      )}
 
       <div className="form-group">
         <label>メモ・感想</label>

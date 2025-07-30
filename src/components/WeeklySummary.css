@@ -1,0 +1,143 @@
+.weekly-summary {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.weekly-summary h3 {
+  color: #2e7d46;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.day-card {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.day-card.today {
+  border-color: #ffc107;
+  background-color: #fff8e1;
+}
+
+.day-card.practice {
+  background-color: #e8f5e8;
+  border-color: #2e7d46;
+}
+
+.day-card.rest {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.day-name {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.day-status {
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+.intensity-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2e7d46;
+  opacity: 0.3;
+  transition: height 0.3s ease;
+}
+
+.week-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2e7d46;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.alert.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+.alert.danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+@media (max-width: 768px) {
+  .weekly-summary {
+    padding: 1rem;
+  }
+  
+  .week-grid {
+    gap: 0.25rem;
+  }
+  
+  .day-status {
+    font-size: 1.2rem;
+  }
+  
+  .week-stats {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}

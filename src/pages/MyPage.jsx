@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PracticeStats from '../components/PracticeStats'
 import PracticeCalendar from '../components/PracticeCalendar'
 import PracticeRecord from '../components/PracticeRecord'
+import WeeklySummary from '../components/WeeklySummary'
 import './MyPage.css'
 
 function MyPage({ posts }) {
@@ -17,6 +18,8 @@ function MyPage({ posts }) {
   return (
     <div className="mypage">
       <h2>📝 マイページ - 練習記録</h2>
+      
+      <WeeklySummary practices={posts} />
       
       <PracticeStats practices={posts} />
       

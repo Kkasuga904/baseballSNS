@@ -2,22 +2,24 @@ import React from 'react'
 import './PracticeRecord.css'
 
 function PracticeRecord({ practiceData }) {
-  const { date, startTime, endTime, category, condition, menu, note } = practiceData
+  const { date, startTime, endTime, category, condition, intensity, menu, note } = practiceData
 
   const categoryIcons = {
     batting: '🏏',
     pitching: '⚾',
     fielding: '🧤',
     running: '🏃',
-    training: '💪'
+    training: '💪',
+    rest: '😴'
   }
 
   const categoryLabels = {
     batting: '打撃練習',
-    pitching: '投球練習',
+    pitching: '投焴練習',
     fielding: '守備練習',
     running: '走塁練習',
-    training: 'トレーニング'
+    training: 'トレーニング',
+    rest: '休養日'
   }
 
   const calculateDuration = () => {
@@ -31,6 +33,44 @@ function PracticeRecord({ practiceData }) {
       return `${hours}時間${minutes > 0 ? minutes + '分' : ''}`
     }
     return `${minutes}分`
+  }
+
+  if (category === 'rest') {
+    return (
+      <div className="practice-record rest-record">
+        <div className="practice-header">
+          <div className="practice-category">
+            <span className="category-icon">{categoryIcons[category]}</span>
+            <span className="category-name">{categoryLabels[category]}</span>
+          </div>
+          <div className="practice-meta">
+            <span className="practice-date">{date}</span>
+          </div>
+        </div>
+
+        <div className="rest-message">
+          <p>🌿 今日はしっかり休養しました</p>
+        </div>
+
+        <div className="practice-condition">
+          <span className="condition-label">体調:</span>
+          <div className="condition-stars">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className={`star ${i < condition ? 'filled' : ''}`}>
+                ★
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {note && (
+          <div className="practice-note">
+            <h4>メモ</h4>
+            <p>{note}</p>
+          </div>
+        )}
+      </div>
+    )
   }
 
   return (
@@ -48,15 +88,30 @@ function PracticeRecord({ practiceData }) {
         </div>
       </div>
 
-      <div className="practice-condition">
-        <span className="condition-label">体調:</span>
-        <div className="condition-stars">
-          {[...Array(5)].map((_, i) => (
-            <span key={i} className={`star ${i < condition ? 'filled' : ''}`}>
-              ★
-            </span>
-          ))}
+      <div className="practice-stats">
+        <div className="practice-condition">
+          <span className="condition-label">体調:</span>
+          <div className="condition-stars">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className={`star ${i < condition ? 'filled' : ''}`}>
+                ★
+              </span>
+            ))}
+          </div>
         </div>
+        
+        {intensity && (
+          <div className="practice-intensity">
+            <span className="intensity-label">強度:</span>
+            <div className="intensity-stars">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className={`star ${i < intensity ? 'filled' : ''}`}>
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="practice-menu">
