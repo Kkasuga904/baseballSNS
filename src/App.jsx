@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
-import PostList from './components/PostList'
-import PostForm from './components/PostForm'
-import PracticeForm from './components/PracticeForm'
-import PostTypeSelector from './components/PostTypeSelector'
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Navigation from './components/Navigation'
+import Timeline from './pages/Timeline'
+import MyPage from './pages/MyPage'
 import './App.css'
 
 function App() {
-  const [postType, setPostType] = useState('normal')
-  const [posts, setPosts] = useState([
+  const [posts, setPosts] = useState(() => {
+    const savedPosts = localStorage.getItem('baseballSNSPosts')
+    return savedPosts ? JSON.parse(savedPosts) : [
     {
       id: 1,
       type: 'normal',
       content: '今日は素晴らしい試合でした！9回裏の逆転サヨナラホームランは鳥肌ものでした！',
       author: '野球太郎',
-      timestamp: new Date('2025-01-30T15:00:00'),
+      timestamp: '2025-01-30T15:00:00',
       likes: 42,
       comments: 5
     },
@@ -21,7 +22,7 @@ function App() {
       id: 2,
       type: 'practice',
       author: '練習マニア',
-      timestamp: new Date('2025-01-30T14:00:00'),
+      timestamp: '2025-01-30T14:00:00',
       likes: 23,
       comments: 8,
       practiceData: {
@@ -43,19 +44,23 @@ function App() {
       type: 'normal',
       content: '明日の先発投手は誰だろう？エースの調子が心配です。',
       author: '応援団長',
-      timestamp: new Date('2025-01-30T13:30:00'),
+      timestamp: '2025-01-30T13:30:00',
       likes: 15,
       comments: 3
     }
-  ])
+  ]})
+
+  useEffect(() => {
+    localStorage.setItem('baseballSNSPosts', JSON.stringify(posts))
+  }, [posts])
 
   const addPost = (content) => {
     const newPost = {
-      id: posts.length + 1,
+      id: Date.now(),
       type: 'normal',
       content,
       author: 'ゲストユーザー',
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0
     }
@@ -64,10 +69,10 @@ function App() {
 
   const addPracticeRecord = (practiceData) => {
     const newPost = {
-      id: posts.length + 1,
+      id: Date.now(),
       type: 'practice',
       author: 'ゲストユーザー',
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0,
       practiceData
@@ -76,27 +81,39 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>⚾ 野球SNS</h1>
-        <p>野球ファンのためのコミュニティ</p>
-      </header>
-      
-      <main className="app-main">
-        <PostTypeSelector 
-          postType={postType} 
-          onTypeChange={setPostType} 
-        />
+    <Router>
+      <div className="app">
+        <header className="app-header">
+          <h1>⚾ 野球SNS</h1>
+          <p>野球ファンのためのコミュニティ</p>
+        </header>
         
-        {postType === 'normal' ? (
-          <PostForm onSubmit={addPost} />
-        ) : (
-          <PracticeForm onSubmit={addPracticeRecord} />
-        )}
+        <Navigation />
         
-        <PostList posts={posts} />
-      </main>
-    </div>
+        <main className="app-main">
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <Timeline 
+                  posts={posts}
+                  addPost={addPost}
+                  addPracticeRecord={addPracticeRecord}
+                />
+              } 
+            />
+            <Route 
+              path="/mypage" 
+              element={
+                <MyPage 
+                  posts={posts.filter(post => post.type === 'practice' && post.author === 'ゲストユーザー')}
+                />
+              } 
+            />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   )
 }
 

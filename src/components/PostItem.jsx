@@ -3,7 +3,8 @@ import PracticeRecord from './PracticeRecord'
 import './PostItem.css'
 
 function PostItem({ post }) {
-  const formatDate = (date) => {
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp)
     const now = new Date()
     const diff = now - date
     const minutes = Math.floor(diff / 60000)

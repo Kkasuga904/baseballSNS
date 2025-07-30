@@ -1,0 +1,118 @@
+.practice-calendar {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-header h3 {
+  color: #2e7d46;
+  font-size: 1.2rem;
+}
+
+.month-nav {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #2e7d46;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.month-nav:hover {
+  background-color: #e8f5e8;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  cursor: default;
+  transition: all 0.2s;
+}
+
+.calendar-day.empty {
+  border: none;
+}
+
+.calendar-day.has-practice {
+  background-color: #e8f5e8;
+  border-color: #2e7d46;
+  cursor: pointer;
+}
+
+.calendar-day.has-practice:hover {
+  background-color: #d4ecd4;
+  transform: scale(1.05);
+}
+
+.calendar-day.today {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+}
+
+.calendar-day.today.has-practice {
+  background: linear-gradient(135deg, #fff3cd 0%, #e8f5e8 100%);
+  border-color: #2e7d46;
+}
+
+.day-number {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.practice-marker {
+  position: absolute;
+  bottom: 2px;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .practice-calendar {
+    padding: 1rem;
+  }
+  
+  .calendar-weekdays {
+    font-size: 0.8rem;
+  }
+  
+  .calendar-grid {
+    gap: 0.25rem;
+  }
+  
+  .day-number {
+    font-size: 0.8rem;
+  }
+}

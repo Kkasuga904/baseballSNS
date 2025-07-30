@@ -1,0 +1,84 @@
+.mypage {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.mypage h2 {
+  color: #2e7d46;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.selected-date-practices {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.selected-date-practices h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.practice-detail {
+  margin-bottom: 1rem;
+}
+
+.practice-detail:last-child {
+  margin-bottom: 0;
+}
+
+.recent-practices {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.recent-practices h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+}
+
+.no-practices {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .mypage h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .selected-date-practices,
+  .recent-practices {
+    padding: 1rem;
+  }
+}
