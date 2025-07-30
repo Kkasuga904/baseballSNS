@@ -1,0 +1,36 @@
+{
+  "name": "野球SNS - Baseball Social Network",
+  "short_name": "野球SNS",
+  "description": "野球ファンのためのソーシャルネットワーク。練習記録、動画共有、健康管理をサポート",
+  "theme_color": "#2e7d46",
+  "background_color": "#e8f5e8",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "クイック記録",
+      "short_name": "記録",
+      "description": "練習を素早く記録",
+      "url": "/mypage",
+      "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "タイムライン",
+      "short_name": "TL",
+      "description": "みんなの投稿を見る",
+      "url": "/",
+      "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ],
+  "categories": ["sports", "social", "health"]
+}

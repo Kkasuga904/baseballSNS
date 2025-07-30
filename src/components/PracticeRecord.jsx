@@ -1,9 +1,10 @@
 import React from 'react'
 import PitchingChart from './PitchingChart'
+import GameRecord from './GameRecord'
 import './PracticeRecord.css'
 
 function PracticeRecord({ practiceData }) {
-  const { date, startTime, endTime, category, trainingPart, condition, intensity, menu, note, videoData, quickEntry } = practiceData
+  const { date, startTime, endTime, category, trainingPart, condition, intensity, menu, maxVelocity, note, videoData, quickEntry, gameResultData } = practiceData
 
   const categoryIcons = {
     batting: '🏏',
@@ -13,7 +14,7 @@ function PracticeRecord({ practiceData }) {
     training: '💪',
     stretch: '🧘',
     catch: '🤾',
-    game: '⚔️',
+    game: '🏟️',
     rest: '😴'
   }
 
@@ -111,6 +112,11 @@ function PracticeRecord({ practiceData }) {
     )
   }
 
+  // 試合記録の場合
+  if (category === 'game' && gameResultData) {
+    return <GameRecord practiceData={practiceData} />
+  }
+
   return (
     <div className="practice-record">
       <div className="practice-header">
@@ -158,7 +164,16 @@ function PracticeRecord({ practiceData }) {
       </div>
 
       {category === 'pitching' && menu[0]?.pitchType ? (
-        <PitchingChart pitchingData={menu} />
+        <>
+          <PitchingChart pitchingData={menu} />
+          {maxVelocity && (
+            <div className="max-velocity-display">
+              <span className="velocity-icon">🔥</span>
+              <span className="velocity-label">最高球速:</span>
+              <span className="velocity-value">{maxVelocity}km/h</span>
+            </div>
+          )}
+        </>
       ) : (
         <div className="practice-menu">
           <h4>練習メニュー</h4>

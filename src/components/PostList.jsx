@@ -2,7 +2,7 @@ import React from 'react'
 import PostItem from './PostItem'
 import './PostList.css'
 
-function PostList({ posts }) {
+function PostList({ posts, onHashtagClick, onUserClick }) {
   return (
     <div className="post-list">
       <h2>最新の投稿</h2>
@@ -10,7 +10,12 @@ function PostList({ posts }) {
         <p className="no-posts">まだ投稿がありません</p>
       ) : (
         posts.map(post => (
-          <PostItem key={post.id} post={post} />
+          <PostItem 
+            key={post.id} 
+            post={post} 
+            onHashtagClick={onHashtagClick}
+            onUserClick={onUserClick}
+          />
         ))
       )}
     </div>

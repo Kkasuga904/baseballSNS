@@ -15,11 +15,14 @@ import Timeline from './pages/Timeline'
 import MyPage from './pages/MyPage'
 import CalendarView from './pages/CalendarView'
 import Profile from './pages/Profile'
+import Disclaimer from './pages/Disclaimer'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import ProfileSetup from './components/ProfileSetup'
 import ForgotPassword from './components/ForgotPassword'
 import ProtectedRoute from './components/ProtectedRoute'
+import InstallPWA from './components/InstallPWA'
+import Footer from './components/Footer'
 import './App.css'
 
 function AppContent() {
@@ -218,8 +221,12 @@ function AppContent() {
               </ProtectedRoute>
             } />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
           </Routes>
         </main>
+        
+        <Footer />
+        <InstallPWA />
     </div>
   )
 }

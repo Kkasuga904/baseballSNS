@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../App'
+import { useNavigate } from 'react-router-dom'
 import PostList from '../components/PostList'
 import PostForm from '../components/PostForm'
 import PracticeForm from '../components/PracticeForm'
@@ -8,13 +9,20 @@ import HealthForm from '../components/HealthForm'
 import PostTypeSelector from '../components/PostTypeSelector'
 import QuickShare from '../components/QuickShare'
 import QuickPracticeForm from '../components/QuickPracticeForm'
+import SearchBar from '../components/SearchBar'
+import { filterPostsBySearch } from '../utils/hashtagUtils.jsx'
 import './Timeline.css'
 
 function Timeline({ posts, addPost, addPracticeRecord, addVideoPost, addHealthRecord }) {
   const [postType, setPostType] = useState('normal')
   const [showFullForm, setShowFullForm] = useState(false)
   const [showQuickPractice, setShowQuickPractice] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const { user } = useAuth()
+  const navigate = useNavigate()
+  
+  // 検索クエリに基づいて投稿をフィルタリング
+  const filteredPosts = filterPostsBySearch(posts, searchQuery)
 
   // クイック投稿のハンドラー
   const handleQuickShare = (shareData) => {
@@ -30,9 +38,35 @@ function Timeline({ posts, addPost, addPracticeRecord, addVideoPost, addHealthRe
     addPracticeRecord(practiceData)
     setShowQuickPractice(false)
   }
+  
+  // ハッシュタグクリックのハンドラー
+  const handleHashtagClick = (hashtag) => {
+    setSearchQuery(`#${hashtag}`)
+  }
+
+  const handleUserClick = (userId) => {
+    navigate('/mypage')
+  }
 
   return (
     <>
+      <SearchBar 
+        posts={posts} 
+        onSearch={setSearchQuery} 
+      />
+      
+      {searchQuery && (
+        <div className="search-results-info">
+          <p>「{searchQuery}」の検索結果: {filteredPosts.length}件</p>
+          <button 
+            className="clear-search-btn"
+            onClick={() => setSearchQuery('')}
+          >
+            検索をクリア
+          </button>
+        </div>
+      )}
+      
       {user ? (
         <>
           <QuickShare onShare={handleQuickShare} />
@@ -101,7 +135,11 @@ function Timeline({ posts, addPost, addPracticeRecord, addVideoPost, addHealthRe
         </div>
       )}
       
-      <PostList posts={posts} />
+      <PostList 
+        posts={filteredPosts} 
+        onHashtagClick={handleHashtagClick}
+        onUserClick={handleUserClick}
+      />
     </>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './PitchingPracticeForm.css'
 
-function PitchingPracticeForm({ pitchingData = [], onChange }) {
+function PitchingPracticeForm({ pitchingData = [], maxVelocity = '', onChange, onMaxVelocityChange }) {
   const [pitchTypes] = useState([
     { id: 'fastball', name: 'ストレート', color: '#ff4444' },
     { id: 'slider', name: 'スライダー', color: '#4444ff' },
@@ -226,6 +226,28 @@ function PitchingPracticeForm({ pitchingData = [], onChange }) {
             <span className="stat-label">全体ストライク率</span>
             <span className="stat-value">{overallStrikeRate}%</span>
           </div>
+        </div>
+        
+        <div className="max-velocity-section">
+          <h5>⚡ 最高球速</h5>
+          <div className="velocity-input-wrapper">
+            <input
+              type="number"
+              value={maxVelocity}
+              onChange={(e) => onMaxVelocityChange && onMaxVelocityChange(e.target.value)}
+              placeholder="0"
+              min="0"
+              max="200"
+              className="velocity-input"
+            />
+            <span className="velocity-unit">km/h</span>
+          </div>
+          {maxVelocity && (
+            <div className="velocity-display">
+              <span className="velocity-emoji">🔥</span>
+              <span className="velocity-text">MAX {maxVelocity}km/h</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

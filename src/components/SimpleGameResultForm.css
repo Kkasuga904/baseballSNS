@@ -1,0 +1,261 @@
+.game-result-form {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.game-result-form > h4 {
+  color: #2e7d46;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.3rem;
+}
+
+.game-info-section {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Individual Stats */
+.individual-stats h4,
+.team-result h4 {
+  color: #2e7d46;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.batting-stats h5,
+.pitching-stats h5,
+.score-section h5 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-item label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.stat-item input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  text-align: center;
+  transition: border-color 0.3s ease;
+}
+
+.stat-item input:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.batting-average {
+  background: #f0f8f4;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.batting-average span {
+  color: #666;
+  margin-right: 0.5rem;
+}
+
+.batting-average strong {
+  font-size: 1.5rem;
+  color: #2e7d46;
+}
+
+/* Team Result */
+.score-section {
+  margin-bottom: 1.5rem;
+}
+
+.score-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.team-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.team-score label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.score-field {
+  width: 80px;
+  height: 60px;
+  font-size: 2rem;
+  text-align: center;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.score-field:focus {
+  outline: none;
+  border-color: #2e7d46;
+  box-shadow: 0 0 0 3px rgba(46, 125, 70, 0.1);
+}
+
+.vs {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #999;
+}
+
+.result-display {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  animation: fadeIn 0.5s ease;
+}
+
+.result-display .result-icon {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.result-display .result-text {
+  color: #333;
+}
+
+.result-display.win {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.result-display.lose {
+  background: #fce4ec;
+  color: #c62828;
+}
+
+.result-display.draw {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Controls */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .game-result-form {
+    padding: 1rem;
+  }
+
+  .tabs {
+    gap: 0.25rem;
+  }
+
+  .tab-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .score-input {
+    gap: 1rem;
+  }
+
+  .score-field {
+    width: 60px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .vs {
+    font-size: 1.2rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

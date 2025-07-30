@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import StarRating from './StarRating'
 import PitchingPracticeForm from './PitchingPracticeForm'
 import PitchingChart from './PitchingChart'
+import SimpleGameResultForm from './SimpleGameResultForm'
 import './PracticeForm.css'
 
 function PracticeForm({ onSubmit }) {
@@ -15,6 +16,8 @@ function PracticeForm({ onSubmit }) {
     intensity: 3,
     menu: [{ name: '', value: '', unit: '回' }],
     pitchingData: [],
+    maxVelocity: '',
+    gameResultData: null,
     note: '',
     videoFile: null,
     videoUrl: null
@@ -31,6 +34,7 @@ function PracticeForm({ onSubmit }) {
     mbthrow: { label: 'MBスロー', icon: '🏐' },
     plyometrics: { label: 'プライオメトリックス', icon: '🦘' },
     sprint: { label: 'スプリント', icon: '💨' },
+    game: { label: '試合', icon: '🏟️' },
     rest: { label: '休養日', icon: '😴' }
   }
 
@@ -152,6 +156,8 @@ function PracticeForm({ onSubmit }) {
           alert('投球データを入力してください')
           return
         }
+      } else if (formData.category === 'game') {
+        // 試合カテゴリの場合、入力は任意とする
       } else {
         validMenu = formData.menu.filter(item => item.name && item.value)
         if (validMenu.length === 0) {
@@ -167,7 +173,7 @@ function PracticeForm({ onSubmit }) {
 
       onSubmit({
         ...formData,
-        menu: formData.category === 'pitching' ? formData.pitchingData : validMenu,
+        menu: formData.category === 'pitching' ? formData.pitchingData : formData.category === 'game' ? [] : validMenu,
         videoData: formData.videoFile ? {
           url: formData.videoUrl,
           fileName: formData.videoFile.name,
@@ -190,6 +196,8 @@ function PracticeForm({ onSubmit }) {
       intensity: 3,
       menu: [{ name: '', value: '', unit: '回' }],
       pitchingData: [],
+      maxVelocity: '',
+      gameResultData: null,
       note: '',
       videoFile: null,
       videoUrl: null
@@ -331,12 +339,19 @@ function PracticeForm({ onSubmit }) {
           <>
             <PitchingPracticeForm
               pitchingData={formData.pitchingData}
+              maxVelocity={formData.maxVelocity}
               onChange={(data) => handleInputChange('pitchingData', data)}
+              onMaxVelocityChange={(velocity) => handleInputChange('maxVelocity', velocity)}
             />
             {formData.pitchingData && formData.pitchingData.length > 0 && (
               <PitchingChart pitchingData={formData.pitchingData} />
             )}
           </>
+        ) : formData.category === 'game' ? (
+          <SimpleGameResultForm
+            gameData={formData.gameResultData}
+            onChange={(data) => handleInputChange('gameResultData', data)}
+          />
         ) : (
           <div className="form-group">
             <label>練習メニュー</label>

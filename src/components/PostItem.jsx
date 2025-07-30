@@ -2,9 +2,10 @@ import React from 'react'
 import PracticeRecord from './PracticeRecord'
 import VideoPost from './VideoPost'
 import HealthRecord from './HealthRecord'
+import { renderTextWithHashtags } from '../utils/hashtagUtils.jsx'
 import './PostItem.css'
 
-function PostItem({ post }) {
+function PostItem({ post, onHashtagClick, onUserClick }) {
   const formatDate = (timestamp) => {
     const date = new Date(timestamp)
     const now = new Date()
@@ -33,10 +34,18 @@ function PostItem({ post }) {
   return (
     <div className={`post-item ${isPracticePost ? 'practice-post' : ''} ${isVideoPost ? 'video-post' : ''} ${isHealthPost ? 'health-post' : ''}`}>
       <div className="post-header">
-        <span className="post-author">
-          {getPostTypeIcon() && <span className="post-type-icon">{getPostTypeIcon()}</span>}
-          {post.author}
-        </span>
+        <div className="post-author-section">
+          <div 
+            className="post-author-icon" 
+            onClick={() => onUserClick && onUserClick(post.userId || post.author)}
+          >
+            <span className="user-icon">{post.userIcon || '👤'}</span>
+          </div>
+          <span className="post-author">
+            {getPostTypeIcon() && <span className="post-type-icon">{getPostTypeIcon()}</span>}
+            {post.author}
+          </span>
+        </div>
         <span className="post-time">{formatDate(post.timestamp)}</span>
       </div>
       
@@ -51,7 +60,7 @@ function PostItem({ post }) {
       )}
       {!isPracticePost && !isVideoPost && !isHealthPost && (
         <div className="post-content">
-          {post.content}
+          {renderTextWithHashtags(post.content, onHashtagClick)}
         </div>
       )}
       
