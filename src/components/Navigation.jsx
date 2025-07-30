@@ -90,31 +90,39 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
               ログアウト
             </button>
             {location.pathname === '/mypage' && (
-              <div className="nav-calendar">
-                <div className="calendar-header-section">
-                  <h3 
-                    className="calendar-header-clickable" 
-                    onClick={() => navigate('/calendar')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    📅 練習カレンダー
-                  </h3>
-                  <button
-                    className="calendar-minimize-btn"
-                    onClick={toggleCalendarMinimize}
-                    title={isCalendarMinimized ? 'カレンダーを表示' : 'カレンダーを最小化'}
-                  >
-                    {isCalendarMinimized ? '▼' : '▲'}
-                  </button>
-                </div>
+              <>
                 {!isCalendarMinimized && (
-                  <PracticeCalendar 
-                    practices={posts} 
-                    onDateClick={onDateClick}
-                    schedules={schedules}
+                  <div 
+                    className="calendar-mobile-overlay"
+                    onClick={() => setIsCalendarMinimized(true)}
                   />
                 )}
-              </div>
+                <div className="nav-calendar">
+                  <div className="calendar-header-section">
+                    <h3 
+                      className="calendar-header-clickable" 
+                      onClick={() => navigate('/calendar')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      📅 練習カレンダー
+                    </h3>
+                    <button
+                      className="calendar-minimize-btn"
+                      onClick={toggleCalendarMinimize}
+                      title={isCalendarMinimized ? 'カレンダーを表示' : 'カレンダーを最小化'}
+                    >
+                      {isCalendarMinimized ? '▼' : '▲'}
+                    </button>
+                  </div>
+                  {!isCalendarMinimized && (
+                    <PracticeCalendar 
+                      practices={posts} 
+                      onDateClick={onDateClick}
+                      schedules={schedules}
+                    />
+                  )}
+                </div>
+              </>
             )}
           </>
         ) : (

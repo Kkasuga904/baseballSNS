@@ -5,6 +5,7 @@ function PracticeCalendar({ practices, onDateClick, schedules = [] }) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [showScheduleModal, setShowScheduleModal] = useState(false)
   const [selectedDateSchedules, setSelectedDateSchedules] = useState([])
+  const [selectedModalDate, setSelectedModalDate] = useState('')
 
   const monthYear = useMemo(() => {
     return {
@@ -93,11 +94,40 @@ function PracticeCalendar({ practices, onDateClick, schedules = [] }) {
         monthYear.year === new Date().getFullYear()
       
       const handleDayClick = () => {
-        if (daySchedules.length > 0) {
-          setSelectedDateSchedules(daySchedules)
-          setShowScheduleModal(true)
+        const practicesOnDate = practices.filter(p => 
+          p.practiceData && p.practiceData.date === dateStr
+        )
+        
+        // 予定と練習記録を結合
+        const allEvents = [...daySchedules]
+        
+        // 練習記録を予定形式に変換して追加
+        practicesOnDate.forEach(practice => {
+          const categoryLabel = getPracticeCategoryLabel(practice.practiceData.category)
+          const timeStr = practice.practiceData.startTime && practice.practiceData.endTime 
+            ? `${practice.practiceData.startTime} - ${practice.practiceData.endTime}`
+            : practice.practiceData.startTime || ''
+            
+          allEvents.push({
+            type: 'practice',
+            title: `練習記録 - ${categoryLabel}`,
+            time: timeStr,
+            description: practice.practiceData.note || '',
+            location: practice.practiceData.location || '',
+            isPracticeRecord: true,
+            practiceData: practice.practiceData
+          })
+        })
+        
+        // モーダルを表示（予定がない場合も表示）
+        setSelectedDateSchedules(allEvents)
+        setSelectedModalDate(dateStr)
+        setShowScheduleModal(true)
+        
+        // 日付選択時のコールバック
+        if (onDateClick) {
+          onDateClick(dateStr)
         }
-        onDateClick(dateStr)
       }
       
       days.push(
@@ -131,10 +161,27 @@ function PracticeCalendar({ practices, onDateClick, schedules = [] }) {
     }
     return icons[type] || icons.other
   }
+
+  const getPracticeCategoryLabel = (category) => {
+    const labels = {
+      batting: 'バッティング',
+      pitching: 'ピッチング', 
+      fielding: 'フィールディング',
+      running: 'ランニング',
+      strength: '筋力トレーニング',
+      flexibility: '柔軟性',
+      game: '試合',
+      other: 'その他'
+    }
+    return labels[category] || category || '一般練習'
+  }
   
   const formatScheduleTime = (schedule) => {
     if (schedule.isAllDay) return '終日'
     if (schedule.isMultiDay && schedule.isMiddleDay) return '継続中'
+    if (schedule.isPracticeRecord) {
+      return schedule.time || '時間未記録'
+    }
     if (schedule.startTime) return schedule.startTime
     return ''
   }
@@ -167,21 +214,58 @@ function PracticeCalendar({ practices, onDateClick, schedules = [] }) {
         <div className="schedule-modal-overlay" onClick={() => setShowScheduleModal(false)}>
           <div className="schedule-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>予定一覧</h3>
+              <h3>
+                {selectedModalDate && (
+                  <>
+                    {new Date(selectedModalDate + 'T00:00:00').toLocaleDateString('ja-JP', {
+                      month: 'long',
+                      day: 'numeric',
+                      weekday: 'short'
+                    })} の予定
+                  </>
+                )}
+              </h3>
               <button className="modal-close" onClick={() => setShowScheduleModal(false)}>✕</button>
             </div>
             <div className="modal-content">
-              {selectedDateSchedules.map((schedule, idx) => (
-                <div key={idx} className="modal-schedule-item">
-                  <div className="schedule-type-icon">{getScheduleIcon(schedule.type)}</div>
-                  <div className="schedule-details">
-                    <h4>{schedule.title}</h4>
-                    <div className="schedule-time">{formatScheduleTime(schedule)}</div>
-                    {schedule.location && <div className="schedule-location">📍 {schedule.location}</div>}
-                    {schedule.description && <div className="schedule-description">{schedule.description}</div>}
+              {selectedDateSchedules.length > 0 ? (
+                selectedDateSchedules.map((schedule, idx) => (
+                  <div key={idx} className={`modal-schedule-item ${schedule.isPracticeRecord ? 'practice-record' : ''}`}>
+                    <div className="schedule-type-icon">{getScheduleIcon(schedule.type)}</div>
+                    <div className="schedule-details">
+                      <h4>{schedule.title}</h4>
+                      <div className="schedule-time">{formatScheduleTime(schedule)}</div>
+                      {schedule.location && <div className="schedule-location">📍 {schedule.location}</div>}
+                      {schedule.description && <div className="schedule-description">{schedule.description}</div>}
+                      {schedule.isPracticeRecord && schedule.practiceData && (
+                        <div className="practice-details">
+                          {schedule.practiceData.condition && (
+                            <div className="practice-condition">
+                              体調: {'★'.repeat(schedule.practiceData.condition)}{'☆'.repeat(5 - schedule.practiceData.condition)}
+                            </div>
+                          )}
+                          {schedule.practiceData.menu && schedule.practiceData.menu.length > 0 && (
+                            <div className="practice-menu">
+                              <strong>練習メニュー:</strong>
+                              <ul>
+                                {schedule.practiceData.menu.map((item, i) => (
+                                  <li key={i}>{item.name}: {item.value}{item.unit}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="no-events-message">
+                  <div className="no-events-icon">📅</div>
+                  <p>この日に予定はありません</p>
+                  <small>練習記録や予定を追加してみましょう</small>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>

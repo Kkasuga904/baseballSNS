@@ -43,6 +43,17 @@ function PracticeForm({ onSubmit }) {
     abs: { label: '腹筋', icon: '🎯' },
     shoulders: { label: '肩', icon: '🤸' }
   }
+  
+  // 基礎トレーニング種目
+  const basicExercises = {
+    chest: ['ベンチプレス', 'ダンベルプレス', 'プッシュアップ', 'ダンベルフライ', 'ケーブルクロスオーバー'],
+    back: ['デッドリフト', 'ラットプルダウン', '懸垂', 'ベントオーバーロウ', 'シーテッドロウ'],
+    biceps: ['バーベルカール', 'ダンベルカール', 'ハンマーカール', 'プリーチャーカール', 'ケーブルカール'],
+    triceps: ['トライセプスエクステンション', 'ディップス', 'ケーブルプレスダウン', 'ダンベルキックバック', 'ナローグリップベンチプレス'],
+    legs: ['スクワット', 'レッグプレス', 'ランジ', 'レッグカール', 'カーフレイズ', 'ブルガリアンスクワット'],
+    abs: ['プランク', 'クランチ', 'レッグレイズ', 'ロシアンツイスト', 'アブローラー', 'マウンテンクライマー'],
+    shoulders: ['ショルダープレス', 'サイドレイズ', 'フロントレイズ', 'リアレイズ', 'アップライトロウ']
+  }
 
   const commonUnits = ['回', '球', '本', '分', 'セット']
 
@@ -102,6 +113,14 @@ function PracticeForm({ onSubmit }) {
     setFormData(prev => ({
       ...prev,
       menu: [...prev.menu, { name: '', value: '', unit: '回' }]
+    }))
+  }
+  
+  const quickAddExercise = (exerciseName) => {
+    const unit = formData.category === 'training' ? 'セット' : '回'
+    setFormData(prev => ({
+      ...prev,
+      menu: [...prev.menu, { name: exerciseName, value: '', unit }]
     }))
   }
 
@@ -321,6 +340,29 @@ function PracticeForm({ onSubmit }) {
         ) : (
           <div className="form-group">
             <label>練習メニュー</label>
+            
+            {/* トレーニングカテゴリーで部位が選択されている場合、基礎種目を表示 */}
+            {formData.category === 'training' && formData.trainingPart && basicExercises[formData.trainingPart] && (
+              <div className="quick-exercises">
+                <div className="quick-exercises-header">
+                  <span className="quick-icon">⚡</span>
+                  <span>基礎種目から選択（タップで追加）</span>
+                </div>
+                <div className="exercise-chips">
+                  {basicExercises[formData.trainingPart].map((exercise) => (
+                    <button
+                      key={exercise}
+                      type="button"
+                      className="exercise-chip"
+                      onClick={() => quickAddExercise(exercise)}
+                    >
+                      + {exercise}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div className="menu-items">
               {formData.menu.map((item, index) => (
                 <div key={index} className="menu-item">
@@ -365,7 +407,7 @@ function PracticeForm({ onSubmit }) {
               onClick={addMenuItem}
               className="add-menu-button"
             >
-              + メニューを追加
+              + メニューを追加（手打ち入力）
             </button>
           </div>
         )}

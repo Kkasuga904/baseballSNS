@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { searchFood } from '../data/foodDatabase'
+import { useAuth } from '../App'
 import './MealForm.css'
 
 function MealForm({ onSubmit }) {
+  const { user } = useAuth()
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [foodSuggestions, setFoodSuggestions] = useState([])
   const [selectedFoods, setSelectedFoods] = useState([])
@@ -18,8 +20,43 @@ function MealForm({ onSubmit }) {
     fat: '',
     notes: '',
     imageUrl: '',
-    imageFile: null
+    imageFile: null,
+    alcohol: false,
+    alcoholAmount: '',
+    alcoholType: ''
   })
+
+  // ユーザーの年齢を取得して成人かどうか判定
+  const [isAdult, setIsAdult] = useState(false)
+  const [userProfile, setUserProfile] = useState(null)
+
+  useEffect(() => {
+    if (user) {
+      const profileKey = `baseballSNSProfile_${user.email || 'guest'}`
+      const savedProfile = localStorage.getItem(profileKey)
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile)
+        setUserProfile(profile)
+        
+        // 年齢計算（生年月日が設定されている場合）
+        if (profile.birthDate) {
+          const today = new Date()
+          const birthDate = new Date(profile.birthDate)
+          let age = today.getFullYear() - birthDate.getFullYear()
+          const monthDiff = today.getMonth() - birthDate.getMonth()
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+          }
+          setIsAdult(age >= 20)
+        } else {
+          // カテゴリーが社会人または大学4年以上の場合は成人と仮定
+          const adultCategories = ['serious', 'amateur', 'pro']
+          const isUniversityFourthYear = profile.category === 'university' && profile.grade === '4'
+          setIsAdult(adultCategories.includes(profile.category) || isUniversityFourthYear)
+        }
+      }
+    }
+  }, [user])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -167,7 +204,10 @@ function MealForm({ onSubmit }) {
       fat: '',
       notes: '',
       imageUrl: '',
-      imageFile: null
+      imageFile: null,
+      alcohol: false,
+      alcoholAmount: '',
+      alcoholType: ''
     })
     setSelectedFoods([])
   }
@@ -380,6 +420,85 @@ function MealForm({ onSubmit }) {
           rows="2"
         />
       </div>
+
+      {isAdult && (
+        <div className="alcohol-section">
+          <div className="form-group">
+            <label className="alcohol-checkbox-label">
+              <input
+                type="checkbox"
+                name="alcohol"
+                checked={formData.alcohol}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  alcohol: e.target.checked,
+                  alcoholAmount: e.target.checked ? prev.alcoholAmount : '',
+                  alcoholType: e.target.checked ? prev.alcoholType : ''
+                }))}
+              />
+              <span className="alcohol-icon">🍺</span>
+              飲酒を記録する
+            </label>
+          </div>
+
+          {formData.alcohol && (
+            <div className="alcohol-details">
+              <div className="alcohol-inputs">
+                <div className="form-group">
+                  <label>お酒の種類</label>
+                  <select
+                    name="alcoholType"
+                    value={formData.alcoholType}
+                    onChange={handleChange}
+                    required={formData.alcohol}
+                  >
+                    <option value="">選択してください</option>
+                    <option value="beer">ビール</option>
+                    <option value="wine">ワイン</option>
+                    <option value="sake">日本酒</option>
+                    <option value="shochu">焼酎</option>
+                    <option value="whiskey">ウイスキー</option>
+                    <option value="cocktail">カクテル</option>
+                    <option value="chuhai">チューハイ</option>
+                    <option value="other">その他</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>飲酒量</label>
+                  <div className="alcohol-amount-input">
+                    <input
+                      type="number"
+                      name="alcoholAmount"
+                      value={formData.alcoholAmount}
+                      onChange={handleChange}
+                      placeholder="1"
+                      min="0"
+                      step="0.5"
+                      required={formData.alcohol}
+                    />
+                    <span className="amount-unit">
+                      {formData.alcoholType === 'beer' && '本 (350ml)'}
+                      {formData.alcoholType === 'wine' && 'グラス (150ml)'}
+                      {formData.alcoholType === 'sake' && '合 (180ml)'}
+                      {formData.alcoholType === 'shochu' && '杯 (60ml)'}
+                      {formData.alcoholType === 'whiskey' && 'ショット (30ml)'}
+                      {formData.alcoholType === 'cocktail' && '杯 (200ml)'}
+                      {formData.alcoholType === 'chuhai' && '本 (350ml)'}
+                      {formData.alcoholType === 'other' && '杯'}
+                      {!formData.alcoholType && '杯'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="alcohol-warning">
+                <p>⚠️ 適度な飲酒を心がけ、トレーニングや体調管理に配慮しましょう</p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <button type="submit" className="submit-button">
         食事を記録

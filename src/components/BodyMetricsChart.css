@@ -1,0 +1,183 @@
+.body-metrics-chart {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.chart-header h3 {
+  margin: 0;
+  color: #2e7d46;
+}
+
+.view-mode-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.view-mode-selector button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.view-mode-selector button:hover {
+  background: #f5f5f5;
+}
+
+.view-mode-selector button.active {
+  background: #2e7d46;
+  color: white;
+  border-color: #2e7d46;
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #666;
+}
+
+.no-data-message p {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.no-data-message small {
+  color: #999;
+}
+
+.chart-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.chart-scroll-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+}
+
+.metrics-svg {
+  display: block;
+  min-width: 100%;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-color {
+  width: 20px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.metrics-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.stat-change {
+  font-size: 0.85rem;
+}
+
+.stat-change .increase {
+  color: #d32f2f;
+}
+
+.stat-change .decrease {
+  color: #1976d2;
+}
+
+/* スクロールバーのスタイリング */
+.chart-scroll-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.chart-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media (max-width: 767px) {
+  .body-metrics-chart {
+    padding: 1rem;
+  }
+  
+  .chart-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .view-mode-selector {
+    width: 100%;
+  }
+  
+  .view-mode-selector button {
+    flex: 1;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.5rem;
+  }
+  
+  .chart-legend {
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .metrics-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}

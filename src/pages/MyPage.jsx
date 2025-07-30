@@ -8,6 +8,7 @@ import DailyRecords from '../components/DailyRecords'
 import NutritionChart from '../components/NutritionChart'
 import ScheduleItem from '../components/ScheduleItem'
 import RoutineTracker from '../components/RoutineTracker'
+import BodyMetricsChart from '../components/BodyMetricsChart'
 import './MyPage.css'
 
 function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate }) {
@@ -78,6 +79,12 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
       sleep: [...(prev.sleep || []), { ...sleepData, id: Date.now() }]
     }))
   }
+  
+  const handleAddBodyMetrics = (metricsData) => {
+    // BodyMetricsFormコンポーネント内でlocalStorageに保存済み
+    // ここでは必要に応じて追加の処理を行う
+    console.log('Body metrics recorded:', metricsData)
+  }
 
   return (
     <div className="mypage">
@@ -96,12 +103,15 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
               onAddMeal={handleAddMeal}
               onAddSupplement={handleAddSupplement}
               onAddSleep={handleAddSleep}
+              onAddBodyMetrics={handleAddBodyMetrics}
             />
           )}
           
           <WeeklySummary practices={posts} />
           
           <PracticeStats practices={posts} />
+          
+          <BodyMetricsChart />
           
           {((myPageData.meals && myPageData.meals.length > 0) || 
             (myPageData.supplements && myPageData.supplements.length > 0)) && (

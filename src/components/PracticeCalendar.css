@@ -243,6 +243,84 @@
   margin-top: 0.25rem;
 }
 
+/* 練習記録専用スタイル */
+.modal-schedule-item.practice-record {
+  background: linear-gradient(135deg, #e8f5e8, #f0f8ff);
+  border-left: 4px solid #2e7d46;
+}
+
+.practice-details {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.practice-condition {
+  font-size: 0.85rem;
+  color: #f39c12;
+  margin-bottom: 0.5rem;
+}
+
+.practice-menu {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.practice-menu ul {
+  margin: 0.25rem 0 0 0;
+  padding-left: 1rem;
+}
+
+.practice-menu li {
+  margin-bottom: 0.2rem;
+}
+
+/* 小さいカレンダー用の改善 */
+.calendar-day {
+  position: relative;
+  overflow: visible;
+}
+
+.calendar-day:hover {
+  z-index: 10;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* クリック可能であることを示すカーソル */
+.calendar-day:not(.empty) {
+  cursor: pointer;
+}
+
+.calendar-day.has-schedule:hover,
+.calendar-day.has-practice:hover {
+  opacity: 0.9;
+}
+
+/* 予定なしメッセージ */
+.no-events-message {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #666;
+}
+
+.no-events-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.no-events-message p {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.no-events-message small {
+  color: #999;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 768px) {
   .practice-calendar {
     padding: 1rem;

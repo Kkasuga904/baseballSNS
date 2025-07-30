@@ -18,7 +18,12 @@ function ProfileSetup() {
     height: '', // 身長
     weight: '', // 体重
     maxSpeed: '', // 最高球速
-    pitchTypes: [] // 球種
+    pitchTypes: [], // 球種
+    birthDate: '', // 生年月日
+    birthYear: '', // 生年
+    birthMonth: '', // 生月
+    birthDay: '', // 生日
+    bodyFat: '' // 体脂肪率
   })
 
   const handleSubmit = (e) => {
@@ -337,6 +342,80 @@ function ProfileSetup() {
           )}
 
           <div className="form-section">
+            <h3>個人情報（任意）</h3>
+            <div className="personal-info-grid">
+              <div className="personal-info-item">
+                <label htmlFor="birthDate">生年月日</label>
+                <div className="birth-date-single-input">
+                  <input
+                    type="text"
+                    placeholder="19951225 (年月日で8桁)"
+                    maxLength="8"
+                    value={formData.birthDateInput || ''}
+                    onChange={(e) => {
+                      const input = e.target.value.replace(/\D/g, '') // 数字のみ
+                      if (input.length <= 8) {
+                        setFormData(prev => {
+                          const newData = { ...prev, birthDateInput: input }
+                          
+                          // 8桁入力された場合、自動的に分解
+                          if (input.length === 8) {
+                            const year = input.substring(0, 4)
+                            const month = input.substring(4, 6)
+                            const day = input.substring(6, 8)
+                            
+                            // 有効な日付かチェック
+                            const currentYear = new Date().getFullYear()
+                            if (year >= 1900 && year <= currentYear && 
+                                month >= 1 && month <= 12 && 
+                                day >= 1 && day <= 31) {
+                              newData.birthYear = year
+                              newData.birthMonth = parseInt(month)
+                              newData.birthDay = parseInt(day)
+                              newData.birthDate = `${year}-${month}-${day}`
+                            }
+                          }
+                          
+                          return newData
+                        })
+                      }
+                    }}
+                    className="birth-single-input"
+                  />
+                  <div className="birth-format-hint">
+                    例: 1995年12月25日 → 19951225
+                  </div>
+                </div>
+                <div className="birth-date-alternative">
+                  <label className="date-picker-label">
+                    📅 または日付選択:
+                    <input
+                      type="date"
+                      value={formData.birthDate}
+                      onChange={(e) => {
+                        const date = e.target.value
+                        if (date) {
+                          const [year, month, day] = date.split('-')
+                          setFormData(prev => ({
+                            ...prev,
+                            birthDate: date,
+                            birthYear: year,
+                            birthMonth: parseInt(month),
+                            birthDay: parseInt(day),
+                            birthDateInput: `${year}${month}${day}`
+                          }))
+                        }
+                      }}
+                      className="birth-date-picker"
+                    />
+                  </label>
+                </div>
+                <span className="birth-date-note">※ 成人判定および年齢に応じた機能で使用します</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="form-section">
             <h3>身体情報（任意）</h3>
             <div className="physical-info-grid">
               <div className="physical-info-item">
@@ -364,6 +443,20 @@ function ProfileSetup() {
                   value={formData.weight}
                   onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                   placeholder="65.5"
+                  className="physical-input"
+                />
+              </div>
+              <div className="physical-info-item">
+                <label htmlFor="bodyFat">体脂肪率 (%)</label>
+                <input
+                  id="bodyFat"
+                  type="number"
+                  min="3"
+                  max="50"
+                  step="0.1"
+                  value={formData.bodyFat}
+                  onChange={(e) => setFormData({ ...formData, bodyFat: e.target.value })}
+                  placeholder="12.5"
                   className="physical-input"
                 />
               </div>

@@ -7,9 +7,10 @@ import SupplementForm from './SupplementForm'
 import GoalsForm from './GoalsForm'
 import SleepForm from './SleepForm'
 import ReminderSettings from './ReminderSettings'
+import BodyMetricsForm from './BodyMetricsForm'
 import './DailyRecordTabs.css'
 
-function DailyRecordTabs({ selectedDate, onAddPractice, onAddVideo, onAddSchedule, onAddMeal, onAddSupplement, onAddSleep }) {
+function DailyRecordTabs({ selectedDate, onAddPractice, onAddVideo, onAddSchedule, onAddMeal, onAddSupplement, onAddSleep, onAddBodyMetrics }) {
   const [activeTab, setActiveTab] = useState('practice')
 
   const tabs = [
@@ -19,6 +20,7 @@ function DailyRecordTabs({ selectedDate, onAddPractice, onAddVideo, onAddSchedul
     { id: 'meal', label: '食事', icon: '🍽️' },
     { id: 'supplement', label: 'サプリ', icon: '💊' },
     { id: 'sleep', label: '睡眠', icon: '😴' },
+    { id: 'bodyMetrics', label: '体重・体脂肪', icon: '💪' },
     { id: 'goals', label: '目標設定', icon: '🎯' },
     { id: 'reminder', label: 'リマインダー', icon: '🔔' }
   ]
@@ -105,6 +107,15 @@ function DailyRecordTabs({ selectedDate, onAddPractice, onAddVideo, onAddSchedul
                 date: selectedDate,
                 isPrivate: true
               })}
+            />
+          </div>
+        )}
+        
+        {activeTab === 'bodyMetrics' && (
+          <div className="simplified-form">
+            <BodyMetricsForm 
+              selectedDate={selectedDate}
+              onSubmit={onAddBodyMetrics}
             />
           </div>
         )}

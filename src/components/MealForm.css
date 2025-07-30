@@ -49,6 +49,90 @@
   margin-bottom: 1rem;
 }
 
+/* 飲酒記録セクション */
+.alcohol-section {
+  background: #f8f9fa;
+  border: 2px solid #e8f5e9;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.alcohol-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #2e7d46;
+  font-size: 1rem;
+}
+
+.alcohol-checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  transform: scale(1.2);
+}
+
+.alcohol-icon {
+  font-size: 1.2rem;
+}
+
+.alcohol-details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.alcohol-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.alcohol-amount-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alcohol-amount-input input {
+  flex: 1;
+}
+
+.amount-unit {
+  color: #666;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.alcohol-warning {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 1rem;
+}
+
+.alcohol-warning p {
+  margin: 0;
+  color: #856404;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .alcohol-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .alcohol-section {
+    padding: 1rem;
+  }
+}
+
 .nutrition-inputs .form-group {
   margin-bottom: 0;
 }

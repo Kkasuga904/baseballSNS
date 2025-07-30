@@ -15,6 +15,17 @@ function Profile() {
   })
   
   const [editData, setEditData] = useState({})
+  
+  // 生年月日を年月日に分解する関数
+  const parseBirthDate = (dateString) => {
+    if (!dateString) return { year: '', month: '', day: '' }
+    const [year, month, day] = dateString.split('-')
+    return {
+      year: year || '',
+      month: parseInt(month) || '',
+      day: parseInt(day) || ''
+    }
+  }
   const [avatarPreview, setAvatarPreview] = useState(null)
   
   useEffect(() => {
@@ -24,7 +35,15 @@ function Profile() {
   }, [user, navigate])
   
   const handleEdit = () => {
-    setEditData(profile || {})
+    const editDataWithParsedDate = profile || {}
+    if (editDataWithParsedDate.birthDate) {
+      const { year, month, day } = parseBirthDate(editDataWithParsedDate.birthDate)
+      editDataWithParsedDate.birthYear = year
+      editDataWithParsedDate.birthMonth = month
+      editDataWithParsedDate.birthDay = day
+      editDataWithParsedDate.birthDateInput = `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`
+    }
+    setEditData(editDataWithParsedDate)
     setAvatarPreview(null)
     setIsEditing(true)
   }
@@ -206,6 +225,23 @@ function Profile() {
                   {profile.grade && ` ${profile.grade}年`}
                 </div>
               </div>
+              {profile.birthDate && (
+                <div className="profile-field">
+                  <label>🎂 年齢</label>
+                  <div className="field-value age-display">
+                    {(() => {
+                      const today = new Date()
+                      const birthDate = new Date(profile.birthDate)
+                      let age = today.getFullYear() - birthDate.getFullYear()
+                      const monthDiff = today.getMonth() - birthDate.getMonth()
+                      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        age--
+                      }
+                      return `${age}歳`
+                    })()}
+                  </div>
+                </div>
+              )}
             </div>
             
             <div className="profile-section">
@@ -237,6 +273,10 @@ function Profile() {
               <div className="profile-field">
                 <label>体重</label>
                 <div className="field-value">{profile.weight || '---'} kg</div>
+              </div>
+              <div className="profile-field">
+                <label>体脂肪率</label>
+                <div className="field-value">{profile.bodyFat ? `${profile.bodyFat}%` : '---'}</div>
               </div>
             </div>
             
@@ -361,6 +401,73 @@ function Profile() {
             
             <div className="profile-section">
               <h2>基本情報</h2>
+              <div className="form-field">
+                <label>🎂 生年月日</label>
+                <div className="birth-date-single-input">
+                  <input
+                    type="text"
+                    placeholder="19951225 (年月日で8桁)"
+                    maxLength="8"
+                    value={editData.birthDateInput || ''}
+                    onChange={(e) => {
+                      const input = e.target.value.replace(/\D/g, '') // 数字のみ
+                      if (input.length <= 8) {
+                        setEditData(prev => {
+                          const newData = { ...prev, birthDateInput: input }
+                          
+                          // 8桁入力された場合、自動的に分解
+                          if (input.length === 8) {
+                            const year = input.substring(0, 4)
+                            const month = input.substring(4, 6)
+                            const day = input.substring(6, 8)
+                            
+                            // 有効な日付かチェック
+                            const currentYear = new Date().getFullYear()
+                            if (year >= 1900 && year <= currentYear && 
+                                month >= 1 && month <= 12 && 
+                                day >= 1 && day <= 31) {
+                              newData.birthYear = year
+                              newData.birthMonth = parseInt(month)
+                              newData.birthDay = parseInt(day)
+                              newData.birthDate = `${year}-${month}-${day}`
+                            }
+                          }
+                          
+                          return newData
+                        })
+                      }
+                    }}
+                    className="birth-single-input"
+                  />
+                  <div className="birth-format-hint">
+                    例: 1995年12月25日 → 19951225
+                  </div>
+                </div>
+                <div className="birth-date-alternative">
+                  <label className="date-picker-label">
+                    📅 または日付選択:
+                    <input
+                      type="date"
+                      value={editData.birthDate || ''}
+                      onChange={(e) => {
+                        const date = e.target.value
+                        if (date) {
+                          const [year, month, day] = date.split('-')
+                          setEditData(prev => ({
+                            ...prev,
+                            birthDate: date,
+                            birthYear: year,
+                            birthMonth: parseInt(month),
+                            birthDay: parseInt(day),
+                            birthDateInput: `${year}${month}${day}`
+                          }))
+                        }
+                      }}
+                      className="birth-date-picker"
+                    />
+                  </label>
+                </div>
+              </div>
               <div className="form-field">
                 <label>ニックネーム</label>
                 <input
@@ -628,6 +735,19 @@ function Profile() {
                   placeholder="70"
                   min="30"
                   max="200"
+                  step="0.1"
+                />
+              </div>
+              <div className="form-field">
+                <label>💪 体脂肪率 (%)</label>
+                <input
+                  type="number"
+                  value={editData.bodyFat || ''}
+                  onChange={(e) => setEditData({...editData, bodyFat: e.target.value})}
+                  placeholder="12.5"
+                  min="3"
+                  max="50"
+                  step="0.1"
                 />
               </div>
             </div>
