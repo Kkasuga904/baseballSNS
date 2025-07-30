@@ -79,8 +79,8 @@ function PWAInstallBanner() {
       <div className="banner-content">
         <div className="banner-icon">⚾</div>
         <div className="banner-text">
-          <h3>野球SNSアプリをインストール</h3>
-          <p>ホーム画面に追加して素早くアクセス！</p>
+          <h3>BaseLogアプリをインストール</h3>
+          <p>野球の記録と交流をひとつに</p>
         </div>
         <div className="banner-actions">
           <button className="install-button" onClick={handleInstallClick}>

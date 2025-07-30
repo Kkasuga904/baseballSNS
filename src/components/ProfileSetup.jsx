@@ -42,12 +42,19 @@ function ProfileSetup() {
     }
     
     // ローカルストレージにプロフィール情報を保存
-    const profileKey = `baseballSNSProfile_${user?.email || 'guest'}`
-    localStorage.setItem(profileKey, JSON.stringify({
+    const profileData = {
       ...formData,
       setupCompleted: true,
       createdAt: new Date().toISOString()
-    }))
+    }
+    
+    // 管理者アカウントの場合は専用のキーに保存
+    if (user?.email === 'over9131120@gmail.com') {
+      localStorage.setItem('baseballSNSAdminProfile', JSON.stringify(profileData))
+    } else {
+      const profileKey = `baseballSNSProfile_${user?.email || 'guest'}`
+      localStorage.setItem(profileKey, JSON.stringify(profileData))
+    }
     
     // ホーム画面へ遷移
     navigate('/')

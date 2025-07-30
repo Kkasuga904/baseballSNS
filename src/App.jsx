@@ -25,6 +25,7 @@ import InstallPWA from './components/InstallPWA'
 import Footer from './components/Footer'
 import PWAInstallBanner from './components/PWAInstallBanner'
 import './App.css'
+import './admin-theme.css'
 
 function AppContent() {
   const { user } = useAuth()
@@ -33,6 +34,20 @@ function AppContent() {
   const [myPageData, setMyPageData] = useState(() => {
     const userKey = user?.email || 'guest'
     const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
+    
+    // 管理者アカウントの場合、永続的なストレージキーを使用
+    if (userKey === 'over9131120@gmail.com') {
+      const adminData = localStorage.getItem('baseballSNSAdminData')
+      return adminData ? JSON.parse(adminData) : {
+        practices: [],
+        videos: [],
+        schedules: [],
+        meals: [],
+        supplements: [],
+        sleep: []
+      }
+    }
+    
     return savedData ? JSON.parse(savedData) : {
       practices: [],
       videos: [],
@@ -93,7 +108,13 @@ function AppContent() {
   
   useEffect(() => {
     const userKey = user?.email || 'guest'
-    localStorage.setItem(`baseballSNSMyPageData_${userKey}`, JSON.stringify(myPageData))
+    
+    // 管理者アカウントの場合、専用のストレージキーを使用
+    if (userKey === 'over9131120@gmail.com') {
+      localStorage.setItem('baseballSNSAdminData', JSON.stringify(myPageData))
+    } else {
+      localStorage.setItem(`baseballSNSMyPageData_${userKey}`, JSON.stringify(myPageData))
+    }
   }, [myPageData, user])
 
   const addPost = (content) => {
@@ -153,11 +174,24 @@ function AppContent() {
     setPosts([newPost, ...posts])
   }
 
+  // Apply admin theme for admin users
+  useEffect(() => {
+    if (user?.isAdmin || user?.email === 'over9131120@gmail.com') {
+      document.body.classList.add('admin-theme')
+    } else {
+      document.body.classList.remove('admin-theme')
+    }
+    
+    return () => {
+      document.body.classList.remove('admin-theme')
+    }
+  }, [user])
+
   return (
     <div className="app">
         <header className="app-header">
-          <h1>⚾ 野球SNS</h1>
-          <p>野球ファンのためのコミュニティ</p>
+          <h1>⚾ BaseLog</h1>
+          <p>野球の記録と交流をひとつに</p>
         </header>
         
         <Navigation 

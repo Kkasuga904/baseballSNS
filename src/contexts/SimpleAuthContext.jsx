@@ -18,11 +18,18 @@ export const AuthProvider = ({ children }) => {
     // LocalStorageから保存されたユーザー情報を読み込み
     const savedUser = localStorage.getItem('baseballSNSUser')
     if (savedUser) {
-      setUser(JSON.parse(savedUser))
+      const parsedUser = JSON.parse(savedUser)
+      // 管理者権限チェック
+      if (parsedUser.email === 'over9131120@gmail.com') {
+        parsedUser.isAdmin = true
+      }
+      setUser(parsedUser)
     }
     
-    // デモアカウントの初期化
+    // デモアカウントと管理者アカウントの初期化
     const users = JSON.parse(localStorage.getItem('baseballSNSUsers') || '[]')
+    
+    // デモアカウント
     if (!users.find(u => u.email === 'demo@baseball-sns.com')) {
       users.push({
         id: 'demo_user',
@@ -30,9 +37,20 @@ export const AuthProvider = ({ children }) => {
         password: 'demo123',
         createdAt: new Date().toISOString()
       })
-      localStorage.setItem('baseballSNSUsers', JSON.stringify(users))
     }
     
+    // 管理者アカウント
+    if (!users.find(u => u.email === 'over9131120@gmail.com')) {
+      users.push({
+        id: 'admin_user',
+        email: 'over9131120@gmail.com',
+        password: 'Sawamura18',
+        isAdmin: true,
+        createdAt: new Date().toISOString()
+      })
+    }
+    
+    localStorage.setItem('baseballSNSUsers', JSON.stringify(users))
     setLoading(false)
   }, [])
 
@@ -80,6 +98,12 @@ export const AuthProvider = ({ children }) => {
     }
 
     const { password: _, ...userWithoutPassword } = user
+    
+    // 管理者権限チェック
+    if (userWithoutPassword.email === 'over9131120@gmail.com') {
+      userWithoutPassword.isAdmin = true
+    }
+    
     setUser(userWithoutPassword)
     localStorage.setItem('baseballSNSUser', JSON.stringify(userWithoutPassword))
     // ユーザー識別用キーも保存

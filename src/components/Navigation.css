@@ -129,6 +129,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-badge {
+  background: #ff6b35;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  white-space: nowrap;
 }
 
 .logout-button {
@@ -169,15 +182,17 @@
 }
 
 .nav-calendar {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
   background: white;
   border-radius: 8px;
   padding: 0.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 200;
   width: 300px;
+  transition: box-shadow 0.3s ease;
+}
+
+.nav-calendar.dragging {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  opacity: 0.9;
 }
 
 .calendar-header-section {
@@ -185,6 +200,37 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
+  cursor: move;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  padding: 0.5rem;
+  background: #f5f5f5;
+  border-radius: 6px 6px 0 0;
+  margin: -0.5rem -0.5rem 0.5rem -0.5rem;
+}
+
+.calendar-drag-handle {
+  display: flex;
+  align-items: center;
+  color: #999;
+  font-size: 1.2rem;
+  cursor: move;
+  padding: 0 0.5rem;
+}
+
+.drag-icon {
+  letter-spacing: -0.3em;
+  font-weight: bold;
+}
+
+.calendar-header-section:hover {
+  background: #eeeeee;
+}
+
+.nav-calendar.dragging .calendar-header-section {
+  background: #e0e0e0;
 }
 
 .nav-calendar h3 {
