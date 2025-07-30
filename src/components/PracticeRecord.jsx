@@ -2,7 +2,7 @@ import React from 'react'
 import './PracticeRecord.css'
 
 function PracticeRecord({ practiceData }) {
-  const { date, startTime, endTime, category, condition, intensity, menu, note } = practiceData
+  const { date, startTime, endTime, category, condition, intensity, menu, note, videoData } = practiceData
 
   const categoryIcons = {
     batting: '🏏',
@@ -132,6 +132,17 @@ function PracticeRecord({ practiceData }) {
         </div>
       </div>
 
+      {videoData && (
+        <div className="practice-video">
+          <h4>練習動画</h4>
+          <video 
+            src={videoData.url} 
+            controls 
+            className="practice-video-player"
+          />
+        </div>
+      )}
+      
       {note && (
         <div className="practice-note">
           <h4>メモ</h4>

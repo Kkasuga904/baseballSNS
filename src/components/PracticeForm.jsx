@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import StarRating from './StarRating'
 import './PracticeForm.css'
 
@@ -11,8 +11,11 @@ function PracticeForm({ onSubmit }) {
     condition: 3,
     intensity: 3,
     menu: [{ name: '', value: '', unit: '回' }],
-    note: ''
+    note: '',
+    videoFile: null,
+    videoUrl: null
   })
+  const videoInputRef = useRef(null)
 
   const practiceCategories = {
     batting: { label: '打撃練習', icon: '🏏' },
@@ -30,6 +33,42 @@ function PracticeForm({ onSubmit }) {
       ...prev,
       [field]: value
     }))
+  }
+  
+  const handleVideoSelect = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    
+    if (!file.type.startsWith('video/')) {
+      alert('動画ファイルを選択してください')
+      return
+    }
+    
+    if (file.size > 100 * 1024 * 1024) {
+      alert('ファイルサイズが大きすぎます。100MB以下の動画をアップロードしてください。')
+      return
+    }
+    
+    const url = URL.createObjectURL(file)
+    setFormData(prev => ({
+      ...prev,
+      videoFile: file,
+      videoUrl: url
+    }))
+  }
+  
+  const removeVideo = () => {
+    if (formData.videoUrl) {
+      URL.revokeObjectURL(formData.videoUrl)
+    }
+    setFormData(prev => ({
+      ...prev,
+      videoFile: null,
+      videoUrl: null
+    }))
+    if (videoInputRef.current) {
+      videoInputRef.current.value = ''
+    }
   }
 
   const handleMenuChange = (index, field, value) => {
@@ -82,11 +121,19 @@ function PracticeForm({ onSubmit }) {
 
       onSubmit({
         ...formData,
-        menu: validMenu
+        menu: validMenu,
+        videoData: formData.videoFile ? {
+          url: formData.videoUrl,
+          fileName: formData.videoFile.name,
+          fileSize: formData.videoFile.size
+        } : null
       })
     }
 
 
+    if (formData.videoUrl) {
+      URL.revokeObjectURL(formData.videoUrl)
+    }
     setFormData({
       date: new Date().toISOString().split('T')[0],
       startTime: '',
@@ -95,8 +142,13 @@ function PracticeForm({ onSubmit }) {
       condition: 3,
       intensity: 3,
       menu: [{ name: '', value: '', unit: '回' }],
-      note: ''
+      note: '',
+      videoFile: null,
+      videoUrl: null
     })
+    if (videoInputRef.current) {
+      videoInputRef.current.value = ''
+    }
   }
 
   return (
@@ -171,6 +223,45 @@ function PracticeForm({ onSubmit }) {
       )}
 
       {formData.category !== 'rest' && (
+        <>
+        <div className="form-group">
+          <label>練習動画（任意）</label>
+          <div className="video-upload-area">
+            {!formData.videoFile ? (
+              <>
+                <input
+                  ref={videoInputRef}
+                  type="file"
+                  accept="video/*"
+                  onChange={handleVideoSelect}
+                  className="video-input"
+                  id="practice-video"
+                />
+                <label htmlFor="practice-video" className="video-label">
+                  <span className="upload-icon">🎥</span>
+                  <span className="upload-text">動画を追加</span>
+                  <span className="upload-hint">フォーム確認や練習風景の動画</span>
+                </label>
+              </>
+            ) : (
+              <div className="video-preview">
+                <video 
+                  src={formData.videoUrl} 
+                  controls 
+                  className="preview-video"
+                />
+                <button
+                  type="button"
+                  onClick={removeVideo}
+                  className="remove-video-btn"
+                >
+                  ✕ 動画を削除
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        
         <div className="form-group">
           <label>練習メニュー</label>
         <div className="menu-items">
@@ -220,6 +311,7 @@ function PracticeForm({ onSubmit }) {
           + メニューを追加
         </button>
         </div>
+        </>
       )}
 
       <div className="form-group">

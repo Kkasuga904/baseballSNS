@@ -194,3 +194,72 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.video-upload-area {
+  border: 2px dashed #2e7d46;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #f8fbf8;
+}
+
+.video-input {
+  display: none;
+}
+
+.video-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.video-label:hover {
+  transform: scale(1.02);
+}
+
+.upload-icon {
+  font-size: 2rem;
+}
+
+.upload-text {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #2e7d46;
+}
+
+.upload-hint {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.video-preview {
+  position: relative;
+}
+
+.preview-video {
+  width: 100%;
+  max-height: 200px;
+  border-radius: 4px;
+}
+
+.remove-video-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ff4458;
+  color: #ff4458;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.remove-video-btn:hover {
+  background: #ff4458;
+  color: white;
+}

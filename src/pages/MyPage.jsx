@@ -53,6 +53,15 @@ function MyPage({ posts, myPageData, setMyPageData }) {
     <div className="mypage">
       <h2>📝 マイページ - 練習記録</h2>
       
+      {selectedDate && (
+        <DailyRecordTabs
+          selectedDate={selectedDate}
+          onAddPractice={handleAddPractice}
+          onAddVideo={handleAddVideo}
+          onAddSchedule={handleAddSchedule}
+        />
+      )}
+      
       <WeeklySummary practices={posts} />
       
       <PracticeStats practices={posts} />
@@ -63,24 +72,15 @@ function MyPage({ posts, myPageData, setMyPageData }) {
       />
       
       {selectedDate && (
-        <>
-          <DailyRecordTabs
-            selectedDate={selectedDate}
-            onAddPractice={handleAddPractice}
-            onAddVideo={handleAddVideo}
-            onAddSchedule={handleAddSchedule}
+        <div className="selected-date-records">
+          <h3>{selectedDate} の記録</h3>
+          <DailyRecords
+            date={selectedDate}
+            practices={selectedDateData.practices}
+            videos={selectedDateData.videos}
+            schedules={selectedDateData.schedules}
           />
-          
-          <div className="selected-date-records">
-            <h3>{selectedDate} の記録</h3>
-            <DailyRecords
-              date={selectedDate}
-              practices={selectedDateData.practices}
-              videos={selectedDateData.videos}
-              schedules={selectedDateData.schedules}
-            />
-          </div>
-        </>
+        </div>
       )}
       
       <div className="recent-practices">
