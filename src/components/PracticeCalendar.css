@@ -59,23 +59,27 @@
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   position: relative;
-  cursor: default;
+  cursor: pointer;
   transition: all 0.2s;
 }
 
 .calendar-day.empty {
   border: none;
+  cursor: default;
+}
+
+.calendar-day:hover:not(.empty) {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
 }
 
 .calendar-day.has-practice {
   background-color: #e8f5e8;
   border-color: #2e7d46;
-  cursor: pointer;
 }
 
 .calendar-day.has-practice:hover {
   background-color: #d4ecd4;
-  transform: scale(1.05);
 }
 
 .calendar-day.today {

@@ -1,0 +1,80 @@
+.daily-record-tabs {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.tabs-header {
+  background: linear-gradient(135deg, #2e7d46, #3a9855);
+  color: white;
+  padding: 1rem 1.5rem;
+}
+
+.tabs-header h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+}
+
+.tabs-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.tab-button.active {
+  background: white;
+  color: #2e7d46;
+  font-weight: bold;
+}
+
+.tab-icon {
+  font-size: 1.1rem;
+}
+
+.tab-content {
+  padding: 1.5rem;
+}
+
+.simplified-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .tabs-header {
+    padding: 1rem;
+  }
+  
+  .tabs-nav {
+    flex-wrap: wrap;
+  }
+  
+  .tab-button {
+    flex: 1;
+    min-width: 100px;
+    justify-content: center;
+  }
+  
+  .tab-content {
+    padding: 1rem;
+  }
+}

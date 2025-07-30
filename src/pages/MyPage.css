@@ -9,21 +9,18 @@
   font-size: 1.8rem;
 }
 
-.selected-date-practices {
+.selected-date-records {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   margin-bottom: 2rem;
-  position: relative;
+  margin-top: 2rem;
 }
 
-.selected-date-practices h3 {
+.selected-date-records h3 {
   color: #2e7d46;
   margin-bottom: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .close-button {

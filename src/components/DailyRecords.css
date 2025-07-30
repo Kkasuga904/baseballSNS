@@ -1,0 +1,34 @@
+.daily-records {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.daily-records.empty {
+  text-align: center;
+  color: #999;
+  padding: 3rem;
+}
+
+.record-section {
+  margin-bottom: 2rem;
+}
+
+.record-section:last-child {
+  margin-bottom: 0;
+}
+
+.record-section h4 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e8f5e8;
+}
+
+@media (max-width: 768px) {
+  .daily-records {
+    padding: 1rem;
+  }
+}

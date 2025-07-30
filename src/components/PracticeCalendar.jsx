@@ -60,7 +60,7 @@ function PracticeCalendar({ practices, onDateClick }) {
         <div
           key={day}
           className={`calendar-day ${hasPractice ? 'has-practice' : ''} ${isToday ? 'today' : ''}`}
-          onClick={() => hasPractice && onDateClick(dateStr)}
+          onClick={() => onDateClick(dateStr)}
         >
           <span className="day-number">{day}</span>
           {hasPractice && <span className="practice-marker">⚾</span>}

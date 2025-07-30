@@ -6,6 +6,16 @@ import MyPage from './pages/MyPage'
 import './App.css'
 
 function App() {
+  // マイページ専用データ
+  const [myPageData, setMyPageData] = useState(() => {
+    const savedData = localStorage.getItem('baseballSNSMyPageData')
+    return savedData ? JSON.parse(savedData) : {
+      practices: [],
+      videos: [],
+      schedules: []
+    }
+  })
+  
   const [posts, setPosts] = useState(() => {
     const savedPosts = localStorage.getItem('baseballSNSPosts')
     return savedPosts ? JSON.parse(savedPosts) : [
@@ -53,6 +63,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('baseballSNSPosts', JSON.stringify(posts))
   }, [posts])
+  
+  useEffect(() => {
+    localStorage.setItem('baseballSNSMyPageData', JSON.stringify(myPageData))
+  }, [myPageData])
 
   const addPost = (content) => {
     const newPost = {
@@ -121,6 +135,8 @@ function App() {
               element={
                 <MyPage 
                   posts={posts.filter(post => post.type === 'practice' && post.author === 'ゲストユーザー')}
+                  myPageData={myPageData}
+                  setMyPageData={setMyPageData}
                 />
               } 
             />

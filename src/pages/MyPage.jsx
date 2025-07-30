@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import PracticeStats from '../components/PracticeStats'
 import PracticeCalendar from '../components/PracticeCalendar'
 import PracticeRecord from '../components/PracticeRecord'
 import WeeklySummary from '../components/WeeklySummary'
+import DailyRecordTabs from '../components/DailyRecordTabs'
+import DailyRecords from '../components/DailyRecords'
 import './MyPage.css'
 
-function MyPage({ posts }) {
-  const [selectedDate, setSelectedDate] = useState(null)
+function MyPage({ posts, myPageData, setMyPageData }) {
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
 
   const practicesOnSelectedDate = selectedDate
     ? posts.filter(post => 
@@ -14,6 +16,38 @@ function MyPage({ posts }) {
         post.practiceData.date === selectedDate
       )
     : []
+  
+  // マイページ専用データの日付別フィルタリング
+  const selectedDateData = useMemo(() => {
+    if (!selectedDate) return { practices: [], videos: [], schedules: [] }
+    
+    return {
+      practices: myPageData.practices.filter(p => p.date === selectedDate),
+      videos: myPageData.videos.filter(v => v.date === selectedDate),
+      schedules: myPageData.schedules.filter(s => s.date === selectedDate)
+    }
+  }, [selectedDate, myPageData])
+  
+  const handleAddPractice = (practiceData) => {
+    setMyPageData(prev => ({
+      ...prev,
+      practices: [...prev.practices, { ...practiceData, id: Date.now() }]
+    }))
+  }
+  
+  const handleAddVideo = (videoData) => {
+    setMyPageData(prev => ({
+      ...prev,
+      videos: [...prev.videos, { ...videoData, id: Date.now() }]
+    }))
+  }
+  
+  const handleAddSchedule = (scheduleData) => {
+    setMyPageData(prev => ({
+      ...prev,
+      schedules: [...prev.schedules, scheduleData]
+    }))
+  }
 
   return (
     <div className="mypage">
@@ -29,27 +63,24 @@ function MyPage({ posts }) {
       />
       
       {selectedDate && (
-        <div className="selected-date-practices">
-          <h3>
-            {selectedDate} の練習記録
-            <button 
-              className="close-button" 
-              onClick={() => setSelectedDate(null)}
-            >
-              ✕
-            </button>
-          </h3>
+        <>
+          <DailyRecordTabs
+            selectedDate={selectedDate}
+            onAddPractice={handleAddPractice}
+            onAddVideo={handleAddVideo}
+            onAddSchedule={handleAddSchedule}
+          />
           
-          {practicesOnSelectedDate.length > 0 ? (
-            practicesOnSelectedDate.map(practice => (
-              <div key={practice.id} className="practice-detail">
-                <PracticeRecord practiceData={practice.practiceData} />
-              </div>
-            ))
-          ) : (
-            <p className="no-practices">この日の練習記録はありません</p>
-          )}
-        </div>
+          <div className="selected-date-records">
+            <h3>{selectedDate} の記録</h3>
+            <DailyRecords
+              date={selectedDate}
+              practices={selectedDateData.practices}
+              videos={selectedDateData.videos}
+              schedules={selectedDateData.schedules}
+            />
+          </div>
+        </>
       )}
       
       <div className="recent-practices">
