@@ -8,6 +8,7 @@ function PracticeForm({ onSubmit }) {
     startTime: '',
     endTime: '',
     category: 'batting',
+    trainingPart: '',
     condition: 3,
     intensity: 3,
     menu: [{ name: '', value: '', unit: '回' }],
@@ -24,6 +25,16 @@ function PracticeForm({ onSubmit }) {
     running: { label: '走塁練習', icon: '🏃' },
     training: { label: 'トレーニング', icon: '💪' },
     rest: { label: '休養日', icon: '😴' }
+  }
+
+  const trainingParts = {
+    chest: { label: '胸', icon: '🫁' },
+    back: { label: '背中', icon: '🔙' },
+    biceps: { label: '二頭筋', icon: '💪' },
+    triceps: { label: '三頭筋', icon: '🦾' },
+    legs: { label: '下半身', icon: '🦵' },
+    abs: { label: '腹筋', icon: '🎯' },
+    shoulders: { label: '肩', icon: '🤸' }
   }
 
   const commonUnits = ['回', '球', '本', '分', 'セット']
@@ -207,6 +218,25 @@ function PracticeForm({ onSubmit }) {
           ))}
         </div>
       </div>
+
+      {formData.category === 'training' && (
+        <div className="form-group">
+          <label>トレーニング部位</label>
+          <div className="training-parts-selector">
+            {Object.entries(trainingParts).map(([key, { label, icon }]) => (
+              <button
+                key={key}
+                type="button"
+                className={`part-button ${formData.trainingPart === key ? 'active' : ''}`}
+                onClick={() => handleInputChange('trainingPart', key)}
+              >
+                <span className="part-icon">{icon}</span>
+                <span className="part-label">{label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <StarRating
         label="体調"

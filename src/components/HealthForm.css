@@ -1,0 +1,176 @@
+.health-form {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.health-form h3 {
+  color: #2e7d46;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.health-section {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #fafafa;
+}
+
+.health-section h4 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quality-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.quality-button {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quality-button:hover {
+  border-color: #2e7d46;
+  transform: scale(1.05);
+}
+
+.quality-button.active {
+  border-color: #2e7d46;
+  background-color: #e8f5e8;
+}
+
+.meal-item {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.meal-item:last-child {
+  margin-bottom: 0;
+}
+
+.meal-item h5 {
+  color: #666;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.meal-item textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.supplements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.supplement-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 40px;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.supplement-name {
+  flex: 2;
+}
+
+.supplement-amount,
+.supplement-timing {
+  flex: 1;
+}
+
+.add-supplement-button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px dashed #2e7d46;
+  border-radius: 8px;
+  background: white;
+  color: #2e7d46;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.add-supplement-button:hover {
+  background-color: #e8f5e8;
+}
+
+.health-form .form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.health-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.health-form .form-group label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.health-form .form-group input[type="date"],
+.health-form .form-group input[type="time"],
+.health-form .form-group input[type="text"],
+.health-form .form-group input[type="number"],
+.health-form .form-group select,
+.health-form .form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.health-form .form-group input:focus,
+.health-form .form-group select:focus,
+.health-form .form-group textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+@media (max-width: 768px) {
+  .health-form {
+    padding: 1rem;
+  }
+  
+  .supplement-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .supplement-name,
+  .supplement-amount,
+  .supplement-timing,
+  .remove-button {
+    width: 100%;
+  }
+}

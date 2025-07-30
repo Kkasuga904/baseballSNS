@@ -25,6 +25,13 @@ function PostTypeSelector({ postType, onTypeChange }) {
         <span className="type-icon">🎬</span>
         <span className="type-label">動画投稿</span>
       </button>
+      <button
+        className={`type-button ${postType === 'health' ? 'active' : ''}`}
+        onClick={() => onTypeChange('health')}
+      >
+        <span className="type-icon">🏥</span>
+        <span className="type-label">健康記録</span>
+      </button>
     </div>
   )
 }

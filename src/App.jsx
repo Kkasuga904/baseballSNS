@@ -125,6 +125,21 @@ function AppContent() {
     setPosts([newPost, ...posts])
   }
 
+  const addHealthRecord = (healthData) => {
+    const newPost = {
+      id: Date.now(),
+      type: 'health',
+      author: user?.email || 'ゲストユーザー',
+      userId: user?.id || null,
+      timestamp: new Date().toISOString(),
+      likes: 0,
+      comments: 0,
+      healthData,
+      isPrivate: false // 共有設定（デフォルトは公開）
+    }
+    setPosts([newPost, ...posts])
+  }
+
   return (
     <div className="app">
         <header className="app-header">
@@ -144,6 +159,7 @@ function AppContent() {
                   addPost={addPost}
                   addPracticeRecord={addPracticeRecord}
                   addVideoPost={addVideoPost}
+                  addHealthRecord={addHealthRecord}
                 />
               } 
             />

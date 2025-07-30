@@ -173,6 +173,45 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+.training-parts-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+
+.part-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.part-button:hover {
+  border-color: #ff6b6b;
+  background-color: #fff5f5;
+}
+
+.part-button.active {
+  border-color: #ff6b6b;
+  background-color: #ffe0e0;
+}
+
+.part-icon {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.part-label {
+  font-size: 0.8rem;
+  color: #333;
+}
+
 @media (max-width: 768px) {
   .practice-form {
     padding: 1rem;
@@ -192,6 +231,10 @@
   
   .category-selector {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .training-parts-selector {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

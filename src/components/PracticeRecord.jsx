@@ -2,7 +2,7 @@ import React from 'react'
 import './PracticeRecord.css'
 
 function PracticeRecord({ practiceData }) {
-  const { date, startTime, endTime, category, condition, intensity, menu, note, videoData } = practiceData
+  const { date, startTime, endTime, category, trainingPart, condition, intensity, menu, note, videoData } = practiceData
 
   const categoryIcons = {
     batting: '🏏',
@@ -15,11 +15,21 @@ function PracticeRecord({ practiceData }) {
 
   const categoryLabels = {
     batting: '打撃練習',
-    pitching: '投焴練習',
+    pitching: '投球練習',
     fielding: '守備練習',
     running: '走塁練習',
     training: 'トレーニング',
     rest: '休養日'
+  }
+
+  const trainingPartLabels = {
+    chest: '胸',
+    back: '背中',
+    biceps: '二頭筋',
+    triceps: '三頭筋',
+    legs: '下半身',
+    abs: '腹筋',
+    shoulders: '肩'
   }
 
   const calculateDuration = () => {
@@ -78,7 +88,12 @@ function PracticeRecord({ practiceData }) {
       <div className="practice-header">
         <div className="practice-category">
           <span className="category-icon">{categoryIcons[category]}</span>
-          <span className="category-name">{categoryLabels[category]}</span>
+          <span className="category-name">
+            {categoryLabels[category]}
+            {category === 'training' && trainingPart && (
+              <span className="training-part"> ({trainingPartLabels[trainingPart]})</span>
+            )}
+          </span>
         </div>
         <div className="practice-meta">
           <span className="practice-date">{date}</span>

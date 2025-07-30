@@ -1,6 +1,7 @@
 import React from 'react'
 import PracticeRecord from './PracticeRecord'
 import VideoPost from './VideoPost'
+import HealthRecord from './HealthRecord'
 import './PostItem.css'
 
 function PostItem({ post }) {
@@ -20,15 +21,17 @@ function PostItem({ post }) {
 
   const isPracticePost = post.type === 'practice'
   const isVideoPost = post.type === 'video'
+  const isHealthPost = post.type === 'health'
 
   const getPostTypeIcon = () => {
     if (isPracticePost) return '📝'
     if (isVideoPost) return '🎬'
+    if (isHealthPost) return '🏥'
     return null
   }
 
   return (
-    <div className={`post-item ${isPracticePost ? 'practice-post' : ''} ${isVideoPost ? 'video-post' : ''}`}>
+    <div className={`post-item ${isPracticePost ? 'practice-post' : ''} ${isVideoPost ? 'video-post' : ''} ${isHealthPost ? 'health-post' : ''}`}>
       <div className="post-header">
         <span className="post-author">
           {getPostTypeIcon() && <span className="post-type-icon">{getPostTypeIcon()}</span>}
@@ -43,7 +46,10 @@ function PostItem({ post }) {
       {isVideoPost && (
         <VideoPost videoData={post.videoData} />
       )}
-      {!isPracticePost && !isVideoPost && (
+      {isHealthPost && (
+        <HealthRecord healthData={post.healthData} />
+      )}
+      {!isPracticePost && !isVideoPost && !isHealthPost && (
         <div className="post-content">
           {post.content}
         </div>
