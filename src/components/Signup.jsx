@@ -130,8 +130,6 @@ VITE_SUPABASE_ANON_KEY=your_supabase_key`}
             <div className="auth-links">
               <Link to="/login">既にアカウントをお持ちの方</Link>
             </div>
-          </>
-        )}
       </div>
     </div>
   )

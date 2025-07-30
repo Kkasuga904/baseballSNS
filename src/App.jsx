@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { AuthProvider, useAuth } from './contexts/AuthContext'
+// Supabase設定がある場合はAuthContext、ない場合はSimpleAuthContextを使用
+import { AuthProvider as SupabaseAuthProvider, useAuth as useSupabaseAuth } from './contexts/AuthContext'
+import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './contexts/SimpleAuthContext'
+
+// 環境に応じて適切な認証システムを選択
+const hasSupabaseConfig = import.meta.env.VITE_SUPABASE_URL && 
+  import.meta.env.VITE_SUPABASE_URL !== 'https://placeholder.supabase.co'
+
+export const AuthProvider = hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider
+export const useAuth = hasSupabaseConfig ? useSupabaseAuth : useSimpleAuth
 import Navigation from './components/Navigation'
 import Timeline from './pages/Timeline'
 import MyPage from './pages/MyPage'
