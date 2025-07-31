@@ -47,12 +47,21 @@
   
   <!-- Service Worker登録（本番環境のみ） -->
   <script>
-    // 開発環境では無効化
-    if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+    // Vercelの本番環境でのみService Workerを有効化
+    // localhost、127.0.0.1、または.vercel.appのプレビュー環境では無効化
+    const isProduction = window.location.hostname.endsWith('.vercel.app') && 
+                        !window.location.hostname.includes('-git-') && // Gitブランチのプレビュー
+                        !window.location.hostname.includes('localhost') &&
+                        !window.location.hostname.includes('127.0.0.1');
+    
+    if (isProduction) {
+      console.log('[SW] 本番環境検出。Service Workerを登録します。');
       const script = document.createElement('script');
       script.src = '/register-sw.js';
       script.defer = true;
       document.body.appendChild(script);
+    } else {
+      console.log('[SW] 開発/プレビュー環境のため、Service Workerは無効化されています');
     }
   </script>
 </body>

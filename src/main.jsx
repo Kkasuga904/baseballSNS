@@ -6,58 +6,47 @@ import './index.css'
 /**
  * Service Worker の登録処理
  * 
- * 開発環境と本番環境で異なるService Workerを使用：
- * - 開発環境: sw-dev.js（最小限の機能のみ）
- * - 本番環境: sw.js（完全な機能）
+ * 本番環境でのみService Workerを登録
+ * 開発環境では完全に無効化してMIMEタイプエラーを回避
  */
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && !import.meta.env.DEV) {
+  // 本番環境でのみ実行
   window.addEventListener('load', () => {
-    // 環境に応じてService Workerファイルを選択
-    const swUrl = import.meta.env.DEV ? '/sw-dev.js' : '/sw.js';
+    console.log('[SW] 本番環境でService Workerを登録します')
     
-    // Service Workerを通常のスクリプトとして登録（ESモジュールではない）
-    // type: 'classic' を明示的に指定してMIMEタイプエラーを防ぐ
-    navigator.serviceWorker.register(swUrl, { type: 'classic' })
-      .then(registration => {
-        console.log(`Service Worker registered: ${swUrl}`, registration)
+    // register-sw.jsの動的読み込みは既にindex.htmlで行っているため、
+    // ここでは自動更新のイベントリスナーのみ設定
+    navigator.serviceWorker.ready.then(registration => {
+      console.log('[SW] Service Worker is ready:', registration)
+      
+      // 更新が見つかったときの処理
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing
+        console.log('[SW] 新しいService Workerが見つかりました')
         
-        // 本番環境でのみ自動更新機能を有効化
-        if (!import.meta.env.DEV) {
-          // 更新が見つかったときの処理
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing
-            console.log('[SW] 新しいService Workerが見つかりました')
-            
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'activated') {
-                console.log('[SW] 新しいService Workerがアクティブになりました')
-                // controllerchangeイベントを待たずに即座にリロード
-                window.location.reload()
-              }
-            })
-          })
-          
-          // 即座に更新をチェック
-          registration.update()
-          
-          // 定期的に更新をチェック（5分ごと）
-          setInterval(() => {
-            registration.update()
-          }, 5 * 60 * 1000) // 5分ごと
-        }
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'activated') {
+            console.log('[SW] 新しいService Workerがアクティブになりました')
+            // 自動的にページをリロード
+            window.location.reload()
+          }
+        })
       })
-      .catch(error => {
-        console.error('Service Worker registration failed:', error)
-      })
+      
+      // 定期的に更新をチェック（5分ごと）
+      setInterval(() => {
+        registration.update()
+      }, 5 * 60 * 1000)
+    })
   })
   
-  // 本番環境でのみ: Service Workerがコントローラーを変更したときもリロード
-  if (!import.meta.env.DEV) {
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      console.log('[SW] コントローラーが変更されました。ページをリロードします。')
-      window.location.reload()
-    })
-  }
+  // Service Workerがコントローラーを変更したときもリロード
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    console.log('[SW] コントローラーが変更されました。ページをリロードします。')
+    window.location.reload()
+  })
+} else if (import.meta.env.DEV) {
+  console.log('[SW] 開発環境のため、Service Workerは無効化されています')
 }
 
 // Add PWA install prompt handling
