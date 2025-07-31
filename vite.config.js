@@ -49,6 +49,11 @@ export default defineConfig({
    */
   build: {
     /**
+     * Service Workerファイルの処理設定
+     * publicディレクトリのファイルはそのままコピー
+     */
+    assetsInlineLimit: 0, // インライン化を無効化
+    /**
      * Rollupのオプション
      * Rollupは内部で使用されるバンドラー
      */
@@ -118,6 +123,14 @@ export default defineConfig({
    * 例: /icon.svg, /manifest.json など
    */
   publicDir: 'public',
+  
+  /**
+   * 最適化設定
+   */
+  optimizeDeps: {
+    // Service Workerファイルを最適化から除外
+    exclude: ['sw.js', 'sw-dev.js']
+  }
 })
 
 /**

@@ -42,6 +42,18 @@
 </head>
 <body>
   <div id="root"></div>
+  <!-- メインアプリケーション -->
   <script type="module" src="/src/main.jsx"></script>
+  
+  <!-- Service Worker登録（本番環境のみ） -->
+  <script>
+    // 開発環境では無効化
+    if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+      const script = document.createElement('script');
+      script.src = '/register-sw.js';
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+  </script>
 </body>
 </html>
