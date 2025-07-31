@@ -18,14 +18,15 @@ import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './
 
 // 環境変数をチェックして適切な認証システムを選択
 // Safari互換性: import.meta.envの安全な参照
-const getSupabaseUrl = () => {
-  try {
-    return import.meta.env.VITE_SUPABASE_URL || '';
-  } catch {
-    return '';
-  }
-};
-const hasSupabaseConfig = getSupabaseUrl() && getSupabaseUrl() !== 'https://xyzcompanyprojectid.supabase.co'
+let hasSupabaseConfig = false;
+
+try {
+  // Viteのdefineで置換される値を直接参照
+  const url = (typeof VITE_SUPABASE_URL !== 'undefined' ? VITE_SUPABASE_URL : '') || '';
+  hasSupabaseConfig = url && url !== 'https://xyzcompanyprojectid.supabase.co';
+} catch (e) {
+  hasSupabaseConfig = false;
+}
 
 // 条件に応じて認証プロバイダーとフックをエクスポート
 export const AuthProvider = hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider

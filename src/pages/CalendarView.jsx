@@ -25,7 +25,7 @@ function CalendarView({ posts = [], myPageData = { schedules: [] }, setMyPageDat
   const practiceDates = useMemo(() => {
     const dates = new Map()
     posts.forEach(post => {
-      if (post.type === 'practice' && post.practiceData?.date) {
+      if (post && post.type === 'practice' && post.practiceData && post.practiceData.date) {
         const date = post.practiceData.date
         if (!dates.has(date)) {
           dates.set(date, [])

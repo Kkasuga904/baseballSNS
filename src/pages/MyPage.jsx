@@ -78,12 +78,12 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
     if (!selectedDate) return { practices: [], videos: [], schedules: [], meals: [], supplements: [], sleep: [] }
     
     return {
-      practices: myPageData.practices.filter(p => p.date === selectedDate),
-      videos: myPageData.videos.filter(v => v.date === selectedDate),
-      schedules: myPageData.schedules.filter(s => s.date === selectedDate),
-      meals: (myPageData.meals || []).filter(m => m.date === selectedDate),
-      supplements: (myPageData.supplements || []).filter(s => s.date === selectedDate),
-      sleep: (myPageData.sleep || []).filter(s => s.date === selectedDate)
+      practices: (myPageData.practices || []).filter(p => p && p.date === selectedDate),
+      videos: (myPageData.videos || []).filter(v => v && v.date === selectedDate),
+      schedules: (myPageData.schedules || []).filter(s => s && s.date === selectedDate),
+      meals: (myPageData.meals || []).filter(m => m && m.date === selectedDate),
+      supplements: (myPageData.supplements || []).filter(s => s && s.date === selectedDate),
+      sleep: (myPageData.sleep || []).filter(s => s && s.date === selectedDate)
     }
   }, [selectedDate, myPageData])
   

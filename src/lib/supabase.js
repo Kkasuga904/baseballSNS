@@ -5,8 +5,15 @@ import { createClient } from '@supabase/supabase-js'
 // Safari互換性: import.meta.envの安全な参照
 const getEnvVar = (key, defaultValue) => {
   try {
-    return import.meta.env[key] || defaultValue;
-  } catch {
+    // Viteのdefineでグローバル変数として定義された値を参照
+    if (key === 'VITE_SUPABASE_URL' && typeof VITE_SUPABASE_URL !== 'undefined') {
+      return VITE_SUPABASE_URL;
+    }
+    if (key === 'VITE_SUPABASE_ANON_KEY' && typeof VITE_SUPABASE_ANON_KEY !== 'undefined') {
+      return VITE_SUPABASE_ANON_KEY;
+    }
+    return defaultValue;
+  } catch (e) {
     return defaultValue;
   }
 };
@@ -15,7 +22,7 @@ const supabaseUrl = getEnvVar('VITE_SUPABASE_URL', 'https://xyzcompanyprojectid.
 const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTcwMDAwMDAwMH0.placeholder');
 
 // Supabase設定がない場合の警告
-if (!getEnvVar('VITE_SUPABASE_URL') || !getEnvVar('VITE_SUPABASE_ANON_KEY')) {
+if (supabaseUrl === 'https://xyzcompanyprojectid.supabase.co' || supabaseAnonKey === 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTcwMDAwMDAwMH0.placeholder') {
   console.warn('⚠️ Supabase設定が見つかりません。.envファイルを作成して、VITE_SUPABASE_URLとVITE_SUPABASE_ANON_KEYを設定してください。')
 }
 

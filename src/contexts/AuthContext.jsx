@@ -15,10 +15,12 @@ export const useAuth = () => {
 // Safari互換性: import.meta.envの安全な参照
 const hasValidSupabaseConfig = () => {
   try {
-    const url = import.meta.env.VITE_SUPABASE_URL || '';
-    const key = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+    // Viteのdefineでグローバル変数として定義された値を参照
+    const url = (typeof VITE_SUPABASE_URL !== 'undefined' ? VITE_SUPABASE_URL : '') || '';
+    const key = (typeof VITE_SUPABASE_ANON_KEY !== 'undefined' ? VITE_SUPABASE_ANON_KEY : '') || '';
+    
     return url && key && url.startsWith('https://') && url.includes('supabase');
-  } catch {
+  } catch (e) {
     return false;
   }
 }

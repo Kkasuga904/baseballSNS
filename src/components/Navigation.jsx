@@ -276,7 +276,6 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     <>
       {/* メインナビゲーションバー */}
       <nav className="navigation">
-        {/* ナビゲーションアイテム */}
         <div className="nav-items">
           {/* タイムライン */}
           <Link
@@ -305,7 +304,7 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
             <span className="nav-label">プロフィール</span>
           </Link>
           
-          {/* アプリインストール */}
+          {/* アプリ */}
           {showInstallButton && (
             <button 
               className="nav-item install-button"
@@ -319,27 +318,25 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
           
           {/* 管理者 */}
           {(user.isAdmin || user.email === 'over9131120@gmail.com') && (
-            <div className="nav-item admin-info">
+            <div className="nav-item admin-badge">
               <span className="nav-icon">👤</span>
               <span className="nav-label">管理者</span>
             </div>
           )}
           
-          {/* その他メニュー */}
+          {/* そのほか */}
           <div className="nav-item more-menu">
             <span className="nav-icon">⚙️</span>
-            <span className="nav-label">その他</span>
-            <div className="dropdown-menu">
-              <Link to="/calendar" className="dropdown-item">
-                <span className="dropdown-icon">📅</span>
-                カレンダー
-              </Link>
-              <button onClick={handleSignOut} className="dropdown-item logout">
-                <span className="dropdown-icon">🚪</span>
-                ログアウト
-              </button>
-            </div>
+            <span className="nav-label">そのほか</span>
           </div>
+          
+          {/* ログアウト */}
+          <button 
+            onClick={handleSignOut} 
+            className="nav-item logout-button"
+          >
+            <span className="nav-label">ログアウト</span>
+          </button>
         </div>
       </nav>
       

@@ -95,6 +95,9 @@ export default defineConfig({
     // ビルドターゲット: Safari 11以降をサポート
     target: ['es2015', 'safari11'],
     
+    // Polyfillの設定
+    polyfillModulePreload: true,
+    
     // ミニファイ設定: Terserを使用（デフォルトはesbuild）
     minify: 'terser',
     
@@ -122,6 +125,9 @@ export default defineConfig({
     // Supabase環境変数のフォールバック（Safari対応）
     'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL || 'https://xyzcompanyprojectid.supabase.co'),
     'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTcwMDAwMDAwMH0.placeholder'),
+    // グローバル変数としても定義
+    'VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL || 'https://xyzcompanyprojectid.supabase.co'),
+    'VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTcwMDAwMDAwMH0.placeholder'),
   },
   
   /**
