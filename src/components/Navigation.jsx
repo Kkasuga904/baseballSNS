@@ -43,8 +43,10 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
   
   // カレンダーの最小化状態（LocalStorageに永続化）
   const [isCalendarMinimized, setIsCalendarMinimized] = useState(() => {
+    // スマホの場合は初期状態で最小化
+    const isMobile = window.innerWidth <= 768
     const saved = localStorage.getItem('baseballSNSCalendarMinimized')
-    return saved ? JSON.parse(saved) : false
+    return saved !== null ? JSON.parse(saved) : isMobile
   })
   
   // PWAインストール関連
@@ -54,7 +56,12 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
   // カレンダーの位置（ドラッグ可能）
   const [calendarPosition, setCalendarPosition] = useState(() => {
     const saved = localStorage.getItem('baseballSNSCalendarPosition')
-    return saved ? JSON.parse(saved) : { x: 20, y: 100 } // デフォルト位置
+    const isMobile = window.innerWidth <= 768
+    // スマホの場合は画面右下に配置
+    return saved ? JSON.parse(saved) : { 
+      x: isMobile ? window.innerWidth - 180 : 20, 
+      y: isMobile ? window.innerHeight - 100 : 100 
+    }
   })
   
   // ドラッグ状態の管理
@@ -83,6 +90,29 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
       }
     }
   }, [user, location.pathname]) // location.pathnameを依存配列に追加
+
+  /**
+   * 初回ロード時にスマホかどうかチェックして、
+   * LocalStorageに保存値がない場合のみ最小化を設定
+   */
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth <= 768
+      const saved = localStorage.getItem('baseballSNSCalendarMinimized')
+      
+      // LocalStorageに保存値がない場合のみ、スマホなら最小化
+      if (saved === null && isMobile) {
+        setIsCalendarMinimized(true)
+      }
+    }
+    
+    // 初回チェック
+    handleResize()
+    
+    // リサイズイベントリスナー
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   /**
    * PWAインストール可能性のチェック
@@ -184,12 +214,26 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
     
     // 画面内に収まるように制限
     const calendarWidth = window.innerWidth < 480 ? 260 : 300
-    const maxX = window.innerWidth - calendarWidth - 10 // カレンダーの幅を考慮
-    const maxY = window.innerHeight - 400 // カレンダーの高さを考慮
+    const isMobile = window.innerWidth <= 768
+    
+    // PCの場合は画面外も許可、モバイルは画面内に制限
+    let finalX, finalY
+    if (isMobile) {
+      const maxX = window.innerWidth - calendarWidth - 10
+      const maxY = window.innerHeight - 200 // カレンダー最小化時の高さを考慮
+      finalX = Math.max(0, Math.min(newX, maxX))
+      finalY = Math.max(60, Math.min(newY, maxY))
+    } else {
+      // PCの場合は左と上に大きく移動可能（右と下は画面内に制限）
+      const maxX = window.innerWidth - 100 // 最低100px表示
+      const maxY = window.innerHeight - 100 // 最低100px表示
+      finalX = Math.max(-calendarWidth + 50, Math.min(newX, maxX)) // 左に大きくはみ出し可能
+      finalY = Math.max(-200, Math.min(newY, maxY)) // 上に大きくはみ出し可能
+    }
     
     setCalendarPosition({
-      x: Math.max(0, Math.min(newX, maxX)),
-      y: Math.max(60, Math.min(newY, maxY)) // ナビゲーションバーの高さを考慮
+      x: finalX,
+      y: finalY
     })
   }
 
@@ -232,12 +276,25 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
     const newY = touch.clientY - dragStart.y
     
     const calendarWidth = window.innerWidth < 480 ? 260 : 300
-    const maxX = window.innerWidth - calendarWidth - 10
-    const maxY = window.innerHeight - 400
+    const isMobile = window.innerWidth <= 768
+    
+    // PCの場合は画面外も許可、モバイルは画面内に制限
+    let finalX, finalY
+    if (isMobile) {
+      const maxX = window.innerWidth - calendarWidth - 10
+      const maxY = window.innerHeight - 200
+      finalX = Math.max(0, Math.min(newX, maxX))
+      finalY = Math.max(60, Math.min(newY, maxY))
+    } else {
+      const maxX = window.innerWidth - 100
+      const maxY = window.innerHeight - 100
+      finalX = Math.max(-calendarWidth + 50, Math.min(newX, maxX))
+      finalY = Math.max(-200, Math.min(newY, maxY))
+    }
     
     setCalendarPosition({
-      x: Math.max(0, Math.min(newX, maxX)),
-      y: Math.max(60, Math.min(newY, maxY))
+      x: finalX,
+      y: finalY
     })
   }
 

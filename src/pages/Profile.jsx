@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../App'
+import ProfileTabs from '../components/ProfileTabs'
 import './Profile.css'
 
 function Profile() {
@@ -207,153 +208,14 @@ function Profile() {
               </div>
             </div>
             
-            <div className="profile-section">
-              <h2>基本情報</h2>
-              <div className="profile-field">
-                <label>ニックネーム</label>
-                <div className="field-value">{profile.nickname}</div>
-              </div>
-              <div className="profile-field">
-                <label>メールアドレス</label>
-                <div className="field-value">{user && user.email}</div>
-              </div>
-              <div className="profile-field">
-                <label>スポーツ</label>
-                <div className="field-value">
-                  {profile.sport === 'baseball' ? '⚾ 野球' : '🥎 ソフトボール'}
-                </div>
-              </div>
-              <div className="profile-field">
-                <label>カテゴリー</label>
-                <div className="field-value">
-                  {getCategoryLabel(profile.category)}
-                  {profile.grade && ` ${profile.grade}年`}
-                </div>
-              </div>
-              {profile.birthDate && (
-                <div className="profile-field">
-                  <label>🎂 年齢</label>
-                  <div className="field-value age-display">
-                    {(() => {
-                      const today = new Date()
-                      const birthDate = new Date(profile.birthDate)
-                      let age = today.getFullYear() - birthDate.getFullYear()
-                      const monthDiff = today.getMonth() - birthDate.getMonth()
-                      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                        age--
-                      }
-                      return `${age}歳`
-                    })()}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <div className="profile-section">
-              <h2>野球情報</h2>
-              <div className="profile-field">
-                <label>ポジション</label>
-                <div className="field-value">
-                  {getPositionLabels(
-                    profile.positions || [profile.position], 
-                    profile.sport, 
-                    profile.pitcherTypes || (profile.pitcherType ? [profile.pitcherType] : [])
-                  )}
-                </div>
-              </div>
-              <div className="profile-field">
-                <label>投打</label>
-                <div className="field-value">
-                  {getHandLabel(profile.throwingHand, profile.battingHand)}
-                </div>
-              </div>
-            </div>
-            
-            <div className="profile-section">
-              <h2>身体情報</h2>
-              <div className="profile-field">
-                <label>身長</label>
-                <div className="field-value">{profile.height || '---'} cm</div>
-              </div>
-              <div className="profile-field">
-                <label>体重</label>
-                <div className="field-value">{profile.weight || '---'} kg</div>
-              </div>
-              <div className="profile-field">
-                <label>体脂肪率</label>
-                <div className="field-value">{profile.bodyFat ? `${profile.bodyFat}%` : '---'}</div>
-              </div>
-            </div>
-            
-            <div className="profile-section">
-              <h2>出身校情報</h2>
-              <div className="profile-field">
-                <label>出身中学校</label>
-                <div className={`field-value ${
-                  profile.middleSchool && profile.middleSchoolPublic !== false 
-                    ? '' 
-                    : (profile.middleSchool && profile.middleSchoolPublic === false 
-                        ? 'private-info' 
-                        : 'unset-info')
-                }`}>
-                  {profile.middleSchool && profile.middleSchoolPublic !== false 
-                    ? profile.middleSchool 
-                    : (profile.middleSchool && profile.middleSchoolPublic === false 
-                        ? '非公開' 
-                        : '未設定')}
-                </div>
-              </div>
-              <div className="profile-field">
-                <label>出身高校</label>
-                <div className={`field-value ${
-                  profile.highSchool && profile.highSchoolPublic !== false 
-                    ? '' 
-                    : (profile.highSchool && profile.highSchoolPublic === false 
-                        ? 'private-info' 
-                        : 'unset-info')
-                }`}>
-                  {profile.highSchool && profile.highSchoolPublic !== false 
-                    ? profile.highSchool 
-                    : (profile.highSchool && profile.highSchoolPublic === false 
-                        ? '非公開' 
-                        : '未設定')}
-                </div>
-              </div>
-              <div className="profile-field">
-                <label>出身大学</label>
-                <div className={`field-value ${
-                  profile.university && profile.universityPublic !== false 
-                    ? '' 
-                    : (profile.university && profile.universityPublic === false 
-                        ? 'private-info' 
-                        : 'unset-info')
-                }`}>
-                  {profile.university && profile.universityPublic !== false 
-                    ? profile.university 
-                    : (profile.university && profile.universityPublic === false 
-                        ? '非公開' 
-                        : '未設定')}
-                </div>
-              </div>
-            </div>
-            
-            {(profile.positions || [profile.position]).includes('pitcher') && (
-              <div className="profile-section">
-                <h2>投手情報</h2>
-                <div className="profile-field">
-                  <label>最高球速</label>
-                  <div className="field-value">{profile.maxSpeed || '---'} km/h</div>
-                </div>
-                <div className="profile-field">
-                  <label>球種</label>
-                  <div className="field-value">
-                    {profile.pitchTypes && profile.pitchTypes.length > 0 
-                      ? profile.pitchTypes.join('、')
-                      : '---'}
-                  </div>
-                </div>
-              </div>
-            )}
+            <ProfileTabs 
+              profile={profile}
+              user={user}
+              isOwnProfile={isOwnProfile}
+              getCategoryLabel={getCategoryLabel}
+              getPositionLabels={getPositionLabels}
+              getHandLabel={getHandLabel}
+            />
           </div>
         ) : (
           <div className="profile-edit">

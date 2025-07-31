@@ -1,0 +1,450 @@
+/* プロフィールセットアップタブのスタイル */
+.setup-tabs-container {
+  margin-top: 20px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.setup-tabs-header {
+  display: flex;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e5e7eb;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.setup-tab {
+  flex: 1;
+  min-width: 100px;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.setup-tab:hover {
+  background: rgba(46, 125, 70, 0.05);
+  color: #374151;
+}
+
+.setup-tab.active {
+  color: #2e7d46;
+  border-bottom-color: #2e7d46;
+  background: white;
+}
+
+.tab-icon {
+  font-size: 20px;
+  display: block;
+}
+
+.tab-label {
+  font-size: 12px;
+}
+
+.setup-tab-content {
+  padding: 24px;
+  min-height: 400px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.tab-panel {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 既存のスタイルを調整 */
+.profile-setup-form {
+  margin-top: 0;
+}
+
+.form-section {
+  margin-bottom: 24px;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.setup-submit-button {
+  margin-top: 24px;
+  width: 100%;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #2e7d46 0%, #1e5631 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.setup-submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .setup-tabs-header {
+    gap: 0;
+  }
+  
+  .setup-tab {
+    font-size: 12px;
+    padding: 12px 16px;
+    min-width: 80px;
+  }
+  
+  .tab-icon {
+    font-size: 18px;
+  }
+  
+  .setup-tab-content {
+    padding: 16px;
+    min-height: 300px;
+  }
+}
+
+/* 既存のスタイルを維持 */
+.profile-setup-container {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-setup-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.setup-subtitle {
+  color: #6b7280;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.sport-selection {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.sport-option {
+  flex: 1;
+  max-width: 200px;
+  padding: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.sport-option.selected {
+  border-color: #2e7d46;
+  background-color: #f0fdf4;
+}
+
+.sport-option input {
+  display: none;
+}
+
+.sport-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.sport-label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.hand-selection {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.hand-group {
+  flex: 1;
+  max-width: 250px;
+}
+
+.hand-group > label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.hand-options {
+  display: flex;
+  gap: 10px;
+}
+
+.hand-option {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+  font-size: 14px;
+}
+
+.hand-option.selected {
+  border-color: #2e7d46;
+  background-color: #f0fdf4;
+}
+
+.hand-option input {
+  display: none;
+}
+
+.position-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.position-option {
+  padding: 10px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+  font-size: 14px;
+}
+
+.position-option.selected {
+  border-color: #2e7d46;
+  background-color: #f0fdf4;
+}
+
+.position-option input {
+  display: none;
+}
+
+.position-hint {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.pitcher-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.pitcher-type-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pitcher-type-option.selected {
+  border-color: #2e7d46;
+  background-color: #f0fdf4;
+}
+
+.pitcher-type-option input {
+  display: none;
+}
+
+.pitcher-type-icon {
+  font-size: 24px;
+}
+
+.nickname-input,
+.category-select,
+.grade-select,
+.sport-select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  background-color: white;
+  cursor: pointer;
+}
+
+.nickname-input:focus,
+.category-select:focus,
+.grade-select:focus,
+.sport-select:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.personal-info-grid,
+.physical-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.personal-info-item,
+.physical-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.personal-info-item label,
+.physical-info-item label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #374151;
+}
+
+.physical-input,
+.birth-single-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.physical-input:focus,
+.birth-single-input:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.birth-date-single-input {
+  margin-bottom: 10px;
+}
+
+.birth-format-hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 5px;
+}
+
+.birth-date-alternative {
+  margin-top: 10px;
+}
+
+.date-picker-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.birth-date-picker {
+  padding: 6px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.birth-date-note {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 10px;
+}
+
+.pitcher-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pitcher-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pitch-types-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pitch-types-section > label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #374151;
+}
+
+.pitch-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.pitch-type-option {
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+  font-size: 14px;
+}
+
+.pitch-type-option.selected {
+  border-color: #2e7d46;
+  background-color: #f0fdf4;
+}
+
+.pitch-type-option input {
+  display: none;
+}
