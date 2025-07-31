@@ -1,9 +1,9 @@
 {
-  "name": "BaseLog - 野球の記録と交流をひとつに",
+  "name": "BaseLog",
   "short_name": "BaseLog",
-  "description": "BaseLog - 野球の記録と交流をひとつに。練習記録、動画共有、健康管理をサポートする野球専門SNS",
+  "description": "野球の記録と交流をひとつに",
   "theme_color": "#2e7d46",
-  "background_color": "#e8f5e8",
+  "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
@@ -12,25 +12,7 @@
     {
       "src": "/icon.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "maskable any"
+      "type": "image/svg+xml"
     }
-  ],
-  "shortcuts": [
-    {
-      "name": "クイック記録",
-      "short_name": "記録",
-      "description": "練習を素早く記録",
-      "url": "/mypage",
-      "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
-    },
-    {
-      "name": "タイムライン",
-      "short_name": "TL",
-      "description": "みんなの投稿を見る",
-      "url": "/",
-      "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
-    }
-  ],
-  "categories": ["sports", "social", "health"]
+  ]
 }

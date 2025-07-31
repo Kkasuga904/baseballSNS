@@ -1,15 +1,31 @@
+/**
+ * App.jsx - メインアプリケーションコンポーネント
+ * 
+ * このファイルは野球SNSアプリ全体の構成と状態管理を担当します。
+ * - ルーティング設定
+ * - グローバルな状態管理（投稿、ユーザーデータ）
+ * - 認証状態の管理
+ * - テーマ（管理者用ダークテーマ）の適用
+ */
+
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+
+// 認証システムの選択
 // Supabase設定がある場合はAuthContext、ない場合はSimpleAuthContextを使用
 import { AuthProvider as SupabaseAuthProvider, useAuth as useSupabaseAuth } from './contexts/AuthContext'
 import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './contexts/SimpleAuthContext'
 
-// 環境に応じて適切な認証システムを選択
+// 環境変数をチェックして適切な認証システムを選択
+// VITE_で始まる環境変数はViteで使用可能
 const hasSupabaseConfig = import.meta.env.VITE_SUPABASE_URL && 
   import.meta.env.VITE_SUPABASE_URL !== 'https://xyzcompanyprojectid.supabase.co'
 
+// 条件に応じて認証プロバイダーとフックをエクスポート
 export const AuthProvider = hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider
 export const useAuth = hasSupabaseConfig ? useSupabaseAuth : useSimpleAuth
+
+// コンポーネントのインポート
 import Navigation from './components/Navigation'
 import Timeline from './pages/Timeline'
 import MyPage from './pages/MyPage'
@@ -27,15 +43,35 @@ import PWAInstallBanner from './components/PWAInstallBanner'
 import './App.css'
 import './admin-theme.css'
 
+/**
+ * アプリケーションのメインコンテンツコンポーネント
+ * ログイン後の全ての画面とデータ管理を行います
+ */
 function AppContent() {
+  // 現在ログイン中のユーザー情報を取得
   const { user } = useAuth()
+  
+  // カレンダーで選択された日付を管理
   const [selectedDate, setSelectedDate] = useState(null)
-  // マイページ専用データ（ユーザーごとに分離）
+  
+  /**
+   * マイページ専用データの状態管理
+   * LocalStorageを使用してユーザーごとにデータを永続化
+   * 
+   * データ構造:
+   * - practices: 練習記録の配列
+   * - videos: 動画投稿の配列
+   * - schedules: スケジュールの配列
+   * - meals: 食事記録の配列
+   * - supplements: サプリメント記録の配列
+   * - sleep: 睡眠記録の配列
+   */
   const [myPageData, setMyPageData] = useState(() => {
+    // ユーザーのメールアドレスをキーとして使用（ゲストの場合は'guest'）
     const userKey = user?.email || 'guest'
     const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
     
-    // 管理者アカウントの場合、永続的なストレージキーを使用
+    // 管理者アカウント専用の永続化処理
     if (userKey === 'over9131120@gmail.com') {
       const adminData = localStorage.getItem('baseballSNSAdminData')
       return adminData ? JSON.parse(adminData) : {
@@ -48,6 +84,7 @@ function AppContent() {
       }
     }
     
+    // 通常ユーザーのデータ読み込み
     return savedData ? JSON.parse(savedData) : {
       practices: [],
       videos: [],
@@ -58,9 +95,15 @@ function AppContent() {
     }
   })
   
+  /**
+   * タイムラインに表示する投稿の状態管理
+   * 初期値としてデモデータを含む
+   */
   const [posts, setPosts] = useState(() => {
+    // LocalStorageから保存済みの投稿を読み込み
     const savedPosts = localStorage.getItem('baseballSNSPosts')
     return savedPosts ? JSON.parse(savedPosts) : [
+    // デモ投稿データ
     {
       id: 1,
       type: 'normal',
@@ -100,51 +143,56 @@ function AppContent() {
       likes: 15,
       comments: 3
     }
-  ]})
+    ]
+  })
 
-  useEffect(() => {
-    localStorage.setItem('baseballSNSPosts', JSON.stringify(posts))
-  }, [posts])
-  
-  useEffect(() => {
+  /**
+   * ユーザーごとのマイページデータを更新する関数
+   * 
+   * @param {Object} newData - 更新するデータ
+   * @param {Array} newData.practices - 練習記録
+   * @param {Array} newData.videos - 動画投稿
+   * 他のプロパティも同様
+   */
+  const updateMyPageData = (newData) => {
     const userKey = user?.email || 'guest'
     
-    // 管理者アカウントの場合、専用のストレージキーを使用
+    // 管理者アカウントの場合は専用キーで保存
     if (userKey === 'over9131120@gmail.com') {
-      localStorage.setItem('baseballSNSAdminData', JSON.stringify(myPageData))
+      localStorage.setItem('baseballSNSAdminData', JSON.stringify(newData))
     } else {
-      localStorage.setItem(`baseballSNSMyPageData_${userKey}`, JSON.stringify(myPageData))
+      localStorage.setItem(`baseballSNSMyPageData_${userKey}`, JSON.stringify(newData))
     }
-  }, [myPageData, user])
-
-  const addPost = (content) => {
-    const newPost = {
-      id: Date.now(),
-      type: 'normal',
-      content,
-      author: user?.email || 'ゲストユーザー',
-      userId: user?.id || null,
-      timestamp: new Date().toISOString(),
-      likes: 0,
-      comments: 0
-    }
-    setPosts([newPost, ...posts])
+    
+    setMyPageData(newData)
   }
 
-  const addPracticeRecord = (practiceData) => {
+  /**
+   * 新しい投稿をタイムラインに追加する関数
+   * 
+   * @param {Object} postData - 投稿データ
+   * @param {string} postData.type - 投稿タイプ（normal/practice/video/health）
+   * @param {string} postData.content - 投稿内容
+   * @param {Object} postData.practiceData - 練習記録データ（練習投稿の場合）
+   */
+  const addPost = (postData) => {
     const newPost = {
-      id: Date.now(),
-      type: 'practice',
+      id: Date.now(), // 一意のIDとしてタイムスタンプを使用
+      ...postData,
       author: user?.email || 'ゲストユーザー',
       userId: user?.id || null,
       timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0,
-      practiceData
+      isPrivate: false // デフォルトは公開
     }
-    setPosts([newPost, ...posts])
+    setPosts([newPost, ...posts]) // 新しい投稿を先頭に追加
   }
 
+  /**
+   * 動画投稿を追加する関数
+   * MyPageから呼ばれて、タイムラインにも反映される
+   */
   const addVideoPost = (videoData) => {
     const newPost = {
       id: Date.now(),
@@ -159,6 +207,9 @@ function AppContent() {
     setPosts([newPost, ...posts])
   }
 
+  /**
+   * 健康記録を投稿として追加する関数
+   */
   const addHealthRecord = (healthData) => {
     const newPost = {
       id: Date.now(),
@@ -169,104 +220,152 @@ function AppContent() {
       likes: 0,
       comments: 0,
       healthData,
-      isPrivate: false // 共有設定（デフォルトは公開）
+      isPrivate: false
     }
     setPosts([newPost, ...posts])
   }
 
-  // Apply admin theme for admin users
+  /**
+   * 管理者用ダークテーマの適用
+   * useEffectフックを使用して、ユーザー情報が変更されたときに実行
+   */
   useEffect(() => {
+    // 管理者アカウントかどうかをチェック
     if (user?.isAdmin || user?.email === 'over9131120@gmail.com') {
       document.body.classList.add('admin-theme')
     } else {
       document.body.classList.remove('admin-theme')
     }
     
+    // クリーンアップ関数：コンポーネントがアンマウントされたときに実行
     return () => {
       document.body.classList.remove('admin-theme')
     }
+  }, [user]) // userが変更されたときのみ実行
+
+  /**
+   * 投稿データの永続化
+   * 投稿が更新されるたびにLocalStorageに保存
+   */
+  useEffect(() => {
+    localStorage.setItem('baseballSNSPosts', JSON.stringify(posts))
+  }, [posts])
+  
+  /**
+   * ユーザーが変更されたときにマイページデータを再読み込み
+   * ログイン/ログアウト時に適切なデータを表示
+   */
+  useEffect(() => {
+    const userKey = user?.email || 'guest'
+    
+    if (userKey === 'over9131120@gmail.com') {
+      const adminData = localStorage.getItem('baseballSNSAdminData')
+      if (adminData) {
+        setMyPageData(JSON.parse(adminData))
+      }
+    } else {
+      const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
+      if (savedData) {
+        setMyPageData(JSON.parse(savedData))
+      } else {
+        // 新規ユーザーの場合は空のデータを設定
+        setMyPageData({
+          practices: [],
+          videos: [],
+          schedules: [],
+          meals: [],
+          supplements: [],
+          sleep: []
+        })
+      }
+    }
   }, [user])
 
+  // JSXレンダリング部分
   return (
     <div className="app">
+        {/* アプリケーションヘッダー */}
         <header className="app-header">
           <h1>⚾ BaseLog</h1>
           <p>野球の記録と交流をひとつに</p>
         </header>
         
+        {/* ナビゲーションバー（ログイン時のみ表示） */}
         <Navigation 
           posts={posts} 
           onDateClick={setSelectedDate} 
-          schedules={myPageData.schedules || []} 
+          selectedDate={selectedDate}
         />
         
-        <main className="app-main">
-          <Routes>
-            <Route 
-              path="/" 
-              element={
-                <Timeline 
-                  posts={posts}
-                  addPost={addPost}
-                  addPracticeRecord={addPracticeRecord}
-                  addVideoPost={addVideoPost}
-                  addHealthRecord={addHealthRecord}
-                />
-              } 
-            />
-            <Route 
-              path="/mypage" 
-              element={
-                <ProtectedRoute>
-                  <MyPage 
-                    posts={posts.filter(post => post.type === 'practice' && post.userId === user?.id)}
-                    myPageData={myPageData}
-                    setMyPageData={setMyPageData}
-                    selectedDate={selectedDate}
-                    setSelectedDate={setSelectedDate}
-                  />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/calendar" 
-              element={
-                <ProtectedRoute>
-                  <CalendarView 
-                    posts={posts.filter(post => post.type === 'practice')}
-                    myPageData={myPageData}
-                    setMyPageData={setMyPageData}
-                  />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/profile" 
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } 
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/profile-setup" element={
-              <ProtectedRoute>
-                <ProfileSetup />
-              </ProtectedRoute>
-            } />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/disclaimer" element={<Disclaimer />} />
-          </Routes>
-        </main>
-        
-        <Footer />
+        {/* PWAインストールボタン */}
         <InstallPWA />
+        
+        {/* PWAインストールバナー（初回訪問時） */}
         <PWAInstallBanner />
+        
+        {/* ルーティング設定 */}
+        <Routes>
+          {/* ログイン画面 */}
+          <Route path="/login" element={<Login />} />
+          
+          {/* 新規登録画面 */}
+          <Route path="/signup" element={<Signup />} />
+          
+          {/* プロフィール設定画面 */}
+          <Route path="/profile-setup" element={<ProfileSetup />} />
+          
+          {/* パスワードリセット画面 */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          
+          {/* タイムライン（ホーム画面） - ログイン必須 */}
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Timeline posts={posts} addPost={addPost} />
+            </ProtectedRoute>
+          } />
+          
+          {/* マイページ - ログイン必須 */}
+          <Route path="/mypage" element={
+            <ProtectedRoute>
+              <MyPage 
+                posts={posts}
+                myPageData={myPageData}
+                updateMyPageData={updateMyPageData}
+                addPost={addPost}
+                addVideoPost={addVideoPost}
+                addHealthRecord={addHealthRecord}
+              />
+            </ProtectedRoute>
+          } />
+          
+          {/* カレンダー画面 - ログイン必須 */}
+          <Route path="/calendar" element={
+            <ProtectedRoute>
+              <CalendarView posts={posts} />
+            </ProtectedRoute>
+          } />
+          
+          {/* ユーザープロフィール画面 */}
+          <Route path="/profile/:userId" element={
+            <ProtectedRoute>
+              <Profile posts={posts} myPageData={myPageData} />
+            </ProtectedRoute>
+          } />
+          
+          {/* 免責事項ページ */}
+          <Route path="/disclaimer" element={<Disclaimer />} />
+        </Routes>
+        
+        {/* フッター */}
+        <Footer />
     </div>
   )
 }
 
+/**
+ * アプリケーションのルートコンポーネント
+ * RouterとAuthProviderでアプリ全体をラップ
+ */
 function App() {
   return (
     <Router>

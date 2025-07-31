@@ -1,13 +1,37 @@
+/**
+ * HealthForm.jsx - 健康記録フォームコンポーネント
+ * 
+ * 野球選手の日々の健康状態を総合的に記録するフォーム。
+ * 睡眠、食事、サプリメント、水分摂取量などを管理。
+ * 
+ * 主な機能:
+ * - 睡眠記録（就寝・起床時間、質の評価）
+ * - 食事記録（朝・昼・夕のカロリーと内容）
+ * - サプリメント管理（動的追加・削除可能）
+ * - 水分摂取量の記録
+ * - 睡眠時間の自動計算
+ */
+
 import React, { useState } from 'react'
 import './HealthForm.css'
 
+/**
+ * 健康記録フォームコンポーネント
+ * 
+ * @param {Object} props
+ * @param {Function} props.onSubmit - 健康記録送信時のコールバック関数
+ */
 function HealthForm({ onSubmit }) {
+  /**
+   * フォームの状態管理
+   * 初期値では今日の日付と空の入力フィールドを設定
+   */
   const [formData, setFormData] = useState({
-    date: new Date().toISOString().split('T')[0],
+    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD形式
     sleep: {
-      bedTime: '',
-      wakeTime: '',
-      quality: 3
+      bedTime: '',      // 就寝時間
+      wakeTime: '',     // 起床時間
+      quality: 3        // 睡眠の質（1-5の5段階評価）
     },
     meals: [
       { type: 'breakfast', time: '', content: '', calories: '' },
@@ -15,18 +39,27 @@ function HealthForm({ onSubmit }) {
       { type: 'dinner', time: '', content: '', calories: '' }
     ],
     supplements: [
-      { name: '', amount: '', timing: '' }
+      { name: '', amount: '', timing: '' } // サプリ名、量、摂取タイミング
     ],
-    water: '',
-    note: ''
+    water: '',  // 水分摂取量（リットル）
+    note: ''    // 自由記述メモ
   })
 
+  /**
+   * 食事タイプのラベル変換マップ
+   */
   const mealLabels = {
     breakfast: '朝食',
     lunch: '昼食',
     dinner: '夕食'
   }
 
+  /**
+   * ルートレベルの入力変更ハンドラー
+   * 
+   * @param {string} field - 更新するフィールド名
+   * @param {any} value - 新しい値
+   */
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -34,6 +67,13 @@ function HealthForm({ onSubmit }) {
     }))
   }
 
+  /**
+   * 睡眠データの変更ハンドラー
+   * ネストされた睡眠オブジェクト内のフィールドを更新
+   * 
+   * @param {string} field - 睡眠オブジェクト内のフィールド名
+   * @param {any} value - 新しい値
+   */
   const handleSleepChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -44,6 +84,14 @@ function HealthForm({ onSubmit }) {
     }))
   }
 
+  /**
+   * 食事データの変更ハンドラー
+   * 配列内の特定の食事オブジェクトを更新
+   * 
+   * @param {number} index - 食事配列のインデックス
+   * @param {string} field - 更新するフィールド名
+   * @param {any} value - 新しい値
+   */
   const handleMealChange = (index, field, value) => {
     const newMeals = [...formData.meals]
     newMeals[index] = { ...newMeals[index], [field]: value }
@@ -53,6 +101,14 @@ function HealthForm({ onSubmit }) {
     }))
   }
 
+  /**
+   * サプリメントデータの変更ハンドラー
+   * 配列内の特定のサプリメントオブジェクトを更新
+   * 
+   * @param {number} index - サプリメント配列のインデックス
+   * @param {string} field - 更新するフィールド名
+   * @param {any} value - 新しい値
+   */
   const handleSupplementChange = (index, field, value) => {
     const newSupplements = [...formData.supplements]
     newSupplements[index] = { ...newSupplements[index], [field]: value }
@@ -62,6 +118,10 @@ function HealthForm({ onSubmit }) {
     }))
   }
 
+  /**
+   * サプリメントを追加するハンドラー
+   * 空のサプリメントオブジェクトを配列に追加
+   */
   const addSupplement = () => {
     setFormData(prev => ({
       ...prev,
@@ -69,6 +129,12 @@ function HealthForm({ onSubmit }) {
     }))
   }
 
+  /**
+   * サプリメントを削除するハンドラー
+   * 最低1つは残すように制御
+   * 
+   * @param {number} index - 削除するサプリメントのインデックス
+   */
   const removeSupplement = (index) => {
     if (formData.supplements.length > 1) {
       const newSupplements = formData.supplements.filter((_, i) => i !== index)
@@ -79,26 +145,35 @@ function HealthForm({ onSubmit }) {
     }
   }
 
+  /**
+   * フォーム送信ハンドラー
+   * 睡眠時間の計算を行い、データを送信
+   * 
+   * @param {Event} e - フォームイベント
+   */
   const handleSubmit = (e) => {
     e.preventDefault()
     
     // 睡眠時間の計算
     if (formData.sleep.bedTime && formData.sleep.wakeTime) {
+      // 仮の日付を使用して時間差を計算
       const bedTime = new Date(`2000-01-01 ${formData.sleep.bedTime}`)
       let wakeTime = new Date(`2000-01-01 ${formData.sleep.wakeTime}`)
       
-      // 翌日起床の場合の処理
+      // 翌日起床の場合の処理（例: 23:00就寝、6:00起床）
       if (wakeTime < bedTime) {
         wakeTime = new Date(`2000-01-02 ${formData.sleep.wakeTime}`)
       }
       
-      const sleepDuration = (wakeTime - bedTime) / (1000 * 60 * 60) // 時間に変換
+      // ミリ秒から時間に変換
+      const sleepDuration = (wakeTime - bedTime) / (1000 * 60 * 60)
       formData.sleep.duration = sleepDuration
     }
 
+    // 親コンポーネントにデータを送信
     onSubmit(formData)
 
-    // フォームリセット
+    // フォームを初期状態にリセット
     setFormData({
       date: new Date().toISOString().split('T')[0],
       sleep: {
@@ -119,10 +194,12 @@ function HealthForm({ onSubmit }) {
     })
   }
 
+  // コンポーネントのレンダリング
   return (
     <form className="health-form" onSubmit={handleSubmit}>
       <h3>🏥 健康記録</h3>
 
+      {/* 日付選択セクション */}
       <div className="form-group">
         <label>日付</label>
         <input
@@ -133,8 +210,10 @@ function HealthForm({ onSubmit }) {
         />
       </div>
 
+      {/* 睡眠記録セクション */}
       <div className="health-section">
         <h4>😴 睡眠</h4>
+        {/* 就寝・起床時間の入力 */}
         <div className="form-row">
           <div className="form-group">
             <label>就寝時間</label>
@@ -155,9 +234,12 @@ function HealthForm({ onSubmit }) {
             />
           </div>
         </div>
+        
+        {/* 睡眠の質評価（1-5の5段階） */}
         <div className="form-group">
           <label>睡眠の質</label>
           <div className="quality-selector">
+            {/* 5段階評価ボタンを動的生成 */}
             {[1, 2, 3, 4, 5].map(num => (
               <button
                 key={num}
@@ -165,6 +247,7 @@ function HealthForm({ onSubmit }) {
                 className={`quality-button ${formData.sleep.quality === num ? 'active' : ''}`}
                 onClick={() => handleSleepChange('quality', num)}
               >
+                {/* 評価に応じた絵文字を表示 */}
                 {num === 1 ? '😫' : num === 2 ? '😣' : num === 3 ? '😐' : num === 4 ? '😊' : '😴'}
               </button>
             ))}
@@ -172,11 +255,14 @@ function HealthForm({ onSubmit }) {
         </div>
       </div>
 
+      {/* 食事記録セクション */}
       <div className="health-section">
         <h4>🍽️ 食事</h4>
+        {/* 朝・昼・夕の食事をそれぞれ表示 */}
         {formData.meals.map((meal, index) => (
           <div key={meal.type} className="meal-item">
             <h5>{mealLabels[meal.type]}</h5>
+            {/* 時間とカロリーの入力横並び */}
             <div className="form-row">
               <div className="form-group">
                 <label>時間</label>
@@ -196,6 +282,7 @@ function HealthForm({ onSubmit }) {
                 />
               </div>
             </div>
+            {/* 食事内容のテキストエリア */}
             <div className="form-group">
               <label>内容</label>
               <textarea
@@ -209,11 +296,14 @@ function HealthForm({ onSubmit }) {
         ))}
       </div>
 
+      {/* サプリメント記録セクション */}
       <div className="health-section">
         <h4>💊 サプリメント</h4>
         <div className="supplements-list">
+          {/* サプリメントリストを動的表示 */}
           {formData.supplements.map((supplement, index) => (
             <div key={index} className="supplement-item">
+              {/* サプリ名入力 */}
               <input
                 type="text"
                 placeholder="サプリ名"
@@ -221,6 +311,7 @@ function HealthForm({ onSubmit }) {
                 onChange={(e) => handleSupplementChange(index, 'name', e.target.value)}
                 className="supplement-name"
               />
+              {/* 量入力 */}
               <input
                 type="text"
                 placeholder="量"
@@ -228,6 +319,7 @@ function HealthForm({ onSubmit }) {
                 onChange={(e) => handleSupplementChange(index, 'amount', e.target.value)}
                 className="supplement-amount"
               />
+              {/* 摂取タイミング入力 */}
               <input
                 type="text"
                 placeholder="タイミング"
@@ -235,6 +327,7 @@ function HealthForm({ onSubmit }) {
                 onChange={(e) => handleSupplementChange(index, 'timing', e.target.value)}
                 className="supplement-timing"
               />
+              {/* 削除ボタン（最低1つは残す） */}
               {formData.supplements.length > 1 && (
                 <button
                   type="button"
@@ -247,6 +340,7 @@ function HealthForm({ onSubmit }) {
             </div>
           ))}
         </div>
+        {/* サプリメント追加ボタン */}
         <button
           type="button"
           onClick={addSupplement}
@@ -256,17 +350,19 @@ function HealthForm({ onSubmit }) {
         </button>
       </div>
 
+      {/* 水分摂取量入力 */}
       <div className="form-group">
         <label>💧 水分摂取量（L）</label>
         <input
           type="number"
-          step="0.1"
+          step="0.1"  // 0.1リットル単位で入力
           placeholder="1.5"
           value={formData.water}
           onChange={(e) => handleInputChange('water', e.target.value)}
         />
       </div>
 
+      {/* 自由記述メモ欄 */}
       <div className="form-group">
         <label>メモ</label>
         <textarea
@@ -277,6 +373,7 @@ function HealthForm({ onSubmit }) {
         />
       </div>
 
+      {/* 送信ボタン */}
       <button type="submit" className="submit-button">
         健康記録を保存
       </button>

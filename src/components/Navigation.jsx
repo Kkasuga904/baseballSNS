@@ -1,28 +1,70 @@
+/**
+ * Navigation.jsx - ナビゲーションバーコンポーネント
+ * 
+ * アプリケーション全体のナビゲーションを提供します。
+ * ページ間の移動、ログアウト、カレンダー表示、PWAインストールなどの機能を実装。
+ * 
+ * 主な機能:
+ * - ページナビゲーション（タイムライン、マイページ、カレンダー）
+ * - ユーザー情報表示（アイコン、名前）
+ * - ドラッグ可能な練習カレンダー
+ * - PWAインストールボタン
+ * - ログアウト機能
+ * - 管理者バッジ表示
+ */
+
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../App'
 import PracticeCalendar from './PracticeCalendar'
 import './Navigation.css'
 
+/**
+ * ナビゲーションコンポーネント
+ * 
+ * @param {Object} props
+ * @param {Array} props.posts - 投稿データ（カレンダー表示用）
+ * @param {Function} props.onDateClick - カレンダーの日付クリックハンドラー
+ * @param {Array} props.schedules - スケジュールデータ
+ */
 function Navigation({ posts, onDateClick, schedules = [] }) {
-  const location = useLocation()
-  const navigate = useNavigate()
+  // React Routerのフック
+  const location = useLocation() // 現在のURLパス
+  const navigate = useNavigate() // プログラマティックなナビゲーション
+  
+  // 認証情報
   const { user, signOut } = useAuth()
   
+  /**
+   * 状態管理
+   */
+  // ユーザープロフィール情報
   const [userProfile, setUserProfile] = useState(null)
+  
+  // カレンダーの最小化状態（LocalStorageに永続化）
   const [isCalendarMinimized, setIsCalendarMinimized] = useState(() => {
     const saved = localStorage.getItem('baseballSNSCalendarMinimized')
     return saved ? JSON.parse(saved) : false
   })
+  
+  // PWAインストール関連
   const [showInstallButton, setShowInstallButton] = useState(false)
   const [deferredPrompt, setDeferredPrompt] = useState(null)
+  
+  // カレンダーの位置（ドラッグ可能）
   const [calendarPosition, setCalendarPosition] = useState(() => {
     const saved = localStorage.getItem('baseballSNSCalendarPosition')
-    return saved ? JSON.parse(saved) : { x: 20, y: 100 }
+    return saved ? JSON.parse(saved) : { x: 20, y: 100 } // デフォルト位置
   })
+  
+  // ドラッグ状態の管理
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   
+  /**
+   * ユーザープロフィールの読み込み
+   * ログインユーザーが変更されたときや、ページ遷移時に実行
+   */
   useEffect(() => {
     if (user) {
       let savedProfile = null
@@ -31,6 +73,7 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
       if (user.email === 'over9131120@gmail.com') {
         savedProfile = localStorage.getItem('baseballSNSAdminProfile')
       } else {
+        // 通常ユーザーはメールアドレスをキーに使用
         const profileKey = `baseballSNSProfile_${user.email || 'guest'}`
         savedProfile = localStorage.getItem(profileKey)
       }
@@ -39,48 +82,68 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
         setUserProfile(JSON.parse(savedProfile))
       }
     }
-  }, [user, location.pathname]) // location.pathnameを追加して、ページ遷移時に更新
+  }, [user, location.pathname]) // location.pathnameを依存配列に追加
 
+  /**
+   * PWAインストール可能性のチェック
+   * beforeinstallpromptイベントをリッスンし、インストール可能な場合はボタンを表示
+   */
   useEffect(() => {
-    // PWAインストール可能かチェック
+    // PWAインストールプロンプトのハンドラー
     const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault()
-      setDeferredPrompt(e)
+      e.preventDefault() // デフォルトのプロンプトを防ぐ
+      setDeferredPrompt(e) // 後で使用するために保存
       setShowInstallButton(true)
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
-    // iOSかどうかチェック
+    // iOS対応：iOSではbeforeinstallpromptイベントが発生しない
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
     const isInStandalone = window.matchMedia('(display-mode: standalone)').matches
     
+    // iOSでまだインストールされていない場合はボタンを表示
     if (isIOS && !isInStandalone) {
       setShowInstallButton(true)
     }
 
+    // クリーンアップ
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     }
   }, [])
 
+  /**
+   * ログアウト処理
+   * 認証情報をクリアしてログイン画面へ遷移
+   */
   const handleSignOut = async () => {
     await signOut()
     navigate('/login')
   }
 
+  /**
+   * カレンダーの最小化/展開切り替え
+   * 状態をLocalStorageに保存して永続化
+   */
   const toggleCalendarMinimize = () => {
     const newState = !isCalendarMinimized
     setIsCalendarMinimized(newState)
     localStorage.setItem('baseballSNSCalendarMinimized', JSON.stringify(newState))
   }
 
+  /**
+   * PWAインストールボタンのクリックハンドラー
+   * Android/デスクトップとiOSで異なる処理を実行
+   */
   const handleInstallClick = async () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
     
     if (isIOS) {
+      // iOSの場合は手動インストール手順を表示
       alert('iOSでのインストール:\n1. Safari下部の共有ボタンをタップ\n2. 「ホーム画面に追加」を選択\n3. 「追加」をタップ')
     } else if (deferredPrompt) {
+      // Android/デスクトップの場合はプロンプトを表示
       deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
       
@@ -92,14 +155,27 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     }
   }
 
+  /**
+   * マウスドラッグ開始ハンドラー
+   * カレンダーのドラッグ移動用
+   * 
+   * @param {MouseEvent} e - マウスイベント
+   */
   const handleMouseDown = (e) => {
     setIsDragging(true)
+    // ドラッグ開始時のマウス位置とカレンダー位置の差分を記録
     setDragStart({
       x: e.clientX - calendarPosition.x,
       y: e.clientY - calendarPosition.y
     })
   }
 
+  /**
+   * マウス移動ハンドラー
+   * ドラッグ中のカレンダー位置を更新
+   * 
+   * @param {MouseEvent} e - マウスイベント
+   */
   const handleMouseMove = (e) => {
     if (!isDragging) return
     
@@ -116,14 +192,23 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     })
   }
 
+  /**
+   * マウスボタンリリースハンドラー
+   * ドラッグ終了時に位置を保存
+   */
   const handleMouseUp = () => {
     if (isDragging) {
       setIsDragging(false)
-      // 位置を保存
+      // 位置をLocalStorageに保存
       localStorage.setItem('baseballSNSCalendarPosition', JSON.stringify(calendarPosition))
     }
   }
 
+  /**
+   * タッチ開始ハンドラー（モバイル対応）
+   * 
+   * @param {TouchEvent} e - タッチイベント
+   */
   const handleTouchStart = (e) => {
     const touch = e.touches[0]
     setIsDragging(true)
@@ -133,6 +218,11 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     })
   }
 
+  /**
+   * タッチ移動ハンドラー（モバイル対応）
+   * 
+   * @param {TouchEvent} e - タッチイベント
+   */
   const handleTouchMove = (e) => {
     if (!isDragging) return
     
@@ -149,142 +239,139 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     })
   }
 
+  /**
+   * タッチ終了ハンドラー（モバイル対応）
+   */
+  const handleTouchEnd = handleMouseUp
+
+  /**
+   * ドラッグ中のマウス/タッチイベントをドキュメント全体で処理
+   * カレンダー外でマウスを動かしても追従するように
+   */
   useEffect(() => {
     if (isDragging) {
+      // マウスイベント
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)
-      document.addEventListener('touchmove', handleTouchMove)
-      document.addEventListener('touchend', handleMouseUp)
       
+      // タッチイベント
+      document.addEventListener('touchmove', handleTouchMove)
+      document.addEventListener('touchend', handleTouchEnd)
+      
+      // クリーンアップ
       return () => {
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
         document.removeEventListener('touchmove', handleTouchMove)
-        document.removeEventListener('touchend', handleMouseUp)
+        document.removeEventListener('touchend', handleTouchEnd)
       }
     }
-  }, [isDragging, dragStart, calendarPosition])
+  }, [isDragging, dragStart])
 
+  // 非ログイン時は何も表示しない
+  if (!user) return null
+
+  // コンポーネントのレンダリング
   return (
-    <nav className="navigation">
-      <div>
-        <Link 
-          to="/" 
-          className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
-        >
-          <span className="nav-icon">🏠</span>
-          <span className="nav-label">タイムライン</span>
-        </Link>
-        {user && (
-          <>
-            <Link 
-              to="/mypage" 
-              className={`nav-link ${location.pathname === '/mypage' ? 'active' : ''}`}
-            >
-              <span className="nav-icon">📊</span>
-              <span className="nav-label">マイページ</span>
-            </Link>
-            <Link 
-              to="/profile" 
-              className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}
-            >
-              <span className="nav-icon">👤</span>
-              <span className="nav-label">プロフィール</span>
-            </Link>
-          </>
-        )}
-      </div>
-      <div className="nav-auth">
-        {showInstallButton && (
-          <button onClick={handleInstallClick} className="nav-install-button">
-            <span className="install-icon">📲</span>
-            <span className="install-label">アプリ</span>
-          </button>
-        )}
-        {user ? (
-          <>
-            <div className="user-info">
-              {userProfile?.avatar ? (
-                <img 
-                  src={userProfile.avatar} 
-                  alt={userProfile.nickname} 
-                  className="nav-user-avatar"
-                  onClick={() => navigate('/profile')}
-                />
-              ) : (
-                <div 
-                  className="nav-avatar-placeholder"
-                  onClick={() => navigate('/profile')}
-                >
-                  <span className="nav-avatar-icon">👤</span>
-                </div>
-              )}
-              <span className="user-email">
-                {user?.isAdmin && <span className="admin-badge">管理者</span>}
-                {userProfile?.nickname || user.email}
-              </span>
+    <>
+      {/* メインナビゲーションバー */}
+      <nav className="navigation">
+        {/* 左側: ユーザー情報 */}
+        <div className="nav-left">
+          <div className="user-info">
+            {/* ユーザーアイコン */}
+            <div className="user-icon">
+              {userProfile?.avatarEmoji || '👤'}
             </div>
-            <button onClick={handleSignOut} className="logout-button">
-              ログアウト
-            </button>
-            {location.pathname === '/mypage' && (
-              <>
-                {!isCalendarMinimized && (
-                  <div 
-                    className="calendar-mobile-overlay"
-                    onClick={() => setIsCalendarMinimized(true)}
-                  />
-                )}
-                <div 
-                  className={`nav-calendar ${isDragging ? 'dragging' : ''}`}
-                  style={{
-                    position: 'fixed',
-                    left: `${calendarPosition.x}px`,
-                    top: `${calendarPosition.y}px`,
-                    zIndex: 999
-                  }}
-                >
-                  <div 
-                    className="calendar-header-section"
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={handleTouchStart}
-                  >
-                    <div className="calendar-drag-handle">
-                      <span className="drag-icon">⋮⋮</span>
-                    </div>
-                    <h3 
-                      className="calendar-header-clickable" 
-                      onClick={() => navigate('/calendar')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      📅 練習カレンダー
-                    </h3>
-                    <button
-                      className="calendar-minimize-btn"
-                      onClick={toggleCalendarMinimize}
-                      title={isCalendarMinimized ? 'カレンダーを表示' : 'カレンダーを最小化'}
-                    >
-                      {isCalendarMinimized ? '▼' : '▲'}
-                    </button>
-                  </div>
-                  {!isCalendarMinimized && (
-                    <PracticeCalendar 
-                      practices={posts} 
-                      onDateClick={onDateClick}
-                      schedules={schedules}
-                    />
-                  )}
-                </div>
-              </>
+            {/* ユーザー名 */}
+            <span className="user-name">
+              {userProfile?.nickname || user.email}
+            </span>
+            {/* 管理者バッジ */}
+            {(user.isAdmin || user.email === 'over9131120@gmail.com') && (
+              <span className="admin-badge">管理者</span>
             )}
-          </>
-        ) : (
-          <Link to="/login" className="login-link">
-            ログイン
+          </div>
+        </div>
+        
+        {/* 中央: ページリンク */}
+        <div className="nav-center">
+          <Link
+            to="/"
+            className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
+          >
+            タイムライン
           </Link>
-        )}
-      </div>
-    </nav>
+          <Link
+            to="/mypage"
+            className={`nav-link ${location.pathname === '/mypage' ? 'active' : ''}`}
+          >
+            マイページ
+          </Link>
+          <Link
+            to="/calendar"
+            className={`nav-link ${location.pathname === '/calendar' ? 'active' : ''}`}
+          >
+            カレンダー
+          </Link>
+        </div>
+        
+        {/* 右側: アクションボタン */}
+        <div className="nav-right">
+          {/* PWAインストールボタン */}
+          {showInstallButton && (
+            <button 
+              className="install-pwa-button"
+              onClick={handleInstallClick}
+              title="アプリをインストール"
+            >
+              📲
+            </button>
+          )}
+          
+          {/* ログアウトボタン */}
+          <button onClick={handleSignOut} className="logout-button">
+            ログアウト
+          </button>
+        </div>
+      </nav>
+      
+      {/* ドラッグ可能なフローティングカレンダー */}
+      {location.pathname !== '/calendar' && (
+        <div 
+          className={`nav-calendar ${isCalendarMinimized ? 'minimized' : ''} ${isDragging ? 'dragging' : ''}`}
+          style={{
+            left: `${calendarPosition.x}px`,
+            top: `${calendarPosition.y}px`,
+          }}
+        >
+          {/* カレンダーヘッダー（ドラッグ可能エリア） */}
+          <div 
+            className="calendar-header-section"
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+          >
+            <h3>📅 練習カレンダー</h3>
+            <button 
+              className="calendar-minimize-btn"
+              onClick={toggleCalendarMinimize}
+              title={isCalendarMinimized ? "展開" : "最小化"}
+            >
+              {isCalendarMinimized ? '📅' : '−'}
+            </button>
+          </div>
+          
+          {/* カレンダー本体 */}
+          {!isCalendarMinimized && (
+            <PracticeCalendar 
+              practices={posts} 
+              onDateClick={onDateClick}
+              schedules={schedules}
+            />
+          )}
+        </div>
+      )}
+    </>
   )
 }
 
