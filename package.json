@@ -4,8 +4,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/updateServiceWorker.js",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update-sw": "node scripts/updateServiceWorker.js"
   },
   "keywords": [],
   "author": "",

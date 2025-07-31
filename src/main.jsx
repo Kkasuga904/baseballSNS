@@ -3,21 +3,48 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-// Register service worker
+// Register service worker with automatic update handling
+// 開発環境では無効化可能（必要に応じてコメントアウトを解除）
+// if (import.meta.env.DEV) {
+//   console.log('開発環境: Service Worker を無効化')
+// } else 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then(registration => {
         console.log('Service Worker registered:', registration)
         
-        // Check for updates periodically
+        // 更新が見つかったときの処理
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing
+          console.log('[SW] 新しいService Workerが見つかりました')
+          
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'activated') {
+              console.log('[SW] 新しいService Workerがアクティブになりました')
+              // controllerchangeイベントを待たずに即座にリロード
+              window.location.reload()
+            }
+          })
+        })
+        
+        // 即座に更新をチェック
+        registration.update()
+        
+        // 定期的に更新をチェック（5分ごと）
         setInterval(() => {
           registration.update()
-        }, 60 * 60 * 1000) // Check every hour
+        }, 5 * 60 * 1000) // 5分ごと
       })
       .catch(error => {
         console.error('Service Worker registration failed:', error)
       })
+  })
+  
+  // Service Workerがコントローラーを変更したときもリロード
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    console.log('[SW] コントローラーが変更されました。ページをリロードします。')
+    window.location.reload()
   })
 }
 

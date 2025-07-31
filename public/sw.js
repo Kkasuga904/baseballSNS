@@ -14,8 +14,11 @@
 /**
  * キャッシュ名とバージョン管理
  * バージョンを変更することで古いキャッシュをクリアできます
+ * デプロイ時は自動的にタイムスタンプを付与することを推奨
  */
-const CACHE_NAME = 'baselog-v1';
+const CACHE_VERSION = '1.0.0'; // バージョンを変更するとキャッシュが更新されます
+const CACHE_NAME = `baselog-v${CACHE_VERSION}`;
+const BUILD_TIME = new Date().toISOString(); // ビルド時刻を記録
 
 /**
  * 初期インストール時にキャッシュするURL一覧
@@ -102,10 +105,16 @@ self.addEventListener('fetch', event => {
   // 動的データはキャッシュせず、常に最新を取得
   if (event.request.url.includes('/api/')) return;
 
+  // Service Worker自身へのリクエストはキャッシュしない
+  if (event.request.url.includes('sw.js')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   // リクエストに対するレスポンスをカスタマイズ
   event.respondWith(
     // まずネットワークから取得を試みる
-    fetch(event.request)
+    fetch(event.request, { cache: 'no-cache' }) // 常に最新を取得
       .then(response => {
         // レスポンスが正常でない場合はそのまま返す
         if (!response || response.status !== 200 || response.type !== 'basic') {
