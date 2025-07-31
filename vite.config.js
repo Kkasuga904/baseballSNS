@@ -28,6 +28,19 @@ export default defineConfig({
    */
   server: {
     port: 3000, // 開発サーバーのポート番号（デフォルト: 5173から変更）
+    
+    /**
+     * Service Worker関連のヘッダー設定
+     * 開発環境でもService WorkerのMIMEタイプを正しく設定
+     */
+    headers: {
+      '/sw.js': {
+        'Content-Type': 'application/javascript',
+      },
+      '/sw-dev.js': {
+        'Content-Type': 'application/javascript',
+      }
+    }
   },
   
   /**
