@@ -49,9 +49,12 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   const { user } = useAuth()
   
   // 選択日付が未設定の場合は今日の日付を設定
-  if (!selectedDate) {
-    setSelectedDate(new Date().toISOString().split('T')[0])
-  }
+  // useEffectを使用してレンダリング中の状態更新を避ける
+  React.useEffect(() => {
+    if (!selectedDate) {
+      setSelectedDate(new Date().toISOString().split('T')[0])
+    }
+  }, [selectedDate, setSelectedDate])
 
   /**
    * 選択日付の練習記録をフィルタリング

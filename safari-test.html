@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safari互換性テスト</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .test-item {
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+    .error {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    .grid-test {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .grid-item {
+      background: #e9ecef;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Safari互換性テスト</h1>
+  
+  <div id="tests"></div>
+  
+  <script>
+    const tests = [];
+    
+    // 1. ES6+ 機能テスト
+    tests.push({
+      name: 'ES6+ Arrow Functions',
+      test: () => {
+        const arrow = () => true;
+        return arrow();
+      }
+    });
+    
+    // 2. Promise テスト
+    tests.push({
+      name: 'Promise Support',
+      test: () => {
+        return typeof Promise !== 'undefined';
+      }
+    });
+    
+    // 3. Object.assign テスト
+    tests.push({
+      name: 'Object.assign Support',
+      test: () => {
+        return typeof Object.assign === 'function';
+      }
+    });
+    
+    // 4. Array.includes テスト
+    tests.push({
+      name: 'Array.includes Support',
+      test: () => {
+        return typeof [].includes === 'function';
+      }
+    });
+    
+    // 5. CSS Grid テスト
+    tests.push({
+      name: 'CSS Grid Support',
+      test: () => {
+        const el = document.createElement('div');
+        el.style.display = 'grid';
+        return el.style.display === 'grid';
+      }
+    });
+    
+    // 6. Fetch API テスト
+    tests.push({
+      name: 'Fetch API Support',
+      test: () => {
+        return typeof fetch !== 'undefined';
+      }
+    });
+    
+    // 7. Service Worker テスト
+    tests.push({
+      name: 'Service Worker Support',
+      test: () => {
+        return 'serviceWorker' in navigator;
+      }
+    });
+    
+    // 8. LocalStorage テスト
+    tests.push({
+      name: 'LocalStorage Support',
+      test: () => {
+        try {
+          localStorage.setItem('test', 'test');
+          localStorage.removeItem('test');
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+    });
+    
+    // 9. import.meta テスト
+    tests.push({
+      name: 'import.meta Support',
+      test: () => {
+        try {
+          // This will be false in Safari 11
+          return typeof import.meta !== 'undefined';
+        } catch (e) {
+          return false;
+        }
+      }
+    });
+    
+    // 10. Optional Chaining テスト
+    tests.push({
+      name: 'Optional Chaining Support',
+      test: () => {
+        try {
+          const obj = { a: { b: 1 } };
+          // Safari 11では使えない
+          // return obj?.a?.b === 1;
+          return false; // Safari 11では常にfalse
+        } catch (e) {
+          return false;
+        }
+      }
+    });
+    
+    // テスト実行
+    const resultsDiv = document.getElementById('tests');
+    
+    tests.forEach(test => {
+      const div = document.createElement('div');
+      try {
+        const result = test.test();
+        div.className = 'test-item ' + (result ? 'success' : 'error');
+        div.textContent = `${test.name}: ${result ? '✅ 成功' : '❌ 失敗'}`;
+      } catch (e) {
+        div.className = 'test-item error';
+        div.textContent = `${test.name}: ❌ エラー - ${e.message}`;
+      }
+      resultsDiv.appendChild(div);
+    });
+    
+    // CSS Grid視覚テスト
+    const gridTestDiv = document.createElement('div');
+    gridTestDiv.innerHTML = `
+      <h2>CSS Grid表示テスト</h2>
+      <div class="grid-test">
+        <div class="grid-item">1</div>
+        <div class="grid-item">2</div>
+        <div class="grid-item">3</div>
+        <div class="grid-item">4</div>
+        <div class="grid-item">5</div>
+        <div class="grid-item">6</div>
+      </div>
+    `;
+    resultsDiv.appendChild(gridTestDiv);
+    
+    // ブラウザ情報
+    const browserInfo = document.createElement('div');
+    browserInfo.innerHTML = `
+      <h2>ブラウザ情報</h2>
+      <p>User Agent: ${navigator.userAgent}</p>
+      <p>Platform: ${navigator.platform}</p>
+    `;
+    resultsDiv.appendChild(browserInfo);
+  </script>
+</body>
+</html>

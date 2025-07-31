@@ -5,6 +5,9 @@ try {
   console.error('Debug log error:', e);
 }
 
+// Safari互換性のためのcore-js polyfill
+import 'core-js/stable'
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
@@ -24,7 +27,13 @@ try {
  * 開発環境では完全に無効化してMIMEタイプエラーを回避
  */
 // Safari互換性: import.meta.envの安全な参照
-const isDev = (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.DEV) || false;
+const isDev = (() => {
+  try {
+    return import.meta.env.DEV || false;
+  } catch {
+    return false;
+  }
+})();
 
 if ('serviceWorker' in navigator && !isDev) {
   // 本番環境でのみ実行

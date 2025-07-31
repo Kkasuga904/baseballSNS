@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import DatePicker from './DatePicker'
 import './ScheduleForm.css'
 
 function ScheduleForm({ selectedDate, onSubmit }) {
@@ -185,23 +186,21 @@ END:VCALENDAR`
       <div className="form-row">
         <div className="form-group">
           <label>{formData.isMultiDay ? '開始日' : '日付'}</label>
-          <input
-            type="date"
+          <DatePicker
             value={formData.startDate}
-            onChange={(e) => handleInputChange('startDate', e.target.value)}
-            required
+            onChange={(value) => handleInputChange('startDate', value)}
+            placeholder="日付を選択"
           />
         </div>
         
         {formData.isMultiDay && (
           <div className="form-group">
             <label>終了日</label>
-            <input
-              type="date"
+            <DatePicker
               value={formData.endDate}
-              onChange={(e) => handleInputChange('endDate', e.target.value)}
-              min={formData.startDate}
-              required
+              onChange={(value) => handleInputChange('endDate', value)}
+              minDate={formData.startDate}
+              placeholder="終了日を選択"
             />
           </div>
         )}

@@ -180,41 +180,77 @@
 
 .training-parts-selector {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  max-width: 800px;
 }
 
 .part-button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.75rem;
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 12px;
   background: white;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
+  min-height: 80px;
+  justify-content: center;
 }
 
 .part-button:hover {
   border-color: #ff6b6b;
   background-color: #fff5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
 }
 
 .part-button.active {
   border-color: #ff6b6b;
   background-color: #ffe0e0;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
 }
 
 .part-icon {
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   margin-bottom: 0.25rem;
 }
 
 .part-label {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #333;
+  font-weight: 500;
+}
+
+/* PC画面用の調整 */
+@media (min-width: 1024px) {
+  .training-parts-selector {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  
+  .part-button {
+    padding: 1rem;
+    min-height: 90px;
+  }
+  
+  .part-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .part-label {
+    font-size: 1rem;
+  }
+}
+
+/* タブレット用 */
+@media (max-width: 1023px) and (min-width: 769px) {
+  .training-parts-selector {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* クイック種目選択 */
@@ -287,6 +323,20 @@
   
   .training-parts-selector {
     grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .part-button {
+    padding: 0.75rem 0.5rem;
+    min-height: 80px;
+  }
+  
+  .part-icon {
+    font-size: 1.5rem;
+  }
+  
+  .part-label {
+    font-size: 0.85rem;
   }
 }
 

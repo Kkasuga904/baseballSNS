@@ -1,18 +1,18 @@
 .navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #2a2a2a;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-.navigation > div:first-child {
+.nav-items {
   display: flex;
-  gap: 2rem;
+  align-items: stretch;
+  height: 56px;
+  margin: 0 auto;
+  max-width: 1200px;
 }
 
 .nav-link {

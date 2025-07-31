@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import './PracticeStats.css'
 
-function PracticeStats({ practices }) {
+function PracticeStats({ practices = [] }) {
   const stats = useMemo(() => {
     const categoryStats = {
       batting: { count: 0, icon: '🏏', label: '打撃' },
@@ -17,10 +17,12 @@ function PracticeStats({ practices }) {
     let maxStreak = 0
     let lastDate = null
 
-    // 日付順にソート
-    const sortedPractices = [...practices].sort((a, b) => 
-      new Date(a.practiceData.date) - new Date(b.practiceData.date)
-    )
+    // 日付順にソート（practiceDataが存在するもののみ）
+    const sortedPractices = [...practices]
+      .filter(p => p && p.practiceData && p.practiceData.date)
+      .sort((a, b) => 
+        new Date(a.practiceData.date) - new Date(b.practiceData.date)
+      )
 
     sortedPractices.forEach(practice => {
       if (practice.practiceData) {

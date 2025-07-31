@@ -20,8 +20,15 @@ export default defineConfig({
   /**
    * プラグイン設定
    * @vitejs/plugin-react: ReactのJSX変換とFast Refreshを有効化
+   * babel設定を有効化してSafari互換性を確保
    */
-  plugins: [react()],
+  plugins: [
+    react({
+      babel: {
+        configFile: true
+      }
+    })
+  ],
   
   /**
    * 開発サーバーの設定
@@ -33,13 +40,14 @@ export default defineConfig({
      * Service Worker関連のヘッダー設定
      * 開発環境でもService WorkerのMIMEタイプを正しく設定
      */
-    headers: {
-      '/sw.js': {
-        'Content-Type': 'application/javascript',
-      },
-      '/sw-dev.js': {
-        'Content-Type': 'application/javascript',
-      }
+    // ヘッダー設定は関数形式で記述
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url === '/sw.js' || req.url === '/sw-dev.js') {
+          res.setHeader('Content-Type', 'application/javascript');
+        }
+        next();
+      });
     }
   },
   

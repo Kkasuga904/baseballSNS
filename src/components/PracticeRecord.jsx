@@ -4,7 +4,30 @@ import GameRecord from './GameRecord'
 import './PracticeRecord.css'
 
 function PracticeRecord({ practiceData }) {
-  const { date, startTime, endTime, category, trainingPart, condition, intensity, menu, maxVelocity, note, videoData, quickEntry, gameResultData } = practiceData
+  // practiceDataが存在しない場合のデフォルト値
+  if (!practiceData) {
+    return (
+      <div className="practice-record">
+        <p>練習データがありません</p>
+      </div>
+    )
+  }
+
+  const { 
+    date = '', 
+    startTime = '', 
+    endTime = '', 
+    category = '', 
+    trainingPart = '', 
+    condition = '', 
+    intensity = '', 
+    menu = [], 
+    maxVelocity = '', 
+    note = '', 
+    videoData = null, 
+    quickEntry = false, 
+    gameResultData = null 
+  } = practiceData
 
   const categoryIcons = {
     batting: '🏏',
@@ -41,6 +64,9 @@ function PracticeRecord({ practiceData }) {
   }
 
   const calculateDuration = () => {
+    if (!startTime || !endTime) {
+      return '時間未記録'
+    }
     const start = new Date(`2000-01-01 ${startTime}`)
     const end = new Date(`2000-01-01 ${endTime}`)
     const diff = end - start

@@ -20,7 +20,7 @@ import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './
 // Safari互換性: import.meta.envの安全な参照
 const getSupabaseUrl = () => {
   try {
-    return (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_SUPABASE_URL) || '';
+    return import.meta.env.VITE_SUPABASE_URL || '';
   } catch {
     return '';
   }
@@ -337,6 +337,8 @@ function AppContent() {
                 posts={posts}
                 myPageData={myPageData}
                 updateMyPageData={updateMyPageData}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
                 addPost={addPost}
                 addVideoPost={addVideoPost}
                 addHealthRecord={addHealthRecord}

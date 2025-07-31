@@ -5,7 +5,7 @@ import ScheduleForm from '../components/ScheduleForm'
 import ScheduleItem from '../components/ScheduleItem'
 import './CalendarView.css'
 
-function CalendarView({ posts, myPageData, setMyPageData }) {
+function CalendarView({ posts = [], myPageData = { schedules: [] }, setMyPageData }) {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -39,7 +39,7 @@ function CalendarView({ posts, myPageData, setMyPageData }) {
   // 予定がある日付を集計
   const scheduleDates = useMemo(() => {
     const dateMap = new Map()
-    const schedules = myPageData.schedules || []
+    const schedules = myPageData?.schedules || []
     
     schedules.forEach(schedule => {
       const dateStr = schedule.date || schedule.startDate
@@ -69,7 +69,7 @@ function CalendarView({ posts, myPageData, setMyPageData }) {
       }
     })
     return dateMap
-  }, [myPageData.schedules])
+  }, [myPageData?.schedules])
 
   const getDaysInMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()

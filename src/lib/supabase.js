@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 // Safari互換性: import.meta.envの安全な参照
 const getEnvVar = (key, defaultValue) => {
   try {
-    return (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env[key]) || defaultValue;
+    return import.meta.env[key] || defaultValue;
   } catch {
     return defaultValue;
   }

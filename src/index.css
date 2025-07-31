@@ -5,6 +5,19 @@
   box-sizing: border-box;
 }
 
+/* Safari用のCSS Grid対応 */
+@supports not (display: grid) {
+  .training-parts-selector,
+  .category-selector,
+  .calendar-days,
+  .calendar-weekdays {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
   background-color: #f0f4f0;
@@ -24,4 +37,29 @@ button {
 textarea {
   font-family: inherit;
   resize: vertical;
+}
+
+/* アイコン配置修正をグローバルに適用 */
+/* @import は先頭に配置する必要があるため、内容を直接記載 */
+/* icon-position-fix.css の内容 */
+.position-relative {
+  position: relative;
+}
+
+.icon-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.icon-offset {
+  transform: translateY(-2px);
+}
+
+.count-input {
+  padding-left: 2.5rem;
+  text-align: right;
 }

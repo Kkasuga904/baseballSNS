@@ -1,0 +1,56 @@
+/**
+ * アイコン配置の修正用CSS
+ * ルーティンやステータス表示でアイコンがテキストと重ならないようにする
+ */
+
+/* ルーティンアイテムのアイコン配置修正 */
+.routine-item .routine-icon,
+.routine-item .emoji-icon,
+.routine-item [class*="icon"] {
+  position: relative !important;
+  display: inline-flex !important;
+  margin-right: 8px !important;
+  vertical-align: middle !important;
+  flex-shrink: 0;
+}
+
+/* ステータス表示のアイコン配置修正 */
+.status-item .status-icon,
+.stat-item .stat-icon {
+  position: relative !important;
+  display: inline-flex !important;
+  margin-right: 8px !important;
+  vertical-align: middle !important;
+}
+
+/* 絶対配置のアイコンを相対配置に修正 */
+.icon-absolute-fix {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+}
+
+/* ストレート表示などの特定アイコン修正 */
+.streak-icon,
+.pitch-type-icon {
+  position: relative !important;
+  display: inline-flex !important;
+  margin-right: 4px !important;
+  vertical-align: middle !important;
+}
+
+/* 数値表示とアイコンの間隔調整 */
+.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* アイコンがテキストの上に重ならないようにする */
+.no-overlap-icon {
+  z-index: 1;
+  position: relative;
+  display: inline-flex;
+  margin-right: 8px;
+}

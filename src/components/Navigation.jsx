@@ -276,63 +276,70 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     <>
       {/* メインナビゲーションバー */}
       <nav className="navigation">
-        {/* 左側: ユーザー情報 */}
-        <div className="nav-left">
-          <div className="user-info">
-            {/* ユーザーアイコン */}
-            <div className="user-icon">
-              {(userProfile && userProfile.avatarEmoji) || '👤'}
-            </div>
-            {/* ユーザー名 */}
-            <span className="user-name">
-              {(userProfile && userProfile.nickname) || user.email}
-            </span>
-            {/* 管理者バッジ */}
-            {(user.isAdmin || user.email === 'over9131120@gmail.com') && (
-              <span className="admin-badge">管理者</span>
-            )}
-          </div>
-        </div>
-        
-        {/* 中央: ページリンク */}
-        <div className="nav-center">
+        {/* ナビゲーションアイテム */}
+        <div className="nav-items">
+          {/* タイムライン */}
           <Link
             to="/"
-            className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
+            className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}
           >
-            タイムライン
+            <span className="nav-icon">🏠</span>
+            <span className="nav-label">タイムライン</span>
           </Link>
+          
+          {/* マイページ */}
           <Link
             to="/mypage"
-            className={`nav-link ${location.pathname === '/mypage' ? 'active' : ''}`}
+            className={`nav-item ${location.pathname === '/mypage' ? 'active' : ''}`}
           >
-            マイページ
+            <span className="nav-icon">📄</span>
+            <span className="nav-label">マイページ</span>
           </Link>
+          
+          {/* プロフィール */}
           <Link
-            to="/calendar"
-            className={`nav-link ${location.pathname === '/calendar' ? 'active' : ''}`}
+            to="/profile"
+            className={`nav-item ${location.pathname === '/profile' ? 'active' : ''}`}
           >
-            カレンダー
+            <span className="nav-icon">👤</span>
+            <span className="nav-label">プロフィール</span>
           </Link>
-        </div>
-        
-        {/* 右側: アクションボタン */}
-        <div className="nav-right">
-          {/* PWAインストールボタン */}
+          
+          {/* アプリインストール */}
           {showInstallButton && (
             <button 
-              className="install-pwa-button"
+              className="nav-item install-button"
               onClick={handleInstallClick}
               title="アプリをインストール"
             >
-              📲
+              <span className="nav-icon">📱</span>
+              <span className="nav-label">アプリ</span>
             </button>
           )}
           
-          {/* ログアウトボタン */}
-          <button onClick={handleSignOut} className="logout-button">
-            ログアウト
-          </button>
+          {/* 管理者 */}
+          {(user.isAdmin || user.email === 'over9131120@gmail.com') && (
+            <div className="nav-item admin-info">
+              <span className="nav-icon">👤</span>
+              <span className="nav-label">管理者</span>
+            </div>
+          )}
+          
+          {/* その他メニュー */}
+          <div className="nav-item more-menu">
+            <span className="nav-icon">⚙️</span>
+            <span className="nav-label">その他</span>
+            <div className="dropdown-menu">
+              <Link to="/calendar" className="dropdown-item">
+                <span className="dropdown-icon">📅</span>
+                カレンダー
+              </Link>
+              <button onClick={handleSignOut} className="dropdown-item logout">
+                <span className="dropdown-icon">🚪</span>
+                ログアウト
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
       

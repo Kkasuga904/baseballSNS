@@ -117,27 +117,39 @@
   
   <!-- Safari デバッグ用ログ出力 -->
   <script>
+    // デバッグモードの制御（本番環境またはSafariのみ有効）
+    var isDebugMode = window.location.hostname.includes('vercel.app') || 
+                     /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
     // グローバルエラーハンドラー
     window.addEventListener('error', function(event) {
       console.error('Global error:', event.error);
-      var errorDiv = document.createElement('div');
-      errorDiv.style.cssText = 'position:fixed;bottom:10px;right:10px;background:red;color:white;padding:10px;z-index:9999;max-width:400px;word-wrap:break-word;';
-      errorDiv.innerHTML = 'Error: ' + event.error.message + '<br>File: ' + event.filename + '<br>Line: ' + event.lineno;
-      document.body.appendChild(errorDiv);
+      if (isDebugMode) {
+        var errorDiv = document.createElement('div');
+        errorDiv.style.cssText = 'position:fixed;bottom:10px;right:10px;background:red;color:white;padding:10px;z-index:9999;max-width:400px;word-wrap:break-word;';
+        errorDiv.innerHTML = 'Error: ' + event.error.message + '<br>File: ' + event.filename + '<br>Line: ' + event.lineno;
+        document.body.appendChild(errorDiv);
+      }
     });
     
     // Promise rejection ハンドラー
     window.addEventListener('unhandledrejection', function(event) {
       console.error('Unhandled promise rejection:', event.reason);
-      var errorDiv = document.createElement('div');
-      errorDiv.style.cssText = 'position:fixed;bottom:80px;right:10px;background:orange;color:white;padding:10px;z-index:9999;max-width:400px;word-wrap:break-word;';
-      errorDiv.innerHTML = 'Promise Rejection: ' + (event.reason.message || event.reason);
-      document.body.appendChild(errorDiv);
+      if (isDebugMode) {
+        var errorDiv = document.createElement('div');
+        errorDiv.style.cssText = 'position:fixed;bottom:80px;right:10px;background:orange;color:white;padding:10px;z-index:9999;max-width:400px;word-wrap:break-word;';
+        errorDiv.innerHTML = 'Promise Rejection: ' + (event.reason.message || event.reason);
+        document.body.appendChild(errorDiv);
+      }
     });
     
     // デバッグログ関数
     window.debugLog = function(msg) {
       console.log('[DEBUG]', msg);
+      
+      // デバッグモードでない場合は画面表示しない
+      if (!isDebugMode) return;
+      
       var logDiv = document.getElementById('debug-log');
       if (!logDiv) {
         logDiv = document.createElement('div');
@@ -148,12 +160,30 @@
       var time = new Date().toTimeString().split(' ')[0];
       logDiv.innerHTML += '<div>' + time + ' - ' + msg + '</div>';
       logDiv.scrollTop = logDiv.scrollHeight;
+      
+      // React render完了時は3秒後に自動的に消去
+      if (msg.includes('React render completed')) {
+        setTimeout(function() {
+          var log = document.getElementById('debug-log');
+          if (log) {
+            log.style.transition = 'opacity 0.5s';
+            log.style.opacity = '0';
+            setTimeout(function() {
+              if (log && log.parentNode) {
+                log.parentNode.removeChild(log);
+              }
+            }, 500);
+          }
+        }, 3000);
+      }
     };
     
-    // 初期ログ
-    window.debugLog('Safari debug mode active');
-    window.debugLog('User Agent: ' + navigator.userAgent);
-    window.debugLog('Safari: ' + /^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+    // 初期ログ（デバッグモード時のみ）
+    if (isDebugMode) {
+      window.debugLog('Safari debug mode active');
+      window.debugLog('User Agent: ' + navigator.userAgent);
+      window.debugLog('Safari: ' + /^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+    }
   </script>
   
   <!-- メインアプリケーション -->
