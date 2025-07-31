@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>BaseLog Safari PWAアイコン生成ツール</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 { color: #2e7d46; }
+    .icon-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .icon-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .icon-preview {
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .download-btn {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #2e7d46;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .download-btn:hover {
+      background: #236135;
+    }
+    .instructions {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    code {
+      background: #f1f1f1;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚾ BaseLog Safari PWAアイコン生成ツール</h1>
+  
+  <div class="instructions">
+    <h3>📱 Safari PWA対応手順:</h3>
+    <ol>
+      <li>下記の各アイコンをダウンロードして <code>public/</code> フォルダに保存</li>
+      <li>manifest.jsonを更新（下記の設定をコピー）</li>
+      <li>index.htmlに <code>&lt;link rel="apple-touch-icon" href="/apple-touch-icon.png"&gt;</code> を追加</li>
+      <li>ビルドして再デプロイ</li>
+    </ol>
+  </div>
+  
+  <button class="download-btn" onclick="downloadAll()" style="margin-bottom: 20px;">
+    全てのアイコンをダウンロード
+  </button>
+  
+  <div id="icons" class="icon-container"></div>
+  
+  <h3>manifest.json 更新内容:</h3>
+  <pre id="manifest-config" style="background: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto;">
+生成中...
+  </pre>
+  
+  <script>
+    // Safari PWAに必要なアイコンサイズ（優先順位順）
+    const iconConfigs = [
+      { size: 192, filename: 'icon-192x192.png', purpose: 'any' },
+      { size: 512, filename: 'icon-512x512.png', purpose: 'any' },
+      { size: 180, filename: 'apple-touch-icon.png', purpose: 'any' },
+      { size: 167, filename: 'icon-167x167.png', purpose: 'any' },
+      { size: 152, filename: 'icon-152x152.png', purpose: 'any' },
+      { size: 144, filename: 'icon-144x144.png', purpose: 'any' },
+      { size: 120, filename: 'icon-120x120.png', purpose: 'any' },
+      { size: 96, filename: 'icon-96x96.png', purpose: 'any' },
+      { size: 72, filename: 'icon-72x72.png', purpose: 'any' },
+      { size: 48, filename: 'icon-48x48.png', purpose: 'any' },
+      { size: 192, filename: 'icon-maskable-192x192.png', purpose: 'maskable' },
+      { size: 512, filename: 'icon-maskable-512x512.png', purpose: 'maskable' }
+    ];
+    
+    const generatedLinks = [];
+    
+    function createIcon(size, purpose = 'any') {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      
+      if (purpose === 'maskable') {
+        // Maskable icon: より大きな安全領域を確保
+        ctx.fillStyle = '#2e7d46';
+        ctx.fillRect(0, 0, size, size);
+        
+        // 中央に小さめの野球ボール
+        const ballSize = size * 0.5;
+        const ballX = size * 0.5;
+        const ballY = size * 0.5;
+        
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(ballX, ballY, ballSize * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 縫い目
+        ctx.strokeStyle = '#ff4444';
+        ctx.lineWidth = size * 0.02;
+        ctx.beginPath();
+        ctx.arc(ballX - ballSize * 0.15, ballY, ballSize * 0.3, -Math.PI * 0.7, Math.PI * 0.7);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(ballX + ballSize * 0.15, ballY, ballSize * 0.3, Math.PI * 0.3, Math.PI * 1.7);
+        ctx.stroke();
+        
+      } else {
+        // 通常のアイコン
+        // 背景（緑のグラデーション）
+        const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+        gradient.addColorStop(0, '#3a9855');
+        gradient.addColorStop(1, '#2e7d46');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+        
+        // 野球ボール
+        const ballX = size * 0.39;
+        const ballY = size * 0.5;
+        const ballRadius = size * 0.176;
+        
+        // ボールの影
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.beginPath();
+        ctx.ellipse(ballX + 3, ballY + 5, ballRadius, ballRadius * 0.9, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // ボール本体
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = size * 0.012;
+        ctx.stroke();
+        
+        // 縫い目
+        ctx.strokeStyle = '#ff4444';
+        ctx.lineWidth = size * 0.01;
+        
+        // 左側の縫い目
+        ctx.beginPath();
+        ctx.moveTo(ballX - ballRadius * 0.6, ballY - ballRadius * 0.8);
+        for (let i = 0; i < 5; i++) {
+          const y = ballY - ballRadius * 0.8 + (i * ballRadius * 0.4);
+          ctx.quadraticCurveTo(
+            ballX - ballRadius * 0.4, y + ballRadius * 0.1,
+            ballX - ballRadius * 0.6, y + ballRadius * 0.2
+          );
+        }
+        ctx.stroke();
+        
+        // 右側の縫い目
+        ctx.beginPath();
+        ctx.moveTo(ballX + ballRadius * 0.6, ballY - ballRadius * 0.8);
+        for (let i = 0; i < 5; i++) {
+          const y = ballY - ballRadius * 0.8 + (i * ballRadius * 0.4);
+          ctx.quadraticCurveTo(
+            ballX + ballRadius * 0.4, y + ballRadius * 0.1,
+            ballX + ballRadius * 0.6, y + ballRadius * 0.2
+          );
+        }
+        ctx.stroke();
+        
+        // BBテキスト
+        ctx.fillStyle = 'white';
+        ctx.font = `bold ${size * 0.176}px Arial Black, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        ctx.shadowBlur = 4;
+        ctx.fillText('BB', size * 0.68, size * 0.74);
+      }
+      
+      return canvas;
+    }
+    
+    // アイコンを生成して表示
+    iconConfigs.forEach(({ size, filename, purpose }) => {
+      const container = document.getElementById('icons');
+      const iconItem = document.createElement('div');
+      iconItem.className = 'icon-item';
+      
+      const canvas = createIcon(size, purpose);
+      
+      // プレビュー
+      const preview = document.createElement('img');
+      preview.src = canvas.toDataURL();
+      preview.className = 'icon-preview';
+      preview.style.width = Math.min(size, 128) + 'px';
+      preview.style.height = Math.min(size, 128) + 'px';
+      
+      // 情報
+      const info = document.createElement('div');
+      info.innerHTML = `
+        <strong>${filename}</strong><br>
+        ${size}×${size}px<br>
+        <small>${purpose === 'maskable' ? 'マスカブル' : '通常'}</small>
+      `;
+      
+      // ダウンロードリンク
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.className = 'download-btn';
+        link.textContent = 'ダウンロード';
+        generatedLinks.push({ link, filename });
+        
+        iconItem.appendChild(preview);
+        iconItem.appendChild(info);
+        iconItem.appendChild(link);
+        container.appendChild(iconItem);
+      });
+    });
+    
+    // manifest.json設定を表示
+    const manifestConfig = {
+      icons: iconConfigs.map(({ size, filename, purpose }) => ({
+        src: `/${filename}`,
+        sizes: `${size}x${size}`,
+        type: "image/png",
+        purpose: purpose
+      }))
+    };
+    
+    document.getElementById('manifest-config').textContent = JSON.stringify(manifestConfig, null, 2);
+    
+    // 全てダウンロード
+    function downloadAll() {
+      generatedLinks.forEach(({ link }, index) => {
+        setTimeout(() => link.click(), index * 100);
+      });
+    }
+  </script>
+</body>
+</html>

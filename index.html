@@ -22,11 +22,18 @@
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/icon.svg">
-  <!-- iOSホーム画面アイコン -->
-  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icon-16x16.png">
   
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json">
+  <!-- iOS Safari PWAアイコン（重要: PNGである必要があります） -->
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="/icon-167x167.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon-180x180.png">
+  
+  <!-- PWA Manifest（キャッシュバスティング付き） -->
+  <link rel="manifest" href="/manifest.json?v=2024.1">
   
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -74,23 +81,36 @@
   <!-- メインアプリケーション -->
   <script type="module" src="/src/main.jsx"></script>
   
-  <!-- Service Worker登録（本番環境のみ） -->
+  <!-- Service Worker登録（本番環境のみ、DOM読み込み後に実行） -->
   <script>
-    // Vercelの本番環境でのみService Workerを有効化
-    // localhost、127.0.0.1、または.vercel.appのプレビュー環境では無効化
-    const isProduction = window.location.hostname.endsWith('.vercel.app') && 
-                        !window.location.hostname.includes('-git-') && // Gitブランチのプレビュー
-                        !window.location.hostname.includes('localhost') &&
-                        !window.location.hostname.includes('127.0.0.1');
-    
-    if (isProduction) {
-      console.log('[SW] 本番環境検出。Service Workerを登録します。');
-      const script = document.createElement('script');
-      script.src = '/register-sw.js';
-      script.defer = true;
-      document.body.appendChild(script);
+    // DOM読み込み完了後にService Workerを登録
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', registerServiceWorker);
     } else {
-      console.log('[SW] 開発/プレビュー環境のため、Service Workerは無効化されています');
+      registerServiceWorker();
+    }
+    
+    function registerServiceWorker() {
+      // Vercelの本番環境でのみService Workerを有効化
+      const isProduction = window.location.hostname.endsWith('.vercel.app') && 
+                          !window.location.hostname.includes('-git-') && // Gitブランチのプレビュー
+                          !window.location.hostname.includes('localhost') &&
+                          !window.location.hostname.includes('127.0.0.1');
+      
+      // Safari対応: Service Worker対応チェック
+      if (isProduction && 'serviceWorker' in navigator) {
+        // 少し遅延させてメインアプリの読み込みを優先
+        setTimeout(() => {
+          console.log('[SW] 本番環境検出。Service Workerを登録します。');
+          const script = document.createElement('script');
+          script.src = '/register-sw.js?v=' + Date.now(); // キャッシュバスティング
+          document.body.appendChild(script);
+        }, 1000);
+      } else if (!isProduction) {
+        console.log('[SW] 開発/プレビュー環境のため、Service Workerは無効化されています');
+      } else if (!('serviceWorker' in navigator)) {
+        console.log('[SW] このブラウザはService Workerをサポートしていません');
+      }
     }
   </script>
 </body>
