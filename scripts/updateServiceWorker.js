@@ -1,8 +1,13 @@
 /**
  * Service Workerのバージョンを自動更新するスクリプト
  * ビルド時に実行して、デプロイごとに新しいバージョンを生成
+ * 
+ * 使用方法:
+ * - npm run build 時に自動実行（prebuildスクリプト）
+ * - 手動実行: npm run update-sw
  */
 
+// CommonJS形式でインポート（Node.jsの標準的な方法）
 const fs = require('fs');
 const path = require('path');
 
