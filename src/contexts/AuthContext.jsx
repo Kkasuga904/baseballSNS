@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
     // 現在のセッションを確認
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
+      setUser(session && session.user ? session.user : null)
       setLoading(false)
     }).catch(err => {
       console.error('Supabase接続エラー:', err)
@@ -41,10 +41,10 @@ export const AuthProvider = ({ children }) => {
 
     // 認証状態の変更を監視
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
+      setUser(session && session.user ? session.user : null)
     })
 
-    return () => subscription?.unsubscribe()
+    return () => subscription && subscription.unsubscribe()
   }, [])
 
   const signUp = async (email, password) => {

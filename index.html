@@ -39,6 +39,35 @@
   <meta name="twitter:title" content="BaseLog">
   <meta name="twitter:description" content="野球の記録と交流をひとつに">
   <meta name="twitter:image" content="/icon.svg">
+  
+  <!-- Safari互換性のためのpolyfill -->
+  <script>
+    // Safari用のObject.assignポリフィル
+    if (typeof Object.assign !== 'function') {
+      Object.defineProperty(Object, 'assign', {
+        value: function assign(target) {
+          'use strict';
+          if (target === null || target === undefined) {
+            throw new TypeError('Cannot convert undefined or null to object');
+          }
+          var to = Object(target);
+          for (var index = 1; index < arguments.length; index++) {
+            var nextSource = arguments[index];
+            if (nextSource !== null && nextSource !== undefined) {
+              for (var nextKey in nextSource) {
+                if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                  to[nextKey] = nextSource[nextKey];
+                }
+              }
+            }
+          }
+          return to;
+        },
+        writable: true,
+        configurable: true
+      });
+    }
+  </script>
 </head>
 <body>
   <div id="root"></div>

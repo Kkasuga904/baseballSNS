@@ -9,7 +9,7 @@ function Profile() {
   
   const [isEditing, setIsEditing] = useState(false)
   const [profile, setProfile] = useState(() => {
-    const profileKey = `baseballSNSProfile_${user?.email || 'guest'}`
+    const profileKey = `baseballSNSProfile_${(user && user.email) || 'guest'}`
     const savedProfile = localStorage.getItem(profileKey)
     return savedProfile ? JSON.parse(savedProfile) : null
   })
@@ -49,7 +49,7 @@ function Profile() {
   }
   
   const handleSave = () => {
-    const profileKey = `baseballSNSProfile_${user?.email || 'guest'}`
+    const profileKey = `baseballSNSProfile_${(user && user.email) || 'guest'}`
     localStorage.setItem(profileKey, JSON.stringify(editData))
     setProfile(editData)
     setAvatarPreview(null)
@@ -114,9 +114,9 @@ function Profile() {
     return positionArray.map(pos => {
       if (pos === 'pitcher' && pitcherTypes && pitcherTypes.length > 0) {
         const types = pitcherTypes.map(t => pitcherTypeLabels[t]).join('・')
-        return `${positions[sport]?.[pos]}(${types})`
+        return `${positions[sport] && positions[sport][pos]}(${types})`
       }
-      return positions[sport]?.[pos] || pos
+      return (positions[sport] && positions[sport][pos]) || pos
     }).join('・')
   }
   
@@ -198,7 +198,7 @@ function Profile() {
               </div>
               <div className="profile-name">
                 <h2>{profile.nickname}</h2>
-                <p>{user?.email}</p>
+                <p>{user && user.email}</p>
               </div>
             </div>
             
@@ -210,7 +210,7 @@ function Profile() {
               </div>
               <div className="profile-field">
                 <label>メールアドレス</label>
-                <div className="field-value">{user?.email}</div>
+                <div className="field-value">{user && user.email}</div>
               </div>
               <div className="profile-field">
                 <label>スポーツ</label>

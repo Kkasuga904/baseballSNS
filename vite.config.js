@@ -80,8 +80,8 @@ export default defineConfig({
     /**
      * Vercel向けの最適化設定
      */
-    // ビルドターゲット: 最新のJavaScript機能を使用
-    target: 'esnext',
+    // ビルドターゲット: Safari 11以降をサポート
+    target: ['es2015', 'safari11'],
     
     // ミニファイ設定: Terserを使用（デフォルトはesbuild）
     minify: 'terser',
@@ -100,11 +100,13 @@ export default defineConfig({
   
   /**
    * グローバル定数の定義
-   * process.envを空オブジェクトとして定義
-   * （一部のライブラリがNode.js環境変数を参照するため）
+   * Safari互換性のための環境変数定義
    */
   define: {
     'process.env': {},
+    // Safari対応: import.meta.envの代替定義
+    'import.meta.env.DEV': JSON.stringify(process.env.NODE_ENV === 'development'),
+    'import.meta.env.PROD': JSON.stringify(process.env.NODE_ENV === 'production'),
   },
   
   /**

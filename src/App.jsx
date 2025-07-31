@@ -68,7 +68,7 @@ function AppContent() {
    */
   const [myPageData, setMyPageData] = useState(() => {
     // ユーザーのメールアドレスをキーとして使用（ゲストの場合は'guest'）
-    const userKey = user?.email || 'guest'
+    const userKey = (user && user.email) || 'guest'
     const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
     
     // 管理者アカウント専用の永続化処理
@@ -155,7 +155,7 @@ function AppContent() {
    * 他のプロパティも同様
    */
   const updateMyPageData = (newData) => {
-    const userKey = user?.email || 'guest'
+    const userKey = (user && user.email) || 'guest'
     
     // 管理者アカウントの場合は専用キーで保存
     if (userKey === 'over9131120@gmail.com') {
@@ -179,8 +179,8 @@ function AppContent() {
     const newPost = {
       id: Date.now(), // 一意のIDとしてタイムスタンプを使用
       ...postData,
-      author: user?.email || 'ゲストユーザー',
-      userId: user?.id || null,
+      author: (user && user.email) || 'ゲストユーザー',
+      userId: (user && user.id) || null,
       timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0,
@@ -197,8 +197,8 @@ function AppContent() {
     const newPost = {
       id: Date.now(),
       type: 'video',
-      author: user?.email || 'ゲストユーザー',
-      userId: user?.id || null,
+      author: (user && user.email) || 'ゲストユーザー',
+      userId: (user && user.id) || null,
       timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0,
@@ -214,8 +214,8 @@ function AppContent() {
     const newPost = {
       id: Date.now(),
       type: 'health',
-      author: user?.email || 'ゲストユーザー',
-      userId: user?.id || null,
+      author: (user && user.email) || 'ゲストユーザー',
+      userId: (user && user.id) || null,
       timestamp: new Date().toISOString(),
       likes: 0,
       comments: 0,
@@ -231,7 +231,7 @@ function AppContent() {
    */
   useEffect(() => {
     // 管理者アカウントかどうかをチェック
-    if (user?.isAdmin || user?.email === 'over9131120@gmail.com') {
+    if ((user && user.isAdmin) || (user && user.email === 'over9131120@gmail.com')) {
       document.body.classList.add('admin-theme')
     } else {
       document.body.classList.remove('admin-theme')
@@ -256,7 +256,7 @@ function AppContent() {
    * ログイン/ログアウト時に適切なデータを表示
    */
   useEffect(() => {
-    const userKey = user?.email || 'guest'
+    const userKey = (user && user.email) || 'guest'
     
     if (userKey === 'over9131120@gmail.com') {
       const adminData = localStorage.getItem('baseballSNSAdminData')
