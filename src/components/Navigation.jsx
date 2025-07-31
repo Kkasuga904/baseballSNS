@@ -27,7 +27,7 @@ import './Navigation.css'
  * @param {Function} props.onDateClick - カレンダーの日付クリックハンドラー
  * @param {Array} props.schedules - スケジュールデータ
  */
-function Navigation({ posts, onDateClick, schedules = [] }) {
+function Navigation({ posts = [], onDateClick, schedules = [] }) {
   // React Routerのフック
   const location = useLocation() // 現在のURLパス
   const navigate = useNavigate() // プログラマティックなナビゲーション
@@ -183,7 +183,8 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     const newY = e.clientY - dragStart.y
     
     // 画面内に収まるように制限
-    const maxX = window.innerWidth - 300 // カレンダーの幅を考慮
+    const calendarWidth = window.innerWidth < 480 ? 260 : 300
+    const maxX = window.innerWidth - calendarWidth - 10 // カレンダーの幅を考慮
     const maxY = window.innerHeight - 400 // カレンダーの高さを考慮
     
     setCalendarPosition({
@@ -230,7 +231,8 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
     const newX = touch.clientX - dragStart.x
     const newY = touch.clientY - dragStart.y
     
-    const maxX = window.innerWidth - 300
+    const calendarWidth = window.innerWidth < 480 ? 260 : 300
+    const maxX = window.innerWidth - calendarWidth - 10
     const maxY = window.innerHeight - 400
     
     setCalendarPosition({
@@ -295,10 +297,19 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
             <span className="nav-label">マイページ</span>
           </Link>
           
+          {/* チーム */}
+          <Link
+            to="/teams"
+            className={`nav-item ${location.pathname.startsWith('/team') ? 'active' : ''}`}
+          >
+            <span className="nav-icon">🏟️</span>
+            <span className="nav-label">チーム</span>
+          </Link>
+          
           {/* プロフィール */}
           <Link
             to="/profile"
-            className={`nav-item ${location.pathname === '/profile' ? 'active' : ''}`}
+            className={`nav-item ${location.pathname.startsWith('/profile') ? 'active' : ''}`}
           >
             <span className="nav-icon">👤</span>
             <span className="nav-label">プロフィール</span>

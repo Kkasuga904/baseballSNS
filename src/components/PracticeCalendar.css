@@ -4,6 +4,9 @@
   padding: 0.5rem;
   position: relative;
   z-index: 0;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .calendar-header {
@@ -47,14 +50,25 @@
 }
 
 .calendar-grid {
+  display: block;
+}
+
+.calendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
+  transition: opacity 0.2s ease-out;
+  min-height: 250px;
+  background-color: #fafafa;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .calendar-day {
-  min-height: 28px;
-  height: 28px;
+  min-height: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,8 +78,9 @@
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
   z-index: 0;
-  font-size: 0.7rem;
-  padding: 0.1rem;
+  font-size: 0.9rem;
+  padding: 0.25rem;
+  background-color: white;
 }
 
 .calendar-day.empty {
@@ -97,18 +112,24 @@
 }
 
 .day-number {
-  font-size: 0.75rem;
-  color: #333;
-  font-weight: 500;
+  font-size: 0.9rem;
+  color: #333 !important;
+  font-weight: 600;
   line-height: 1;
+  z-index: 10;
+  position: relative;
+  display: block;
+  text-align: center;
+  -webkit-text-fill-color: #333 !important;
 }
 
-.practice-marker {
+.practice-indicator {
   position: absolute;
-  bottom: 1px;
-  right: 1px;
-  font-size: 0.45rem;
+  bottom: 2px;
+  right: 2px;
+  font-size: 0.4rem;
   line-height: 1;
+  color: #2e7d46;
 }
 
 .calendar-day.has-schedule {

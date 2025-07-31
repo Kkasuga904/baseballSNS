@@ -360,6 +360,23 @@
 }
 
 @media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  
+  .day-modal,
+  .schedule-form-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 12px 12px 0 0;
+    max-height: 85vh;
+  }
+  
+  .modal-content {
+    max-height: calc(85vh - 80px);
+  }
+  
   .calendar-view-header {
     flex-direction: column;
     align-items: stretch;

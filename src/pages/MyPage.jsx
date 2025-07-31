@@ -15,7 +15,9 @@
  */
 
 import React, { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../App'
+import { useTeam } from '../contexts/TeamContext'
 import PracticeStats from '../components/PracticeStats'
 import PracticeRecord from '../components/PracticeRecord'
 import WeeklySummary from '../components/WeeklySummary'
@@ -26,6 +28,9 @@ import ScheduleItem from '../components/ScheduleItem'
 import RoutineTracker from '../components/RoutineTracker'
 import BodyMetricsChart from '../components/BodyMetricsChart'
 import MonthlyStats from '../components/MonthlyStats'
+import TeamManagement from '../components/TeamManagement'
+import ClearDataButton from '../components/ClearDataButton'
+import { TeamRoleLabels } from '../models/team'
 import './MyPage.css'
 
 /**
@@ -47,6 +52,17 @@ import './MyPage.css'
 function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate }) {
   // 認証情報を取得
   const { user } = useAuth()
+  const navigate = useNavigate()
+  const { getUserTeams, isInitialized } = useTeam()
+  const [showTeamManagement, setShowTeamManagement] = useState(false)
+  
+  // ユーザーの所属チーム一覧を取得（ユーザー情報を明示的に渡す）
+  const userTeams = React.useMemo(() => {
+    if (!isInitialized || !user) {
+      return [];
+    }
+    return getUserTeams(user);
+  }, [user, getUserTeams, isInitialized]);
   
   // 選択日付が未設定の場合は今日の日付を設定
   // useEffectを使用してレンダリング中の状態更新を避ける
@@ -182,6 +198,49 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
       
       <div className="mypage-layout">
         <div className="mypage-main">
+          {/* 所属チーム一覧 */}
+          <div className="my-teams-section">
+            <div className="section-header">
+              <h3>🏟️ 所属チーム</h3>
+              <button
+                onClick={() => setShowTeamManagement(true)}
+                className="btn-secondary"
+              >
+                チーム作成・参加
+              </button>
+            </div>
+            
+            {userTeams.length > 0 ? (
+              <div className="teams-grid">
+                {userTeams.map((teamData) => (
+                  <div
+                    key={teamData.id}
+                    className="team-card"
+                    onClick={() => navigate(`/team/${teamData.id}`)}
+                  >
+                    <h4>{teamData.name}</h4>
+                    {teamData.description && (
+                      <p className="team-description">{teamData.description}</p>
+                    )}
+                    <span className="team-role">
+                      {TeamRoleLabels[teamData.membership.role]}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="no-teams">
+                <p>まだチームに所属していません</p>
+                <button
+                  onClick={() => setShowTeamManagement(true)}
+                  className="btn-primary"
+                >
+                  チームに参加する
+                </button>
+              </div>
+            )}
+          </div>
+          
           {/* ルーティントラッカー: 日々の習慣を記録 */}
           <RoutineTracker />
           
@@ -311,6 +370,27 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           </div>
         </div>
       </div>
+      
+      {/* チーム管理モーダル */}
+      {showTeamManagement && (
+        <TeamManagement
+          onClose={() => setShowTeamManagement(false)}
+          onTeamCreated={(newTeam) => {
+            setShowTeamManagement(false)
+            // 成功メッセージを表示
+            if (newTeam) {
+              alert(`チーム「${newTeam.name}」を作成しました！\n招待コード: ${newTeam.inviteCode}`)
+            }
+            // チーム一覧を更新
+            setTimeout(() => {
+              window.location.reload()
+            }, 100)
+          }}
+        />
+      )}
+      
+      {/* データクリアボタン（開発用） */}
+      <ClearDataButton />
     </div>
   )
 }

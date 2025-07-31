@@ -24,6 +24,14 @@ import './PostList.css'
  * @param {Function} props.onUserClick - ユーザー名クリック時のハンドラー
  */
 function PostList({ posts, onHashtagClick, onUserClick }) {
+  // デバッグ: 重複IDを確認
+  const postIds = posts.map(p => p.id);
+  const duplicateIds = postIds.filter((id, index) => postIds.indexOf(id) !== index);
+  if (duplicateIds.length > 0) {
+    console.warn('重複している投稿ID:', duplicateIds);
+    console.warn('全ての投稿ID:', postIds);
+  }
+
   return (
     <div className="post-list">
       <h2>最新の投稿</h2>
@@ -32,10 +40,10 @@ function PostList({ posts, onHashtagClick, onUserClick }) {
         <p className="no-posts">まだ投稿がありません</p>
       ) : (
         // 投稿をmap関数で展開
-        // keyプロパティにはpost.idを使用（Reactの再レンダリング最適化）
-        posts.map(post => (
+        // keyプロパティにはpost.idとインデックスの組み合わせを使用（重複対策）
+        posts.map((post, index) => (
           <PostItem 
-            key={post.id} 
+            key={`${post.id}-${index}`} 
             post={post} 
             onHashtagClick={onHashtagClick}
             onUserClick={onUserClick}

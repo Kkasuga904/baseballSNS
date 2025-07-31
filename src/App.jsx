@@ -40,6 +40,8 @@ import CalendarView from './pages/CalendarView'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
 import Disclaimer from './pages/Disclaimer'
+import TeamDetail from './pages/TeamDetail'
+import Teams from './pages/Teams'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import ProfileSetup from './components/ProfileSetup'
@@ -48,6 +50,9 @@ import ProtectedRoute from './components/ProtectedRoute'
 import InstallPWA from './components/InstallPWA'
 import Footer from './components/Footer'
 import PWAInstallBanner from './components/PWAInstallBanner'
+import { TeamProvider } from './contexts/TeamContext'
+import { PostProvider } from './contexts/PostContext'
+import { setupDemoTeam, joinDemoTeam, addDemoUserToTeam } from './utils/demoTeamSetup'
 import './App.css'
 import './admin-theme.css'
 
@@ -289,6 +294,46 @@ function AppContent() {
     }
   }, [user])
 
+  // 初回ロード時にデモチームのセットアップ確認
+  useEffect(() => {
+    // デモチームが存在するか確認
+    const teams = JSON.parse(localStorage.getItem('baseballSNS_teams') || '[]');
+    const demoTeamExists = teams.some(team => team.id === 'demo-team-001');
+    
+    if (demoTeamExists) {
+      // デモチームは存在するが、現在のユーザーがメンバーでない可能性があるため
+      // デモユーザーを追加（既に存在する場合は何もしない）
+      addDemoUserToTeam();
+    }
+  }, []);
+
+  // デモチームセットアップ
+  const handleSetupDemoTeam = () => {
+    const wasSetup = setupDemoTeam();
+    if (wasSetup) {
+      // 現在のユーザーをチームに参加させる
+      if (user) {
+        joinDemoTeam(user.id || user.email);
+      }
+      // デモユーザーも追加
+      addDemoUserToTeam();
+      alert('デモチーム「新神田ウイングス」を作成しました！\nマイページで確認してください。');
+      window.location.reload();
+    } else {
+      // 既に存在する場合もデモユーザーを追加
+      if (user) {
+        const joined = joinDemoTeam(user.id || user.email);
+        if (joined) {
+          alert('デモチームに参加しました！');
+          window.location.reload();
+        } else {
+          alert('既にチームに参加しています。');
+        }
+      }
+      addDemoUserToTeam();
+    }
+  };
+
   // JSXレンダリング部分
   return (
     <div className="app">
@@ -296,6 +341,26 @@ function AppContent() {
         <header className="app-header">
           <h1>⚾ BaseLog</h1>
           <p>野球の記録と交流をひとつに</p>
+          {/* デモチームセットアップボタン */}
+          {user && (
+            <button 
+              onClick={handleSetupDemoTeam}
+              style={{
+                position: 'absolute',
+                right: '20px',
+                top: '20px',
+                padding: '8px 16px',
+                backgroundColor: '#2e7d46',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              デモチームを作成
+            </button>
+          )}
         </header>
         
         {/* ナビゲーションバー（ログイン時のみ表示） */}
@@ -338,12 +403,9 @@ function AppContent() {
               <MyPage 
                 posts={posts}
                 myPageData={myPageData}
-                updateMyPageData={updateMyPageData}
+                setMyPageData={updateMyPageData}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
-                addPost={addPost}
-                addVideoPost={addVideoPost}
-                addHealthRecord={addHealthRecord}
               />
             </ProtectedRoute>
           } />
@@ -355,8 +417,22 @@ function AppContent() {
             </ProtectedRoute>
           } />
           
+          {/* チーム一覧 - ログイン必須 */}
+          <Route path="/teams" element={
+            <ProtectedRoute>
+              <Teams />
+            </ProtectedRoute>
+          } />
+          
           {/* ユーザープロフィール画面 */}
           <Route path="/profile/:userId" element={
+            <ProtectedRoute>
+              <Profile posts={posts} myPageData={myPageData} />
+            </ProtectedRoute>
+          } />
+          
+          {/* プロフィール（自分） */}
+          <Route path="/profile" element={
             <ProtectedRoute>
               <Profile posts={posts} myPageData={myPageData} />
             </ProtectedRoute>
@@ -366,6 +442,13 @@ function AppContent() {
           <Route path="/settings" element={
             <ProtectedRoute>
               <Settings />
+            </ProtectedRoute>
+          } />
+          
+          {/* チーム詳細画面 - ログイン必須 */}
+          <Route path="/team/:teamId" element={
+            <ProtectedRoute>
+              <TeamDetail />
             </ProtectedRoute>
           } />
           
@@ -387,7 +470,11 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent />
+        <PostProvider>
+          <TeamProvider>
+            <AppContent />
+          </TeamProvider>
+        </PostProvider>
       </AuthProvider>
     </Router>
   )

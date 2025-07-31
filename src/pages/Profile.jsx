@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../App'
 import './Profile.css'
 
 function Profile() {
   const { user } = useAuth()
+  const { userId } = useParams()
   const navigate = useNavigate()
+  
+  // 表示するユーザーを判定（自分 or 他のユーザー）
+  const isOwnProfile = !userId || userId === user?.id || userId === user?.email
+  const displayUserId = isOwnProfile ? (user?.email || 'guest') : userId
   
   const [isEditing, setIsEditing] = useState(false)
   const [profile, setProfile] = useState(() => {
-    const profileKey = `baseballSNSProfile_${(user && user.email) || 'guest'}`
+    const profileKey = `baseballSNSProfile_${displayUserId}`
     const savedProfile = localStorage.getItem(profileKey)
     return savedProfile ? JSON.parse(savedProfile) : null
   })
@@ -49,7 +54,7 @@ function Profile() {
   }
   
   const handleSave = () => {
-    const profileKey = `baseballSNSProfile_${(user && user.email) || 'guest'}`
+    const profileKey = `baseballSNSProfile_${displayUserId}`
     localStorage.setItem(profileKey, JSON.stringify(editData))
     setProfile(editData)
     setAvatarPreview(null)
@@ -177,7 +182,7 @@ function Profile() {
       <div className="profile-container">
         <div className="profile-header">
           <h1>プロフィール</h1>
-          {!isEditing && (
+          {!isEditing && isOwnProfile && (
             <button className="btn-edit" onClick={handleEdit}>
               編集
             </button>

@@ -27,9 +27,6 @@
   
   <!-- iOS Safari PWAアイコン（重要: PNGである必要があります） -->
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="/icon-167x167.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/icon-180x180.png">
   
   <!-- PWA Manifest（キャッシュバスティング付き） -->
@@ -126,9 +123,9 @@
   
   <!-- Safari デバッグ用ログ出力 -->
   <script>
-    // デバッグモードの制御（本番環境またはSafariのみ有効）
-    var isDebugMode = window.location.hostname.includes('vercel.app') || 
-                     /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    // デバッグモードの制御（URLパラメータで明示的に有効化した場合のみ）
+    var urlParams = new URLSearchParams(window.location.search);
+    var isDebugMode = urlParams.get('debug') === 'true';
     
     // グローバルエラーハンドラー
     window.addEventListener('error', function(event) {
@@ -189,9 +186,12 @@
     
     // 初期ログ（デバッグモード時のみ）
     if (isDebugMode) {
-      window.debugLog('Safari debug mode active');
+      window.debugLog('Debug mode active (add ?debug=true to URL to enable)');
       window.debugLog('User Agent: ' + navigator.userAgent);
       window.debugLog('Safari: ' + /^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+    } else {
+      // デバッグモード無効時は、コンソールに使用方法を表示
+      console.log('Debug mode is disabled. Add ?debug=true to URL to enable debug logs.');
     }
   </script>
   
