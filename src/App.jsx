@@ -38,6 +38,7 @@ import Timeline from './pages/Timeline'
 import MyPage from './pages/MyPage'
 import CalendarView from './pages/CalendarView'
 import Profile from './pages/Profile'
+import Settings from './pages/Settings'
 import Disclaimer from './pages/Disclaimer'
 import Login from './components/Login'
 import Signup from './components/Signup'
@@ -358,6 +359,13 @@ function AppContent() {
           <Route path="/profile/:userId" element={
             <ProtectedRoute>
               <Profile posts={posts} myPageData={myPageData} />
+            </ProtectedRoute>
+          } />
+          
+          {/* 設定画面 - ログイン必須 */}
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           } />
           

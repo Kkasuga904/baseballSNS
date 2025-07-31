@@ -1,0 +1,187 @@
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.settings-container h1 {
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.message {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.settings-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.settings-section h2 {
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.setting-item {
+  margin-bottom: 20px;
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+.setting-item label {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+.setting-item input[type="checkbox"] {
+  margin-right: 12px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.setting-item input[type="time"],
+.setting-item select {
+  margin-left: 12px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.setting-item input[type="time"]:focus,
+.setting-item select:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.save-button:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.save-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.danger-zone {
+  background-color: #fff5f5;
+  border: 1px solid #fed7d7;
+}
+
+.danger-zone h2 {
+  color: #c53030;
+  border-bottom-color: #fed7d7;
+}
+
+.logout-button,
+.delete-account-button {
+  margin-right: 12px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.logout-button:hover {
+  background-color: #d0d0d0;
+}
+
+.delete-account-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-account-button:hover {
+  background-color: #c82333;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 16px;
+  }
+  
+  .settings-section {
+    padding: 16px;
+  }
+  
+  .setting-item label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .setting-item input[type="time"],
+  .setting-item select {
+    margin-left: 0;
+    margin-top: 8px;
+    width: 100%;
+  }
+  
+  .logout-button,
+  .delete-account-button {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+}

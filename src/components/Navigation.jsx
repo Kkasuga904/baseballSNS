@@ -324,11 +324,14 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
             </div>
           )}
           
-          {/* そのほか */}
-          <div className="nav-item more-menu">
+          {/* 設定 */}
+          <Link
+            to="/settings"
+            className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}
+          >
             <span className="nav-icon">⚙️</span>
-            <span className="nav-label">そのほか</span>
-          </div>
+            <span className="nav-label">設定</span>
+          </Link>
           
           {/* ログアウト */}
           <button 
