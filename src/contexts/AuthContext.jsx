@@ -12,10 +12,15 @@ export const useAuth = () => {
 }
 
 // Supabase設定の有効性をチェック
+// Safari互換性: import.meta.envの安全な参照
 const hasValidSupabaseConfig = () => {
-  const url = import.meta.env.VITE_SUPABASE_URL
-  const key = import.meta.env.VITE_SUPABASE_ANON_KEY
-  return url && key && url.startsWith('https://') && url.includes('supabase')
+  try {
+    const url = (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_SUPABASE_URL) || '';
+    const key = (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_SUPABASE_ANON_KEY) || '';
+    return url && key && url.startsWith('https://') && url.includes('supabase');
+  } catch {
+    return false;
+  }
 }
 
 export const AuthProvider = ({ children }) => {

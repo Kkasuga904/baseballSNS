@@ -9,7 +9,10 @@ import './index.css'
  * 本番環境でのみService Workerを登録
  * 開発環境では完全に無効化してMIMEタイプエラーを回避
  */
-if ('serviceWorker' in navigator && !import.meta.env.DEV) {
+// Safari互換性: import.meta.envの安全な参照
+const isDev = (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.DEV) || false;
+
+if ('serviceWorker' in navigator && !isDev) {
   // 本番環境でのみ実行
   window.addEventListener('load', () => {
     console.log('[SW] 本番環境でService Workerを登録します')
@@ -45,7 +48,7 @@ if ('serviceWorker' in navigator && !import.meta.env.DEV) {
     console.log('[SW] コントローラーが変更されました。ページをリロードします。')
     window.location.reload()
   })
-} else if (import.meta.env.DEV) {
+} else if (isDev) {
   console.log('[SW] 開発環境のため、Service Workerは無効化されています')
 }
 

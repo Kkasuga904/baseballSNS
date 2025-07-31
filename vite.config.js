@@ -111,6 +111,9 @@ export default defineConfig({
     // Safari対応: import.meta.envの代替定義
     'import.meta.env.DEV': JSON.stringify(process.env.NODE_ENV === 'development'),
     'import.meta.env.PROD': JSON.stringify(process.env.NODE_ENV === 'production'),
+    // Supabase環境変数のフォールバック（Safari対応）
+    'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL || 'https://xyzcompanyprojectid.supabase.co'),
+    'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTcwMDAwMDAwMH0.placeholder'),
   },
   
   /**

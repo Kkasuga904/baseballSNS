@@ -51,7 +51,7 @@ function BodyMetricsForm({ selectedDate, onSubmit }) {
     }
     
     // ローカルストレージに保存
-    const userKey = user?.email || 'guest'
+    const userKey = (user && user.email) || 'guest'
     const metricsKey = `baseballSNSBodyMetrics_${userKey}`
     const savedMetrics = localStorage.getItem(metricsKey)
     let allMetrics = savedMetrics ? JSON.parse(savedMetrics) : []

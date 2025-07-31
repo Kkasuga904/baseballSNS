@@ -18,7 +18,7 @@ function MonthlyStats() {
   }, [user, selectedMonth])
 
   const loadGameResults = () => {
-    const userKey = user?.email || 'guest'
+    const userKey = (user && user.email) || 'guest'
     const savedResults = localStorage.getItem(`baseballSNSGameResults_${userKey}`)
     
     if (savedResults) {

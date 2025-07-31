@@ -17,9 +17,15 @@ import { AuthProvider as SupabaseAuthProvider, useAuth as useSupabaseAuth } from
 import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './contexts/SimpleAuthContext'
 
 // 環境変数をチェックして適切な認証システムを選択
-// VITE_で始まる環境変数はViteで使用可能
-const hasSupabaseConfig = import.meta.env.VITE_SUPABASE_URL && 
-  import.meta.env.VITE_SUPABASE_URL !== 'https://xyzcompanyprojectid.supabase.co'
+// Safari互換性: import.meta.envの安全な参照
+const getSupabaseUrl = () => {
+  try {
+    return (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_SUPABASE_URL) || '';
+  } catch {
+    return '';
+  }
+};
+const hasSupabaseConfig = getSupabaseUrl() && getSupabaseUrl() !== 'https://xyzcompanyprojectid.supabase.co'
 
 // 条件に応じて認証プロバイダーとフックをエクスポート
 export const AuthProvider = hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider

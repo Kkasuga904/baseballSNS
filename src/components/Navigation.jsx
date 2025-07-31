@@ -281,11 +281,11 @@ function Navigation({ posts, onDateClick, schedules = [] }) {
           <div className="user-info">
             {/* ユーザーアイコン */}
             <div className="user-icon">
-              {userProfile?.avatarEmoji || '👤'}
+              {(userProfile && userProfile.avatarEmoji) || '👤'}
             </div>
             {/* ユーザー名 */}
             <span className="user-name">
-              {userProfile?.nickname || user.email}
+              {(userProfile && userProfile.nickname) || user.email}
             </span>
             {/* 管理者バッジ */}
             {(user.isAdmin || user.email === 'over9131120@gmail.com') && (
