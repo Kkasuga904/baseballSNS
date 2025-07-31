@@ -1,7 +1,21 @@
+// Safari デバッグ: モジュール読み込み開始
+try {
+  if (window.debugLog) window.debugLog('main.jsx starting imports...');
+} catch (e) {
+  console.error('Debug log error:', e);
+}
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
+
+// Safari デバッグ: インポート完了
+try {
+  if (window.debugLog) window.debugLog('Imports completed successfully');
+} catch (e) {
+  console.error('Debug log error:', e);
+}
 
 /**
  * Service Worker の登録処理
@@ -68,8 +82,39 @@ window.addEventListener('appinstalled', () => {
   window.deferredPrompt = null
 })
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+// Safari デバッグ: React レンダリング開始
+try {
+  if (window.debugLog) window.debugLog('Starting React render...');
+  
+  const rootElement = document.getElementById('root');
+  if (!rootElement) {
+    throw new Error('Root element not found');
+  }
+  
+  if (window.debugLog) window.debugLog('Root element found, creating React root...');
+  
+  const root = ReactDOM.createRoot(rootElement);
+  
+  if (window.debugLog) window.debugLog('Rendering App component...');
+  
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+  
+  if (window.debugLog) window.debugLog('React render completed');
+} catch (error) {
+  console.error('Failed to render React app:', error);
+  if (window.debugLog) window.debugLog('React render failed: ' + error.message);
+  
+  // フォールバックエラー表示
+  document.getElementById('root').innerHTML = `
+    <div style="padding: 20px; font-family: sans-serif;">
+      <h1 style="color: red;">エラーが発生しました</h1>
+      <p>アプリケーションの起動に失敗しました。</p>
+      <p>エラー: ${error.message}</p>
+      <p>ブラウザのコンソールで詳細を確認してください。</p>
+    </div>
+  `;
+}

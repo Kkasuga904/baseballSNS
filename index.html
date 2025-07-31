@@ -114,8 +114,97 @@
 </head>
 <body>
   <div id="root"></div>
+  
+  <!-- Safari デバッグ用ログ出力 -->
+  <script>
+    // グローバルエラーハンドラー
+    window.addEventListener('error', function(event) {
+      console.error('Global error:', event.error);
+      var errorDiv = document.createElement('div');
+      errorDiv.style.cssText = 'position:fixed;bottom:10px;right:10px;background:red;color:white;padding:10px;z-index:9999;max-width:400px;word-wrap:break-word;';
+      errorDiv.innerHTML = 'Error: ' + event.error.message + '<br>File: ' + event.filename + '<br>Line: ' + event.lineno;
+      document.body.appendChild(errorDiv);
+    });
+    
+    // Promise rejection ハンドラー
+    window.addEventListener('unhandledrejection', function(event) {
+      console.error('Unhandled promise rejection:', event.reason);
+      var errorDiv = document.createElement('div');
+      errorDiv.style.cssText = 'position:fixed;bottom:80px;right:10px;background:orange;color:white;padding:10px;z-index:9999;max-width:400px;word-wrap:break-word;';
+      errorDiv.innerHTML = 'Promise Rejection: ' + (event.reason.message || event.reason);
+      document.body.appendChild(errorDiv);
+    });
+    
+    // デバッグログ関数
+    window.debugLog = function(msg) {
+      console.log('[DEBUG]', msg);
+      var logDiv = document.getElementById('debug-log');
+      if (!logDiv) {
+        logDiv = document.createElement('div');
+        logDiv.id = 'debug-log';
+        logDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:rgba(0,0,0,0.8);color:lime;padding:10px;z-index:9999;max-width:400px;max-height:300px;overflow:auto;font-family:monospace;font-size:12px;';
+        document.body.appendChild(logDiv);
+      }
+      var time = new Date().toTimeString().split(' ')[0];
+      logDiv.innerHTML += '<div>' + time + ' - ' + msg + '</div>';
+      logDiv.scrollTop = logDiv.scrollHeight;
+    };
+    
+    // 初期ログ
+    window.debugLog('Safari debug mode active');
+    window.debugLog('User Agent: ' + navigator.userAgent);
+    window.debugLog('Safari: ' + /^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+  </script>
+  
   <!-- メインアプリケーション -->
-  <script type="module" src="/src/main.jsx"></script>
+  <script type="module" src="/src/main.jsx" onerror="handleModuleError()"></script>
+  
+  <!-- モジュール読み込みエラーのフォールバック -->
+  <script>
+    function handleModuleError() {
+      console.error('Failed to load main.jsx as ES module');
+      if (window.debugLog) {
+        window.debugLog('Module loading failed - ES modules may not be supported');
+      }
+      
+      // エラーメッセージを表示
+      document.getElementById('root').innerHTML = `
+        <div style="padding: 20px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #ff6b6b;">⚠️ ブラウザの互換性エラー</h1>
+          <p>お使いのブラウザはこのアプリケーションに対応していない可能性があります。</p>
+          <h3>推奨ブラウザ:</h3>
+          <ul>
+            <li>Safari 14以降</li>
+            <li>Chrome 最新版</li>
+            <li>Firefox 最新版</li>
+            <li>Edge 最新版</li>
+          </ul>
+          <p style="margin-top: 20px; padding: 10px; background: #f8f8f8; border-radius: 5px;">
+            <strong>Safari をお使いの場合:</strong><br>
+            設定 → Safari → 詳細 → JavaScript を有効にする を確認してください。
+          </p>
+        </div>
+      `;
+    }
+    
+    // モジュールサポートのチェック
+    function checkModuleSupport() {
+      var script = document.createElement('script');
+      if (!('noModule' in script)) {
+        if (window.debugLog) {
+          window.debugLog('ES modules not supported by browser');
+        }
+        handleModuleError();
+      }
+    }
+    
+    // ページ読み込み時にチェック
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', checkModuleSupport);
+    } else {
+      checkModuleSupport();
+    }
+  </script>
   
   <!-- Service Worker登録（本番環境のみ、DOM読み込み後に実行） -->
   <script>
