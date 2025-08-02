@@ -1,0 +1,216 @@
+.diary-list {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* フィルターセクション */
+.diary-filters {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.mood-filter,
+.sort-select {
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.mood-filter:focus,
+.sort-select:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+/* 日記がない場合 */
+.no-diaries {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+}
+
+.no-diaries p:first-child {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.no-diaries p:last-child {
+  font-size: 16px;
+}
+
+/* 日記グリッド */
+.diary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.diary-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.diary-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.diary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.diary-date {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.diary-indicators {
+  display: flex;
+  gap: 8px;
+  font-size: 20px;
+}
+
+.mood-indicator,
+.weather-indicator {
+  display: inline-block;
+}
+
+.diary-title {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #1f2937;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.diary-title:hover {
+  color: #2e7d46;
+}
+
+.diary-preview {
+  margin: 0 0 12px 0;
+  color: #4b5563;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.diary-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.diary-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #e5e7eb;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #374151;
+}
+
+.diary-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.view-button,
+.edit-button,
+.delete-button {
+  padding: 6px 12px;
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.view-button:hover {
+  background: #f0fdf4;
+  border-color: #2e7d46;
+}
+
+.edit-button:hover {
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.delete-button:hover {
+  background: #fee2e2;
+  border-color: #dc2626;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .diary-list {
+    padding: 16px;
+  }
+  
+  .diary-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .filter-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .mood-filter,
+  .sort-select {
+    width: 100%;
+  }
+}

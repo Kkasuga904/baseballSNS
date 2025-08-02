@@ -2,46 +2,105 @@ import React, { useState } from 'react';
 import './ProfileTabs.css';
 
 function ProfileTabs({ profile, user, isOwnProfile, getCategoryLabel, getPositionLabels, getHandLabel }) {
-  const [activeTab, setActiveTab] = useState('basic');
+  const [activeTab, setActiveTab] = useState('timeline');
+  const [profileTab, setProfileTab] = useState('basic');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editableProfile, setEditableProfile] = useState(profile);
+  
+  // ポジションオプション
+  const positionOptions = [
+    { value: 'pitcher', label: '投手' },
+    { value: 'catcher', label: '捕手' },
+    { value: 'first', label: '一塁手' },
+    { value: 'second', label: '二塁手' },
+    { value: 'third', label: '三塁手' },
+    { value: 'shortstop', label: '遊撃手' },
+    { value: 'left', label: '左翼手' },
+    { value: 'center', label: '中堅手' },
+    { value: 'right', label: '右翼手' },
+    { value: 'dh', label: '指名打者' }
+  ];
+  
+  const handleSave = () => {
+    // ここで実際の保存処理を実装
+    console.log('保存:', editableProfile);
+    setIsEditing(false);
+  };
+  
+  const handleCancel = () => {
+    setEditableProfile(profile);
+    setIsEditing(false);
+  };
   
   return (
     <div className="profile-tabs-container">
-      {/* タブヘッダー */}
-      <div className="profile-tabs-header">
+      {/* メインタブ切り替え */}
+      <div className="main-tabs">
         <button
-          className={`profile-tab ${activeTab === 'basic' ? 'active' : ''}`}
-          onClick={() => setActiveTab('basic')}
+          className={`main-tab ${activeTab === 'timeline' ? 'active' : ''}`}
+          onClick={() => setActiveTab('timeline')}
+        >
+          <span className="tab-icon">📊</span>
+          タイムライン
+        </button>
+        <button
+          className={`main-tab ${activeTab === 'profile' ? 'active' : ''}`}
+          onClick={() => setActiveTab('profile')}
         >
           <span className="tab-icon">👤</span>
-          基本情報
-        </button>
-        <button
-          className={`profile-tab ${activeTab === 'baseball' ? 'active' : ''}`}
-          onClick={() => setActiveTab('baseball')}
-        >
-          <span className="tab-icon">⚾</span>
-          野球情報
-        </button>
-        <button
-          className={`profile-tab ${activeTab === 'physical' ? 'active' : ''}`}
-          onClick={() => setActiveTab('physical')}
-        >
-          <span className="tab-icon">💪</span>
-          身体情報
-        </button>
-        <button
-          className={`profile-tab ${activeTab === 'school' ? 'active' : ''}`}
-          onClick={() => setActiveTab('school')}
-        >
-          <span className="tab-icon">🏫</span>
-          出身校
+          リアル部活
         </button>
       </div>
+
+      {/* プロフィールタブのサブタブ */}
+      {activeTab === 'profile' && (
+        <div className="profile-tabs-header">
+          <button
+            className={`profile-tab ${profileTab === 'basic' ? 'active' : ''}`}
+            onClick={() => setProfileTab('basic')}
+          >
+            <span className="tab-icon">👤</span>
+            基本情報
+          </button>
+          <button
+            className={`profile-tab ${profileTab === 'baseball' ? 'active' : ''}`}
+            onClick={() => setProfileTab('baseball')}
+          >
+            <span className="tab-icon">⚾</span>
+            野球情報
+          </button>
+          <button
+            className={`profile-tab ${profileTab === 'physical' ? 'active' : ''}`}
+            onClick={() => setProfileTab('physical')}
+          >
+            <span className="tab-icon">💪</span>
+            身体情報
+          </button>
+          <button
+            className={`profile-tab ${profileTab === 'school' ? 'active' : ''}`}
+            onClick={() => setProfileTab('school')}
+          >
+            <span className="tab-icon">🏫</span>
+            出身校
+          </button>
+        </div>
+      )}
       
       {/* タブコンテンツ */}
       <div className="profile-tab-content">
-        {/* 基本情報タブ */}
-        {activeTab === 'basic' && (
+        {/* タイムラインタブ */}
+        {activeTab === 'timeline' && (
+          <div className="timeline-section">
+            <div className="timeline-placeholder">
+              <h3>📊 練習記録タイムライン</h3>
+              <p>練習の記録や成果がここに表示されます</p>
+              <p className="coming-soon">Coming Soon...</p>
+            </div>
+          </div>
+        )}
+
+        {/* リアル部活タブの中の基本情報タブ */}
+        {activeTab === 'profile' && profileTab === 'basic' && (
           <div className="profile-section">
             <div className="profile-field">
               <label>ニックネーム</label>
@@ -84,18 +143,51 @@ function ProfileTabs({ profile, user, isOwnProfile, getCategoryLabel, getPositio
           </div>
         )}
         
-        {/* 野球情報タブ */}
-        {activeTab === 'baseball' && (
+        {/* リアル部活タブの中の野球情報タブ */}
+        {activeTab === 'profile' && profileTab === 'baseball' && (
           <div className="profile-section">
-            <div className="profile-field">
-              <label>ポジション</label>
-              <div className="field-value">
-                {getPositionLabels(
-                  profile.positions || [profile.position], 
-                  profile.sport, 
-                  profile.pitcherTypes || (profile.pitcherType ? [profile.pitcherType] : [])
+            {isOwnProfile && (
+              <div className="profile-edit-controls">
+                {!isEditing ? (
+                  <button className="btn-edit" onClick={() => setIsEditing(true)}>
+                    ✏️ 編集
+                  </button>
+                ) : (
+                  <div className="edit-buttons">
+                    <button className="btn-save" onClick={handleSave}>
+                      ✅ 保存
+                    </button>
+                    <button className="btn-cancel" onClick={handleCancel}>
+                      ❌ キャンセル
+                    </button>
+                  </div>
                 )}
               </div>
+            )}
+            <div className="profile-field">
+              <label>ポジション</label>
+              {isEditing ? (
+                <select 
+                  className="position-select"
+                  value={editableProfile.position || ''}
+                  onChange={(e) => setEditableProfile({...editableProfile, position: e.target.value})}
+                >
+                  <option value="">選択してください</option>
+                  {positionOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <div className="field-value">
+                  {getPositionLabels(
+                    profile.positions || [profile.position], 
+                    profile.sport, 
+                    profile.pitcherTypes || (profile.pitcherType ? [profile.pitcherType] : [])
+                  )}
+                </div>
+              )}
             </div>
             <div className="profile-field">
               <label>投打</label>
@@ -114,8 +206,8 @@ function ProfileTabs({ profile, user, isOwnProfile, getCategoryLabel, getPositio
           </div>
         )}
         
-        {/* 身体情報タブ */}
-        {activeTab === 'physical' && (
+        {/* リアル部活タブの中の身体情報タブ */}
+        {activeTab === 'profile' && profileTab === 'physical' && (
           <div className="profile-section">
             <div className="profile-field">
               <label>身長</label>
@@ -136,8 +228,8 @@ function ProfileTabs({ profile, user, isOwnProfile, getCategoryLabel, getPositio
           </div>
         )}
         
-        {/* 出身校タブ */}
-        {activeTab === 'school' && (
+        {/* リアル部活タブの中の出身校タブ */}
+        {activeTab === 'profile' && profileTab === 'school' && (
           <div className="profile-section">
             <div className="profile-field">
               <label>出身中学校</label>

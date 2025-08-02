@@ -185,6 +185,40 @@
   white-space: pre-wrap;
 }
 
+/* 振り返りセクション */
+.practice-reflection {
+  background: #f8fafb;
+  border: 2px solid #e8f5e9;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.practice-reflection h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.reflection-icon {
+  font-size: 1.2rem;
+}
+
+.reflection-text {
+  color: #333;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  font-size: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #d4e8d4;
+}
+
 /* 投球チャートのコンテナスタイル */
 .practice-record .pitching-chart {
   margin-top: 0;

@@ -12,25 +12,45 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 // 認証システムの選択
-// Supabase設定がある場合はAuthContext、ない場合はSimpleAuthContextを使用
+// Firebase設定がある場合はFirebaseAuthContext、Supabase設定がある場合はAuthContext、それ以外はSimpleAuthContextを使用
 import { AuthProvider as SupabaseAuthProvider, useAuth as useSupabaseAuth } from './contexts/AuthContext'
 import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './contexts/SimpleAuthContext'
+import { AuthProvider as FirebaseAuthProvider, useAuth as useFirebaseAuth } from './contexts/FirebaseAuthContext'
 
 // 環境変数をチェックして適切な認証システムを選択
-// Safari互換性: import.meta.envの安全な参照
 let hasSupabaseConfig = false;
+let hasFirebaseConfig = false;
 
 try {
-  // Viteのdefineで置換される値を直接参照
-  const url = (typeof VITE_SUPABASE_URL !== 'undefined' ? VITE_SUPABASE_URL : '') || '';
-  hasSupabaseConfig = url && url !== 'https://xyzcompanyprojectid.supabase.co';
+  // Firebaseの設定チェック - プレースホルダー値を含む場合は無効とする
+  const firebaseApiKey = import.meta.env?.VITE_FIREBASE_API_KEY || '';
+  hasFirebaseConfig = firebaseApiKey && 
+    firebaseApiKey !== 'AIzaSyDummy-YourActualAPIKey' &&
+    firebaseApiKey !== 'your-actual-api-key-here' &&
+    !firebaseApiKey.includes('your-') &&
+    !firebaseApiKey.includes('placeholder');
+  
+  // Supabaseの設定チェック
+  if (!hasFirebaseConfig) {
+    const url = (typeof VITE_SUPABASE_URL !== 'undefined' ? VITE_SUPABASE_URL : '') || '';
+    hasSupabaseConfig = url && 
+      url !== 'https://xyzcompanyprojectid.supabase.co' &&
+      !url.includes('placeholder') &&
+      !url.includes('your-');
+  }
+  
+  // デバッグ用ログ
+  console.log('Firebase Config Check:', { firebaseApiKey, hasFirebaseConfig });
+  console.log('Auth Provider Selected:', hasFirebaseConfig ? 'Firebase' : (hasSupabaseConfig ? 'Supabase' : 'SimpleAuth'));
 } catch (e) {
   hasSupabaseConfig = false;
+  hasFirebaseConfig = false;
+  console.log('Auth config error, falling back to SimpleAuth:', e);
 }
 
 // 条件に応じて認証プロバイダーとフックをエクスポート
-export const AuthProvider = hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider
-export const useAuth = hasSupabaseConfig ? useSupabaseAuth : useSimpleAuth
+export const AuthProvider = hasFirebaseConfig ? FirebaseAuthProvider : (hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider)
+export const useAuth = hasFirebaseConfig ? useFirebaseAuth : (hasSupabaseConfig ? useSupabaseAuth : useSimpleAuth)
 
 // コンポーネントのインポート
 import Navigation from './components/Navigation'
@@ -40,19 +60,23 @@ import CalendarView from './pages/CalendarView'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
 import Disclaimer from './pages/Disclaimer'
-import TeamDetail from './pages/TeamDetail'
-import Teams from './pages/Teams'
+// MVP版ではチーム機能は無効化
+// import TeamDetail from './pages/TeamDetail'
+// import Teams from './pages/Teams'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import CompactLogin from './components/CompactLogin'
 import ProfileSetup from './components/ProfileSetup'
 import ForgotPassword from './components/ForgotPassword'
 import ProtectedRoute from './components/ProtectedRoute'
 import InstallPWA from './components/InstallPWA'
 import Footer from './components/Footer'
 import PWAInstallBanner from './components/PWAInstallBanner'
+import OfflineIndicator from './components/OfflineIndicator'
 import { TeamProvider } from './contexts/TeamContext'
 import { PostProvider } from './contexts/PostContext'
 import { setupDemoTeam, joinDemoTeam, addDemoUserToTeam } from './utils/demoTeamSetup'
+import { useOfflineSync } from './hooks/useOfflineSync'
 import './App.css'
 import './admin-theme.css'
 
@@ -63,6 +87,9 @@ import './admin-theme.css'
 function AppContent() {
   // 現在ログイン中のユーザー情報を取得
   const { user } = useAuth()
+  
+  // オフライン同期機能
+  const { isOnline, pendingSync } = useOfflineSync()
   
   // カレンダーで選択された日付を管理
   const [selectedDate, setSelectedDate] = useState(null)
@@ -93,7 +120,9 @@ function AppContent() {
         schedules: [],
         meals: [],
         supplements: [],
-        sleep: []
+        sleep: [],
+        games: [],
+        diaries: []
       }
     }
     
@@ -104,7 +133,9 @@ function AppContent() {
       schedules: [],
       meals: [],
       supplements: [],
-      sleep: []
+      sleep: [],
+      games: [],
+      diaries: []
     }
   })
   
@@ -288,7 +319,9 @@ function AppContent() {
           schedules: [],
           meals: [],
           supplements: [],
-          sleep: []
+          sleep: [],
+          games: [],
+          diaries: []
         })
       }
     }
@@ -373,8 +406,11 @@ function AppContent() {
         {/* PWAインストールボタン */}
         <InstallPWA />
         
-        {/* PWAインストールバナー（初回訪問時） */}
-        <PWAInstallBanner />
+        {/* PWAインストールバナー（一時的に無効化） */}
+        {/* <PWAInstallBanner /> */}
+        
+        {/* オフラインインジケーター */}
+        <OfflineIndicator isOnline={isOnline} pendingCount={pendingSync.length} />
         
         {/* ルーティング設定 */}
         <Routes>
@@ -417,12 +453,12 @@ function AppContent() {
             </ProtectedRoute>
           } />
           
-          {/* チーム一覧 - ログイン必須 */}
-          <Route path="/teams" element={
+          {/* チーム一覧 - MVP版では無効化 */}
+          {/* <Route path="/teams" element={
             <ProtectedRoute>
               <Teams />
             </ProtectedRoute>
-          } />
+          } /> */}
           
           {/* ユーザープロフィール画面 */}
           <Route path="/profile/:userId" element={
@@ -445,12 +481,12 @@ function AppContent() {
             </ProtectedRoute>
           } />
           
-          {/* チーム詳細画面 - ログイン必須 */}
-          <Route path="/team/:teamId" element={
+          {/* チーム詳細画面 - MVP版では無効化 */}
+          {/* <Route path="/team/:teamId" element={
             <ProtectedRoute>
               <TeamDetail />
             </ProtectedRoute>
-          } />
+          } /> */}
           
           {/* 免責事項ページ */}
           <Route path="/disclaimer" element={<Disclaimer />} />

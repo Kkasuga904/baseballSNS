@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../App'
 import ScheduleForm from '../components/ScheduleForm'
 import ScheduleItem from '../components/ScheduleItem'
+import { exportMonthlySchedules, exportMultipleSchedules } from '../utils/calendarExport'
 import './CalendarView.css'
 
 function CalendarView({ posts = [], myPageData = { schedules: [] }, setMyPageData }) {
@@ -191,9 +192,25 @@ function CalendarView({ posts = [], myPageData = { schedules: [] }, setMyPageDat
           </button>
         </div>
         
-        <button className="today-btn" onClick={() => setCurrentDate(new Date())}>
-          今日
-        </button>
+        <div className="calendar-actions">
+          <button className="today-btn" onClick={() => setCurrentDate(new Date())}>
+            今日
+          </button>
+          <button 
+            className="export-btn"
+            onClick={() => {
+              const schedules = myPageData?.schedules || [];
+              if (schedules.length === 0) {
+                alert('エクスポートする予定がありません');
+                return;
+              }
+              exportMonthlySchedules(schedules, monthYear.year, monthYear.month);
+            }}
+            title="今月の予定をカレンダーアプリ用にエクスポート"
+          >
+            📥 月間予定を出力
+          </button>
+        </div>
       </div>
 
       <div className="calendar-weekdays">

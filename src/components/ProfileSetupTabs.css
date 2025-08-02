@@ -269,6 +269,22 @@
   display: none;
 }
 
+.position-select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.position-select:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
 .position-hint {
   color: #ef4444;
   font-size: 14px;

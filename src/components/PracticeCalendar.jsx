@@ -327,7 +327,7 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
           }}
           onClick={handleDayClick}
         >
-          <span className="text-black-900 font-bold text-base">{day}</span>
+          <span className="day-number">{day}</span>
           
           {/* 練習がある日のインジケーター */}
           {hasPractice && (

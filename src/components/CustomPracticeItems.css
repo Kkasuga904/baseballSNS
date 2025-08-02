@@ -1,0 +1,260 @@
+.custom-practice-items {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.custom-items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.custom-items-header h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.edit-items-btn {
+  background: #2e7d46;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.edit-items-btn:hover {
+  background: #1e5631;
+}
+
+/* 編集モード */
+.edit-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.item-unit {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.item-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.move-btn {
+  background: #e5e7eb;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.move-btn:hover:not(:disabled) {
+  background: #d1d5db;
+}
+
+.move-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.remove-btn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+
+.remove-btn:hover {
+  background: #fecaca;
+}
+
+/* 追加フォーム */
+.add-item-form {
+  display: flex;
+  gap: 8px;
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.item-name-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.item-name-input:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.unit-select {
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.unit-select:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.add-btn {
+  background: #2e7d46;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background: #1e5631;
+}
+
+.reset-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: center;
+}
+
+.reset-btn:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* クイック選択モード */
+.quick-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-item {
+  background: white;
+  border: 2px solid #e5e7eb;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quick-item:hover {
+  border-color: #2e7d46;
+  background: #f0fdf4;
+  transform: translateY(-1px);
+}
+
+.unit-badge {
+  background: #e5e7eb;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* スクロールバー */
+.items-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.items-list::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+
+.items-list::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.items-list::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .add-item-form {
+    flex-wrap: wrap;
+  }
+  
+  .item-name-input {
+    flex: 1 1 100%;
+    margin-bottom: 8px;
+  }
+  
+  .unit-select {
+    flex: 1;
+  }
+  
+  .add-btn {
+    flex: 1;
+  }
+}

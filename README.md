@@ -1,74 +1,158 @@
-# 野球SNSアプリ
+# BaseLog - 野球ノートのデジタル化
 
-野球ファンのためのSNSアプリケーション。練習記録、動画投稿、スケジュール管理などの機能を提供します。
+React + Vite + Tailwind CSSで構築された、野球プレイヤー向けの総合記録管理アプリケーションです。
 
-## 機能
+伝統的な「野球ノート」をデジタル化し、練習記録、試合結果、成績分析、チーム管理を一元化します。
 
-- 📝 タイムライン投稿（通常投稿、練習記録、動画投稿）
-- 🏋️ 練習記録管理（カテゴリ別、強度記録、動画付き）
-- 📊 マイページ（個人記録、カレンダー表示）
-- 🎥 動画アップロード機能
-- 📅 スケジュール管理（iCalendarエクスポート対応）
-- 🔐 ユーザー認証（メール/パスワード）
+PWA（Progressive Web App）対応でオフラインでも利用可能。スマートフォンにインストールしてネイティブアプリのように使用できます。
+
+## 主な機能
+
+### 📓 野球ノート機能
+- **試合記録**: 打席結果、守備記録、目標・振り返り
+- **練習記録**: メニュー別練習量、コンディション記録
+- **成績分析**: 打率・守備率の推移グラフ、練習量の可視化
+- **日記機能**: 日々の気づきやアドバイスを記録
+
+### 👥 チーム管理
+- チーム作成・参加機能
+- メンバー別権限管理
+- チーム内情報共有
+
+### 📱 PWA機能
+- オフライン対応（データの自動同期）
+- ホーム画面への追加
+- プッシュ通知（今後実装予定）
+
+### 🔒 認証・セキュリティ
+- Firebase認証（Googleアカウント連携）
+- メール/パスワード認証
+- プライベート設定
 
 ## セットアップ
 
-### 1. 依存関係のインストール
+### 1. リポジトリをクローン
+```bash
+git clone <repository-url>
+cd baseball-sns-app
+```
 
+### 2. 依存関係をインストール
 ```bash
 npm install
 ```
 
-### 2. Supabaseの設定
+### 3. 環境変数の設定（オプション）
 
-1. [Supabase](https://app.supabase.com/)でプロジェクトを作成
-2. プロジェクトの設定から`API URL`と`anon key`を取得
-3. `.env`ファイルを作成し、以下の内容を設定：
+Firebase認証を使用する場合は、`.env`ファイルを作成：
 
 ```env
-VITE_SUPABASE_URL=your_supabase_url_here
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+VITE_FIREBASE_API_KEY=your-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
 ```
 
-### 3. Supabaseでの認証設定
+※ 詳細はFIREBASE_SETUP.mdを参照
 
-1. Supabaseダッシュボードの`Authentication`セクションへ移動
-2. `Providers`でEmail認証を有効化
-3. `Email Templates`で必要に応じてメールテンプレートをカスタマイズ
-
-### 4. アプリケーションの起動
-
+### 4. 開発サーバーを起動
 ```bash
 npm run dev
 ```
 
-## 使用技術
+## PWA機能
 
-- React (Vite)
-- React Router
-- Supabase Auth
-- LocalStorage（データ永続化）
+### インストール方法
 
-## 主要コンポーネント
+1. **デスクトップ (Chrome/Edge)**
+   - URLバーの右端にインストールアイコンが表示されます
+   - クリックして「インストール」を選択
 
-### 認証関連
-- `Login.jsx` - ログイン画面
-- `Signup.jsx` - 新規登録画面
-- `ForgotPassword.jsx` - パスワードリセット
-- `AuthContext.jsx` - 認証状態管理
+2. **スマートフォン (iOS)**
+   - Safariでアプリを開く
+   - 共有ボタンをタップ
+   - 「ホーム画面に追加」を選択
 
-### 投稿機能
-- `PostForm.jsx` - 通常投稿フォーム
-- `PracticeForm.jsx` - 練習記録フォーム
-- `VideoForm.jsx` - 動画投稿フォーム
+3. **スマートフォン (Android)**
+   - Chromeでアプリを開く
+   - メニューから「ホーム画面に追加」を選択
 
-### 表示機能
-- `Timeline.jsx` - タイムライン表示
-- `MyPage.jsx` - マイページ
-- `PracticeCalendar.jsx` - カレンダー表示
+### オフライン機能
 
-## 開発時の注意事項
+- インストール後はネットワーク接続なしでも基本機能が利用可能
+- オンライン復帰時にデータが自動同期されます
+- オフライン中も記録の閲覧・作成が可能
 
-- Supabaseの認証情報は必ず環境変数で管理してください
-- `.env`ファイルはGitにコミットしないでください
-- 本番環境では適切なCORS設定を行ってください
+## 使用方法
+
+### 初回セットアップ
+1. 新規登録またはGoogleアカウントでログイン
+2. プロフィール情報を入力（所属チーム、ポジションなど）
+3. チームを作成または既存チームに参加
+
+### 日々の使い方
+1. **試合後**: マイページ > 試合記録を追加
+2. **練習後**: タイムライン > 練習記録を投稿
+3. **振り返り**: マイページ > 日記を書く
+4. **分析**: 成績推移グラフで成長を確認
+
+## 開発情報
+
+### 技術スタック
+- **フロントエンド**: React 18, Vite 6, Tailwind CSS 3
+- **認証**: Firebase Authentication
+- **ルーティング**: React Router v6
+- **状態管理**: React Context API
+- **PWA**: Service Worker, Web App Manifest
+- **ホスティング**: Vercel
+
+### プロジェクト構造
+```
+src/
+├── components/      # 再利用可能なコンポーネント
+├── pages/           # ページコンポーネント
+├── contexts/        # Context API
+├── hooks/           # カスタムフック
+├── firebase/        # Firebase設定
+└── utils/           # ユーティリティ関数
+```
+
+### カスタマイズ
+
+#### ダークモード
+管理者アカウント（`over9131120@gmail.com`）でログインすると、自動的にダークモードが適用されます。
+
+#### データストレージ
+デフォルトではLocalStorageを使用。バックエンドAPIとの連携は簡単に実装可能。
+
+## 今後の展開
+
+### 短期目標
+- [ ] プッシュ通知機能
+- [ ] チーム内チャット機能
+- [ ] 動画アップロード・分析機能
+- [ ] コーチ向け管理機能
+
+### 中長期目標
+- [ ] ネイティブアプリ化（React Native）
+- [ ] AIを活用したフォーム分析
+- [ ] リーグ・大会管理機能
+- [ ] スカウト向け情報公開機能
+
+## コントリビュート
+
+プルリクエストやイシューの作成を歓迎します。
+
+1. Forkしてフィーチャーブランチを作成
+2. 変更をコミット
+3. プルリクエストを作成
+
+## ライセンス
+
+MIT
+
+## 作者
+
+[@over9131120](https://github.com/over9131120)

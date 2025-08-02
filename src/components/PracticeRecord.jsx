@@ -108,9 +108,12 @@ function PracticeRecord({ practiceData }) {
         </div>
 
         {note && (
-          <div className="practice-note">
-            <h4>メモ</h4>
-            <p>{note}</p>
+          <div className="practice-reflection">
+            <h4>
+              <span className="reflection-icon">📝</span>
+              振り返り・気づき
+            </h4>
+            <p className="reflection-text">{note}</p>
           </div>
         )}
       </div>
@@ -232,9 +235,12 @@ function PracticeRecord({ practiceData }) {
       )}
       
       {note && (
-        <div className="practice-note">
-          <h4>メモ</h4>
-          <p>{note}</p>
+        <div className="practice-reflection">
+          <h4>
+            <span className="reflection-icon">📝</span>
+            振り返り・気づき
+          </h4>
+          <p className="reflection-text">{note}</p>
         </div>
       )}
     </div>

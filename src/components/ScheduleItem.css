@@ -72,6 +72,73 @@
   margin-top: 0.5rem;
 }
 
+/* カレンダー連携ボタン */
+.schedule-actions {
+  margin-top: 0.75rem;
+  position: relative;
+}
+
+.calendar-export-btn {
+  background: #f0f7ff;
+  border: 1px solid #4285f4;
+  color: #4285f4;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.calendar-export-btn:hover {
+  background: #4285f4;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 220px;
+  overflow: hidden;
+}
+
+.calendar-menu-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.calendar-menu-item:last-child {
+  border-bottom: none;
+}
+
+.calendar-menu-item:hover {
+  background-color: #f8f9fa;
+}
+
+.calendar-menu-item:active {
+  background-color: #e9ecef;
+}
+
 @media (max-width: 768px) {
   .schedule-header {
     flex-direction: column;

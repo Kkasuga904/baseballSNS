@@ -44,6 +44,14 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .quick-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }
 
 .quick-practice-btn {

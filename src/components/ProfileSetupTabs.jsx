@@ -306,29 +306,27 @@ function ProfileSetupTabs() {
                   </div>
 
                   <div className="form-section">
-                    <h3>ポジション（複数選択可）</h3>
-                    <div className="position-grid">
+                    <h3>メインポジション</h3>
+                    <select
+                      value={formData.positions[0] || ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value) {
+                          setFormData({ ...formData, positions: [value] });
+                        } else {
+                          setFormData({ ...formData, positions: [], pitcherTypes: [] });
+                        }
+                      }}
+                      className="position-select"
+                      required
+                    >
+                      <option value="">ポジションを選択してください</option>
                       {(positions[formData.sport || 'baseball']).map(pos => (
-                          <label key={pos.value} className={`position-option ${formData.positions.includes(pos.value) ? 'selected' : ''}`}>
-                            <input
-                              type="checkbox"
-                              value={pos.value}
-                              checked={formData.positions.includes(pos.value)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setFormData({ ...formData, positions: [...formData.positions, pos.value] })
-                                } else {
-                                  setFormData({ ...formData, positions: formData.positions.filter(p => p !== pos.value), pitcherTypes: [] })
-                                }
-                              }}
-                            />
-                            <span>{pos.label}</span>
-                          </label>
-                        ))}
-                      </div>
-                    {formData.positions.length === 0 && (
-                      <p className="position-hint">最低1つのポジションを選択してください</p>
-                    )}
+                        <option key={pos.value} value={pos.value}>
+                          {pos.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   {formData.positions.includes('pitcher') && (

@@ -18,6 +18,8 @@ import StarRating from './StarRating'
 import PitchingPracticeForm from './PitchingPracticeForm'
 import PitchingChart from './PitchingChart'
 import SimpleGameResultForm from './SimpleGameResultForm'
+import CustomPracticeItems from './CustomPracticeItems'
+import { useAuth } from '../App'
 import './PracticeForm.css'
 
 /**
@@ -27,6 +29,7 @@ import './PracticeForm.css'
  * @param {Function} props.onSubmit - フォーム送信時のコールバック関数
  */
 function PracticeForm({ onSubmit }) {
+  const { user } = useAuth()
   /**
    * フォームデータの状態管理
    * 
@@ -446,6 +449,28 @@ function PracticeForm({ onSubmit }) {
             <div className="form-group">
               <label>練習メニュー</label>
               
+              {/* カスタム練習項目コンポーネント */}
+              <CustomPracticeItems
+                category={formData.category}
+                userId={user?.email || 'guest'}
+                onItemsChange={(items) => {
+                  if (items.length === 1) {
+                    // クイック選択された項目を最初の空欄に追加
+                    const emptyIndex = formData.menu.findIndex(item => !item.name)
+                    if (emptyIndex !== -1) {
+                      handleMenuChange(emptyIndex, 'name', items[0].name)
+                      handleMenuChange(emptyIndex, 'unit', items[0].unit)
+                    } else {
+                      // 空欄がない場合は新規追加
+                      setFormData(prev => ({
+                        ...prev,
+                        menu: [...prev.menu, { name: items[0].name, value: '', unit: items[0].unit }]
+                      }))
+                    }
+                  }
+                }}
+              />
+              
               {/* トレーニング種目の候補表示 */}
               {formData.category === 'training' && formData.trainingPart && (
                 <div className="exercise-suggestions">
@@ -560,14 +585,19 @@ function PracticeForm({ onSubmit }) {
         </div>
       </div>
 
-      {/* メモ・備考入力セクション */}
-      <div className="form-group">
-        <label>メモ・備考</label>
+      {/* 振り返り入力セクション */}
+      <div className="form-group reflection-section">
+        <label>
+          <span className="reflection-icon">📝</span>
+          振り返り・気づき
+          <span className="reflection-subtitle">（今日の学びと改善点）</span>
+        </label>
         <textarea
           value={formData.note}
           onChange={(e) => handleInputChange('note', e.target.value)}
-          rows="3"
-          placeholder="練習の感想や気づいたことなど"
+          rows="5"
+          placeholder="・今日できたこと&#10;・改善が必要な点&#10;・次回への課題&#10;・コーチからのアドバイス&#10;・その他気づいたこと"
+          className="reflection-textarea"
         />
       </div>
 

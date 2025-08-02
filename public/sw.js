@@ -16,8 +16,9 @@
  * バージョンを変更することで古いキャッシュをクリアできます
  * デプロイ時は自動的にタイムスタンプを付与することを推奨
  */
-const CACHE_VERSION = '2025-07-31T03-10-40-028Z'; // バージョンを変更するとキャッシュが更新されます
+const CACHE_VERSION = '2025-08-01-v2'; // バージョンを変更するとキャッシュが更新されます
 const CACHE_NAME = `baselog-v${CACHE_VERSION}`;
+const DATA_CACHE_NAME = `baselog-data-v${CACHE_VERSION}`;
 const BUILD_TIME = new Date().toISOString(); // ビルド時刻を記録
 
 /**
@@ -28,7 +29,8 @@ const urlsToCache = [
   '/',              // ルートページ
   '/index.html',    // メインHTMLファイル
   '/manifest.json', // PWAマニフェスト
-  '/icon.svg'       // アプリアイコン
+  '/icon.svg',      // アプリアイコン
+  '/offline.html'   // オフラインページ
 ];
 
 /**
@@ -70,7 +72,7 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           // 現在のキャッシュ名と異なる場合は削除（古いバージョン）
-          if (cacheName !== CACHE_NAME) {
+          if (cacheName !== CACHE_NAME && cacheName !== DATA_CACHE_NAME) {
             console.log('[Service Worker] 古いキャッシュを削除:', cacheName);
             return caches.delete(cacheName);
           }
@@ -87,59 +89,90 @@ self.addEventListener('activate', event => {
 /**
  * fetchイベント - ネットワークリクエストをインターセプト
  * 
- * 戦略: Network First, Cache Fallback
- * 1. まずネットワークからの取得を試みる（最新データ優先）
- * 2. ネットワークが利用できない場合はキャッシュから返す
- * 3. 成功したレスポンスはキャッシュに保存
+ * 戦略:
+ * - 静的アセット: Cache First (高速化優先)
+ * - ナビゲーション: Network First (最新コンテンツ優先)
+ * - データAPI: Network Only with localStorage backup
  */
 self.addEventListener('fetch', event => {
   // GET以外のリクエスト（POST、PUT、DELETE等）はスキップ
-  // これらはデータ変更を伴うため、キャッシュすべきでない
   if (event.request.method !== 'GET') return;
 
   // 別オリジンへのリクエストはスキップ
-  // 外部APIやCDNへのリクエストはキャッシュしない
   if (!event.request.url.startsWith(self.location.origin)) return;
-
-  // APIコールはスキップ
-  // 動的データはキャッシュせず、常に最新を取得
-  if (event.request.url.includes('/api/')) return;
 
   // Service Worker自身へのリクエストはキャッシュしない
   if (event.request.url.includes('sw.js')) {
     event.respondWith(fetch(event.request));
     return;
   }
+  
+  // 静的アセット（JS、CSS、画像）の場合はCache First戦略
+  if (event.request.url.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff2?)$/)) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          if (response) {
+            return response;
+          }
+          return fetch(event.request).then(response => {
+            if (!response || response.status !== 200) {
+              return response;
+            }
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+            return response;
+          });
+        })
+    );
+    return;
+  }
 
-  // リクエストに対するレスポンスをカスタマイズ
-  event.respondWith(
-    // まずネットワークから取得を試みる
-    fetch(event.request, { cache: 'no-cache' }) // 常に最新を取得
-      .then(response => {
-        // レスポンスが正常でない場合はそのまま返す
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
-        }
-
-        /**
-         * レスポンスのクローンを作成
-         * レスポンスはストリームなので、一度しか読めない
-         * ブラウザ用とキャッシュ用に2つ必要
-         */
-        const responseToCache = response.clone();
-
-        // 非同期でキャッシュに保存（レスポンス返却をブロックしない）
-        caches.open(CACHE_NAME)
-          .then(cache => {
+  // ナビゲーションリクエスト（ページ遷移）の場合
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          if (!response || response.status !== 200) {
+            return response;
+          }
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, responseToCache);
           });
-
-        // オリジナルのレスポンスをブラウザに返す
+          return response;
+        })
+        .catch(() => {
+          // オフライン時はキャッシュから返す
+          return caches.match(event.request)
+            .then(response => {
+              if (response) {
+                return response;
+              }
+              // キャッシュにもない場合はオフラインページを表示
+              return caches.match('/offline.html');
+            });
+        })
+    );
+    return;
+  }
+  
+  // その他のリクエストはNetwork First戦略
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        if (!response || response.status !== 200) {
+          return response;
+        }
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseToCache);
+        });
         return response;
       })
       .catch(() => {
-        // ネットワークエラー時（オフライン等）はキャッシュから返す
-        console.log('[Service Worker] ネットワークエラー、キャッシュから取得:', event.request.url);
         return caches.match(event.request);
       })
   );

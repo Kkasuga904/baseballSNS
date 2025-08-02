@@ -34,7 +34,9 @@ export default defineConfig({
    * 開発サーバーの設定
    */
   server: {
-    port: 3000, // 開発サーバーのポート番号（デフォルト: 5173から変更）
+    port: 5173, // 開発サーバーのポート番号を5173に固定
+    strictPort: true, // ポートが使用中の場合はエラーを出す
+    host: true, // ネットワーク経由でのアクセスを許可
     
     /**
      * Service Worker関連のヘッダー設定

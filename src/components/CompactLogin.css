@@ -1,0 +1,280 @@
+/* コンパクトな認証画面 */
+.compact-auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2e7d46 0%, #3da858 100%);
+  padding: 1rem;
+}
+
+.compact-auth-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+}
+
+/* ヘッダー */
+.auth-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.app-title {
+  font-size: 2rem;
+  color: #2e7d46;
+  margin: 0 0 0.25rem 0;
+  font-weight: bold;
+}
+
+.app-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* タブ切り替え */
+.auth-tabs {
+  display: flex;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.auth-tab.active {
+  background: white;
+  color: #2e7d46;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* フォーム */
+.compact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.compact-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+}
+
+.compact-input:focus {
+  outline: none;
+  border-color: #2e7d46;
+  box-shadow: 0 0 0 3px rgba(46, 125, 70, 0.1);
+}
+
+/* パスワード表示切り替え */
+.password-field {
+  position: relative;
+}
+
+.password-field .compact-input {
+  padding-right: 2.5rem;
+}
+
+.compact-password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.125rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.compact-password-toggle:hover {
+  opacity: 1;
+}
+
+/* エラーメッセージ */
+.compact-error {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.625rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+/* 送信ボタン */
+.compact-submit {
+  background: #2e7d46;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.compact-submit:hover:not(:disabled) {
+  background: #1e5631;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 125, 70, 0.25);
+}
+
+.compact-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 区切り線 */
+.auth-divider {
+  text-align: center;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.auth-divider span {
+  background: white;
+  padding: 0 0.75rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e5e7eb;
+  z-index: -1;
+}
+
+/* Google認証ボタン */
+.google-auth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.google-auth-btn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.google-icon {
+  flex-shrink: 0;
+}
+
+/* デモセクション */
+.demo-section {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.demo-button {
+  background: none;
+  border: none;
+  color: #2e7d46;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.demo-button:hover {
+  opacity: 0.8;
+}
+
+/* PC用の調整 */
+@media (min-width: 1024px) {
+  .compact-auth-container {
+    padding: 2rem;
+  }
+  
+  .compact-auth-card {
+    padding: 1.75rem;
+    max-width: 360px;
+  }
+  
+  .app-title {
+    font-size: 1.75rem;
+  }
+  
+  .app-subtitle {
+    font-size: 0.8125rem;
+  }
+  
+  .auth-tabs {
+    margin-bottom: 1.25rem;
+  }
+  
+  .compact-form {
+    gap: 0.625rem;
+  }
+  
+  .compact-input {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .compact-submit {
+    padding: 0.625rem;
+    font-size: 0.875rem;
+  }
+  
+  .google-auth-btn {
+    padding: 0.5rem;
+    font-size: 0.8125rem;
+  }
+  
+  .auth-divider {
+    margin: 0.875rem 0;
+  }
+}
+
+/* モバイル用の調整 */
+@media (max-width: 640px) {
+  .compact-auth-card {
+    padding: 1.5rem;
+  }
+  
+  .app-title {
+    font-size: 1.75rem;
+  }
+}

@@ -1,0 +1,286 @@
+.diary-view-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.diary-view-modal {
+  background: white;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.diary-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.diary-view-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #1f2937;
+  word-break: break-word;
+  flex: 1;
+  padding-right: 16px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #6b7280;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.close-button:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+.diary-view-meta {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: #f9fafb;
+}
+
+.diary-view-date {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.diary-view-date .date {
+  font-size: 16px;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.diary-view-date .time {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.diary-view-indicators {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.diary-view-indicators .mood,
+.diary-view-indicators .weather {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  color: #374151;
+}
+
+.diary-view-content {
+  padding: 24px;
+  line-height: 1.8;
+  color: #1f2937;
+}
+
+.diary-view-content p {
+  margin: 0 0 16px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.diary-view-content p:last-child {
+  margin-bottom: 0;
+}
+
+.diary-view-tags {
+  padding: 0 24px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.diary-view-tags .tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #e5e7eb;
+  border-radius: 16px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.diary-view-actions {
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.diary-view-actions .edit-button {
+  padding: 10px 24px;
+  background: #2e7d46;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.diary-view-actions .edit-button:hover {
+  background: #1e5631;
+  transform: translateY(-1px);
+}
+
+.diary-view-updated {
+  padding: 12px 24px;
+  background: #f9fafb;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .diary-view-overlay {
+    padding: 0;
+  }
+  
+  .diary-view-modal {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  
+  .diary-view-header {
+    padding: 20px 16px 16px;
+  }
+  
+  .diary-view-meta,
+  .diary-view-content,
+  .diary-view-tags,
+  .diary-view-actions {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* 振り返りセクション */
+.diary-reflection-section {
+  background: #f8fafb;
+  border: 2px solid #e8f5e9;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 0 24px 24px;
+}
+
+.reflection-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2e7d46;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+}
+
+.reflection-icon {
+  font-size: 1.4rem;
+}
+
+.reflection-item {
+  margin-bottom: 1.5rem;
+}
+
+.reflection-item:last-child {
+  margin-bottom: 0;
+}
+
+.reflection-item h4 {
+  display: flex;
+  align-items: center;
+  color: #374151;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+}
+
+.label-icon {
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
+}
+
+.reflection-content {
+  background: white;
+  padding: 0.75rem;
+  border: 1px solid #d4e8d4;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.reflection-content p {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.reflection-content p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .diary-reflection-section {
+    margin-left: 16px;
+    margin-right: 16px;
+    padding: 1rem;
+  }
+}

@@ -107,6 +107,33 @@
   background: #1e5d36;
 }
 
+.calendar-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.export-btn {
+  padding: 0.5rem 1rem;
+  background: #f0f7ff;
+  border: 1px solid #4285f4;
+  color: #4285f4;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.export-btn:hover {
+  background: #4285f4;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .calendar-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);

@@ -19,14 +19,122 @@
 .auth-card h2 {
   text-align: center;
   color: #2e7d46;
-  margin-bottom: 2.5rem;
-  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+}
+
+/* PC用の縦幅を抑えたコンパクトレイアウト */
+@media (min-width: 1024px) {
+  .auth-container {
+    min-height: 100vh;
+    height: 100vh;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .auth-card {
+    padding: 0.75rem 1rem;
+    max-width: 340px;
+    margin: 0;
+  }
+  
+  .auth-card h2 {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .auth-form {
+    gap: 0.25rem;
+  }
+  
+  .form-group {
+    gap: 0;
+    margin-bottom: 0.25rem;
+  }
+  
+  .form-group label {
+    font-size: 0.625rem;
+    margin-bottom: 0.0625rem;
+  }
+  
+  .form-group input {
+    padding: 0.25rem 0.375rem;
+    font-size: 0.6875rem;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .google-login {
+    padding: 0.25rem;
+    font-size: 0.6875rem;
+    margin-bottom: 0.125rem;
+  }
+  
+  .google-icon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .auth-button {
+    padding: 0.3125rem;
+    font-size: 0.6875rem;
+    margin-top: 0.125rem;
+  }
+  
+  .divider {
+    margin: 0.25rem 0;
+    font-size: 0.625rem;
+  }
+  
+  .auth-links {
+    margin-top: 0.25rem;
+    font-size: 0.625rem;
+  }
+  
+  .error-message,
+  .success-message {
+    padding: 0.1875rem 0.375rem;
+    font-size: 0.625rem;
+    margin-bottom: 0.125rem;
+  }
+  
+  .demo-quick-login {
+    padding: 0.25rem;
+    font-size: 0.625rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .password-input-wrapper input {
+    padding-right: 1.5rem;
+  }
+  
+  .password-toggle {
+    width: 16px;
+    height: 16px;
+    right: 0.125rem;
+    padding: 0.25rem;
+  }
+  
+  .password-toggle svg {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* さらに高さがある画面用の調整 */
+@media (min-width: 1024px) and (min-height: 900px) {
+  .auth-container {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 5vh;
+  }
 }
 
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .form-group {
@@ -38,7 +146,7 @@
 .form-group label {
   font-weight: 600;
   color: #333;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
 }
 
 .form-group input {
@@ -105,8 +213,8 @@
 .auth-links {
   display: flex;
   justify-content: space-between;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
 }
 
 .auth-links a {
@@ -122,10 +230,10 @@
 
 .divider {
   text-align: center;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   position: relative;
   color: #999;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .divider::before,
@@ -188,12 +296,22 @@
   height: 20px;
 }
 
-.demo-login {
+.demo-quick-login {
+  width: 100%;
+  padding: 0.5rem;
   background: #f5f5f5;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  color: #666;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 0.5rem;
+}
+
+.demo-quick-login:hover {
+  background: #e8e8e8;
+  color: #333;
 }
 
 .demo-login-title {

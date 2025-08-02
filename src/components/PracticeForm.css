@@ -300,6 +300,61 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 振り返りセクション */
+.reflection-section {
+  background: #f8fafb;
+  border: 2px solid #e8f5e9;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.reflection-section label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.reflection-icon {
+  font-size: 1.3rem;
+}
+
+.reflection-subtitle {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: normal;
+  margin-left: 0.5rem;
+}
+
+.reflection-textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 1rem;
+  border: 1px solid #d4e8d4;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  background: white;
+  transition: border-color 0.3s;
+}
+
+.reflection-textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+  box-shadow: 0 0 0 3px rgba(46, 125, 70, 0.1);
+}
+
+.reflection-textarea::placeholder {
+  color: #999;
+  line-height: 1.8;
+}
+
 @media (max-width: 768px) {
   .practice-form {
     padding: 1rem;

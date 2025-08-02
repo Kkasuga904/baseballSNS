@@ -9,7 +9,7 @@ function Login() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const { signIn } = useAuth()
+  const { signIn, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -27,13 +27,33 @@ function Login() {
     }
   }
 
-  const handleGoogleLogin = () => {
-    // Googleログイン風の動作（実際には簡易ログイン）
-    setEmail('demo@baseball-sns.com')
-    setPassword('demo123')
-    setTimeout(() => {
-      handleSubmit({ preventDefault: () => {} })
-    }, 500)
+  const handleGoogleLogin = async () => {
+    setLoading(true)
+    setError('')
+    
+    // signInWithGoogleがある場合（Firebase認証）は実際のGoogle認証を使用
+    if (signInWithGoogle) {
+      const { data, error, needsProfileSetup } = await signInWithGoogle()
+      
+      if (error) {
+        setError('Googleアカウントでのログインに失敗しました')
+        setLoading(false)
+      } else {
+        setLoading(false)
+        if (needsProfileSetup) {
+          navigate('/profile-setup')
+        } else {
+          navigate('/')
+        }
+      }
+    } else {
+      // Firebase設定がない場合は従来のデモログイン
+      setEmail('demo@baseball-sns.com')
+      setPassword('demo123')
+      setTimeout(() => {
+        handleSubmit({ preventDefault: () => {} })
+      }, 500)
+    }
   }
 
   const handleAppleLogin = () => {
@@ -48,6 +68,27 @@ function Login() {
   const useDemoAccount = (demoEmail, demoPassword) => {
     setEmail(demoEmail)
     setPassword(demoPassword)
+  }
+
+  const resetDemoData = () => {
+    if (confirm('デモデータをリセットしますか？\n※すべてのローカルデータが削除されます')) {
+      // LocalStorageのデモ関連データをクリア
+      localStorage.removeItem('baseballSNSUsers')
+      localStorage.removeItem('baseballSNSUser')
+      localStorage.removeItem('baseballSNSPosts')
+      localStorage.removeItem('baseballSNSAdminData')
+      localStorage.removeItem('baseballSNS_teams')
+      
+      // ユーザー固有データをクリア
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('baseballSNSMyPageData_')) {
+          localStorage.removeItem(key)
+        }
+      })
+      
+      alert('デモデータをリセットしました。ページを再読み込みします。')
+      window.location.reload()
+    }
   }
 
   return (
@@ -67,31 +108,39 @@ function Login() {
           Googleでログイン
         </button>
         
-        <button type="button" onClick={handleAppleLogin} className="apple-login">
-          <svg className="apple-icon" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-          </svg>
-          Appleでサインイン
-        </button>
         
         <div className="divider">または</div>
         
-        <div className="demo-login">
-          <div className="demo-login-title">🎯 デモアカウントで試す</div>
-          <div className="demo-account">
-            <div className="demo-account-info">
-              <span className="demo-email">demo@baseball-sns.com</span>
-              <span className="demo-password">パスワード: demo123</span>
-            </div>
-            <button 
-              type="button" 
-              className="use-demo-btn"
-              onClick={() => useDemoAccount('demo@baseball-sns.com', 'demo123')}
-            >
-              使用
-            </button>
-          </div>
-        </div>
+        <button 
+          type="button" 
+          className="demo-quick-login"
+          onClick={() => useDemoAccount('demo@baseball-sns.com', 'demo123')}
+        >
+          🎯 デモアカウントで試す
+        </button>
+        
+        <button 
+          type="button" 
+          className="demo-quick-login admin-demo"
+          onClick={() => useDemoAccount('over9131120@gmail.com', 'Sawamura18')}
+        >
+          👑 管理者デモアカウント
+        </button>
+        
+        <button 
+          type="button" 
+          className="reset-demo-data"
+          onClick={resetDemoData}
+          style={{
+            backgroundColor: '#dc3545',
+            color: 'white',
+            fontSize: '12px',
+            padding: '8px 12px',
+            marginTop: '10px'
+          }}
+        >
+          🔄 デモデータをリセット
+        </button>
         
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">

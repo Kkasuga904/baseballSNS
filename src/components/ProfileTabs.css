@@ -5,6 +5,79 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* メインタブ（タイムライン・リアル部活） */
+.main-tabs {
+  display: flex;
+  background: #1f2937;
+  border-bottom: 2px solid #2e7d46;
+}
+
+.main-tab {
+  flex: 1;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #9ca3af;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+}
+
+.main-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e5e7eb;
+}
+
+.main-tab.active {
+  color: white;
+  background: #2e7d46;
+}
+
+.main-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #2e7d46;
+}
+
+/* タイムラインセクション */
+.timeline-section {
+  padding: 24px;
+  min-height: 400px;
+}
+
+.timeline-placeholder {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+}
+
+.timeline-placeholder h3 {
+  font-size: 24px;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+.timeline-placeholder p {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.coming-soon {
+  color: #9ca3af;
+  font-style: italic;
+  margin-top: 20px;
+}
+
 .profile-tabs-header {
   display: flex;
   background: #f8f9fa;
@@ -104,8 +177,114 @@
   color: #d1d5db;
 }
 
+/* 編集コントロール */
+.profile-edit-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.btn-edit {
+  background: #2e7d46;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-edit:hover {
+  background: #1e5d36;
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-save {
+  background: #059669;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-save:hover {
+  background: #047857;
+}
+
+.btn-cancel {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-cancel:hover {
+  background: #b91c1c;
+}
+
+/* ポジション選択ドロップダウン */
+.position-select {
+  width: 100%;
+  max-width: 200px;
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 16px;
+  background: white;
+  color: #1f2937;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.position-select:focus {
+  outline: none;
+  border-color: #2e7d46;
+  box-shadow: 0 0 0 3px rgba(46, 125, 70, 0.1);
+}
+
+.position-select option {
+  padding: 8px;
+  color: #1f2937;
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
+  .main-tabs {
+    font-size: 14px;
+  }
+  
+  .main-tab {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  .main-tab .tab-icon {
+    font-size: 18px;
+  }
+  
   .profile-tabs-header {
     gap: 0;
   }
@@ -138,5 +317,34 @@
   
   .field-value {
     font-size: 15px;
+  }
+  
+  .position-select {
+    max-width: 100%;
+    font-size: 15px;
+  }
+  
+  .edit-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .btn-edit,
+  .btn-save,
+  .btn-cancel {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+  
+  .timeline-placeholder {
+    padding: 40px 16px;
+  }
+  
+  .timeline-placeholder h3 {
+    font-size: 20px;
+  }
+  
+  .timeline-placeholder p {
+    font-size: 14px;
   }
 }

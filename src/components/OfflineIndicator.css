@@ -1,0 +1,65 @@
+.offline-indicator {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+}
+
+.indicator-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #ff5722;
+  color: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.offline-indicator.syncing .indicator-content {
+  background: #2196f3;
+}
+
+.indicator-icon {
+  font-size: 1rem;
+}
+
+.indicator-icon.syncing {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .offline-indicator {
+    top: 60px;
+  }
+  
+  .indicator-content {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}

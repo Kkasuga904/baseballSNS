@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../App'
 import { useNavigate, Link } from 'react-router-dom'
+import GoogleAuthNotice from './GoogleAuthNotice'
 import './Login.css'
 
 function Signup() {
@@ -12,7 +13,8 @@ function Signup() {
   const [success, setSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const { signUp } = useAuth()
+  const [showGoogleNotice, setShowGoogleNotice] = useState(false)
+  const { signUp, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -48,19 +50,46 @@ function Signup() {
   }
 
   const handleGoogleSignup = async () => {
-    // Googleアカウント風の登録（実際には自動生成されたメールで登録）
+    // Firebase設定がない場合は通知を表示
+    if (!signInWithGoogle || !import.meta.env.VITE_FIREBASE_API_KEY) {
+      setShowGoogleNotice(true)
+      return
+    }
+    
+    setLoading(true)
+    setError('')
+    
+    const { data, error, needsProfileSetup } = await signInWithGoogle()
+    
+    if (error) {
+      setError('Googleアカウントでの登録に失敗しました')
+      setLoading(false)
+    } else {
+      setSuccess(true)
+      setLoading(false)
+      setTimeout(() => {
+        navigate(needsProfileSetup ? '/profile-setup' : '/')
+      }, 1500)
+    }
+  }
+
+  const handleDemoGoogleSignup = async () => {
+    setShowGoogleNotice(false)
+    setLoading(true)
+    setError('')
+    
+    // デモ用のGoogle風認証
     const googleEmail = `user${Date.now()}@gmail.com`
     const googlePassword = 'google123'
     
     setEmail(googleEmail)
     setPassword(googlePassword)
     setConfirmPassword(googlePassword)
-    setLoading(true)
     
     const { error } = await signUp(googleEmail, googlePassword)
     
     if (error) {
-      setError('Googleアカウントでの登録に失敗しました')
+      setError('デモ登録に失敗しました')
       setLoading(false)
     } else {
       setSuccess(true)
@@ -97,6 +126,36 @@ function Signup() {
 
   return (
     <div className="auth-container">
+      {showGoogleNotice && (
+        <GoogleAuthNotice
+          onClose={handleDemoGoogleSignup}
+          onProceed={async () => {
+            setShowGoogleNotice(false)
+            // Firebase設定がある場合のみ実際のGoogle認証を実行
+            if (signInWithGoogle && import.meta.env.VITE_FIREBASE_API_KEY) {
+              setLoading(true)
+              setError('')
+              
+              const { data, error, needsProfileSetup } = await signInWithGoogle()
+              
+              if (error) {
+                setError('Googleアカウントでの登録に失敗しました')
+                setLoading(false)
+              } else {
+                setSuccess(true)
+                setLoading(false)
+                setTimeout(() => {
+                  navigate(needsProfileSetup ? '/profile-setup' : '/')
+                }, 1500)
+              }
+            } else {
+              // Firebase設定がない場合はデモ認証
+              handleDemoGoogleSignup()
+            }
+          }}
+        />
+      )}
+      
       <div className="auth-card">
         <h2>⚾ 新規登録</h2>
         
@@ -119,12 +178,6 @@ function Signup() {
           Googleで新規登録
         </button>
         
-        <button type="button" onClick={handleAppleSignup} className="apple-login" disabled={loading}>
-          <svg className="apple-icon" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-          </svg>
-          Appleで登録
-        </button>
         
         <div className="divider">または</div>
         

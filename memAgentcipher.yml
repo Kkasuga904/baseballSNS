@@ -1,0 +1,6 @@
+embedding:
+  type: ollama
+  model: nomic-embed-text
+
+systemPrompt: >
+  You are a helpful AI assistant with memory capabilities.

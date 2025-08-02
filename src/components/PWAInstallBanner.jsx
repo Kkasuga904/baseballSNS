@@ -22,28 +22,24 @@ function PWAInstallBanner() {
     
     // beforeinstallpromptイベントをリッスン
     const handleBeforeInstallPrompt = (e) => {
+      // ブラウザのデフォルトプロンプトを防ぐ
       e.preventDefault()
       setDeferredPrompt(e)
-      if (!bannerDismissed) {
-        setShowInstallBanner(true)
-      }
+      // カスタムバナーは表示しない（ブラウザのプロンプトを使う）
+      // if (!bannerDismissed) {
+      //   setShowInstallBanner(true)
+      // }
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
-    // iOS用のバナー表示
+    // iOS用のバナー表示（iOSはブラウザプロンプトがないため必要）
     if (checkIOS() && !bannerDismissed) {
       setShowInstallBanner(true)
     }
 
-    // スタンドアロンモードでない場合、少し遅れてバナーを表示
-    if (!window.matchMedia('(display-mode: standalone)').matches && !bannerDismissed) {
-      setTimeout(() => {
-        if (checkIOS() || deferredPrompt) {
-          setShowInstallBanner(true)
-        }
-      }, 3000)
-    }
+    // Android/デスクトップはブラウザのプロンプトに任せる
+    // iOSのみカスタムバナーを表示
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)

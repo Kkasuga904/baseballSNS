@@ -354,14 +354,14 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
             <span className="nav-label">マイページ</span>
           </Link>
           
-          {/* チーム */}
-          <Link
+          {/* チーム（MVP版では非表示） */}
+          {/* <Link
             to="/teams"
             className={`nav-item ${location.pathname.startsWith('/team') ? 'active' : ''}`}
           >
             <span className="nav-icon">🏟️</span>
             <span className="nav-label">チーム</span>
-          </Link>
+          </Link> */}
           
           {/* プロフィール */}
           <Link

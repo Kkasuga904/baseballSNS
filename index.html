@@ -46,14 +46,8 @@
   
   <!-- Safari互換性のためのpolyfill -->
   <script>
-    // import.metaの存在チェックとフォールバック
-    try {
-      if (typeof import === 'undefined') {
-        window.import = { meta: { env: {} } };
-      }
-    } catch (e) {
-      console.warn('import.meta polyfill failed:', e);
-    }
+    // import.metaのpolyfillは削除（モジュール内でのみ使用可能）
+    // 代わりにViteが自動的に処理します
     
     // Safari用のObject.assignポリフィル
     if (typeof Object.assign !== 'function') {

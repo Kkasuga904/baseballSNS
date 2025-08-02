@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { exportSingleSchedule, createGoogleCalendarUrl } from '../utils/calendarExport'
 import './ScheduleItem.css'
 
 function ScheduleItem({ schedule }) {
+  const [showCalendarMenu, setShowCalendarMenu] = useState(false)
   const { title, type, startDate, endDate, startTime, endTime, location, description, isMultiDay, isAllDay, date } = schedule
 
   const scheduleTypes = {
@@ -18,6 +20,31 @@ function ScheduleItem({ schedule }) {
   const formatDate = (dateStr) => {
     const date = new Date(dateStr)
     return `${date.getMonth() + 1}/${date.getDate()}`
+  }
+
+  // カレンダーにエクスポート
+  const handleExportToCalendar = () => {
+    const scheduleData = {
+      ...schedule,
+      date: schedule.date || schedule.startDate,
+      title: `${typeInfo.icon} ${title}`,
+      description: description || ''
+    }
+    exportSingleSchedule(scheduleData)
+    setShowCalendarMenu(false)
+  }
+
+  // Googleカレンダーで開く
+  const handleOpenInGoogleCalendar = () => {
+    const scheduleData = {
+      ...schedule,
+      date: schedule.date || schedule.startDate,
+      title: `${typeInfo.icon} ${title}`,
+      description: description || ''
+    }
+    const url = createGoogleCalendarUrl(scheduleData)
+    window.open(url, '_blank')
+    setShowCalendarMenu(false)
   }
 
   return (
@@ -59,6 +86,27 @@ function ScheduleItem({ schedule }) {
           {description}
         </div>
       )}
+
+      {/* カレンダー連携ボタン */}
+      <div className="schedule-actions">
+        <button 
+          className="calendar-export-btn"
+          onClick={() => setShowCalendarMenu(!showCalendarMenu)}
+        >
+          📅 カレンダーに追加
+        </button>
+        
+        {showCalendarMenu && (
+          <div className="calendar-menu">
+            <button onClick={handleExportToCalendar} className="calendar-menu-item">
+              📥 iCalファイルをダウンロード
+            </button>
+            <button onClick={handleOpenInGoogleCalendar} className="calendar-menu-item">
+              🌐 Googleカレンダーで開く
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
