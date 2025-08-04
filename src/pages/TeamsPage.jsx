@@ -54,6 +54,23 @@ function TeamsPage() {
             joinedAt: '2024-01-01T00:00:00.000Z'
           },
           inviteCode: 'WINGS123',
+          members: [
+            { id: 1, name: '田中太郎', role: 'admin', position: '監督', email: 'tanaka@example.com', joinedAt: '2023-04-01' },
+            { id: 2, name: '佐藤次郎', role: 'coach', position: 'コーチ', email: 'sato@example.com', joinedAt: '2023-04-01' },
+            { id: 3, name: '山田三郎', role: 'player', position: '投手', number: '1', email: 'yamada@example.com', joinedAt: '2023-04-15' },
+            { id: 4, name: '鈴木四郎', role: 'player', position: '捕手', number: '2', email: 'suzuki@example.com', joinedAt: '2023-05-01' },
+            { id: 5, name: '高橋五郎', role: 'player', position: '一塁手', number: '3', email: 'takahashi@example.com', joinedAt: '2023-05-10' },
+            { id: 6, name: '伊藤花子', role: 'player', position: 'マネージャー', email: 'ito@example.com', joinedAt: '2023-04-01' },
+            { id: 7, name: '渡辺美咲', role: 'player', position: 'スコアラー', email: 'watanabe@example.com', joinedAt: '2023-06-01' },
+            { id: 8, name: '中村健一', role: 'player', position: '二塁手', number: '4', email: 'nakamura@example.com', joinedAt: '2023-07-01' },
+            { id: 9, name: '小林誠二', role: 'player', position: '三塁手', number: '5', email: 'kobayashi@example.com', joinedAt: '2023-07-15' },
+            { id: 10, name: '加藤里美', role: 'player', position: '遊撃手', number: '6', email: 'kato@example.com', joinedAt: '2023-08-01' },
+            { id: 11, name: '木村真司', role: 'player', position: '左翼手', number: '7', email: 'kimura@example.com', joinedAt: '2023-08-15' },
+            { id: 12, name: '松本大輔', role: 'player', position: '中堅手', number: '8', email: 'matsumoto@example.com', joinedAt: '2023-09-01' },
+            { id: 13, name: '井上勇気', role: 'player', position: '右翼手', number: '9', email: 'inoue@example.com', joinedAt: '2023-09-15' },
+            { id: 14, name: '森田拓也', role: 'player', position: '投手', number: '11', email: 'morita@example.com', joinedAt: '2023-10-01' },
+            { id: 15, name: '吉田直樹', role: 'player', position: '投手', number: '18', email: 'yoshida@example.com', joinedAt: '2023-10-15' }
+          ],
           wikiText: `# 新神田ウイングス Wiki
 
 ## 📅 今月のスケジュール
@@ -139,6 +156,28 @@ function TeamsPage() {
             joinedAt: '2024-01-01T00:00:00.000Z'
           },
           inviteCode: 'SEIRYO24',
+          members: [
+            { id: 1, name: '大谷監督', role: 'admin', position: '監督', email: 'otani@seiryo.ac.jp', joinedAt: '2020-04-01' },
+            { id: 2, name: '松井コーチ', role: 'coach', position: 'ヘッドコーチ', email: 'matsui@seiryo.ac.jp', joinedAt: '2020-04-01' },
+            { id: 3, name: '野村助監督', role: 'coach', position: '助監督', email: 'nomura@seiryo.ac.jp', joinedAt: '2021-04-01' },
+            { id: 4, name: '山崎主将', role: 'player', position: '投手', number: '1', year: '4年', email: 'yamazaki@st.seiryo.ac.jp', joinedAt: '2021-04-01' },
+            { id: 5, name: '石井副将', role: 'player', position: '捕手', number: '2', year: '4年', email: 'ishii@st.seiryo.ac.jp', joinedAt: '2021-04-01' },
+            { id: 6, name: '佐々木', role: 'player', position: '一塁手', number: '3', year: '3年', email: 'sasaki@st.seiryo.ac.jp', joinedAt: '2022-04-01' },
+            { id: 7, name: '田村', role: 'player', position: '二塁手', number: '4', year: '3年', email: 'tamura@st.seiryo.ac.jp', joinedAt: '2022-04-01' },
+            { id: 8, name: '高木', role: 'player', position: '三塁手', number: '5', year: '2年', email: 'takagi@st.seiryo.ac.jp', joinedAt: '2023-04-01' },
+            { id: 9, name: '斎藤', role: 'player', position: '遊撃手', number: '6', year: '2年', email: 'saito@st.seiryo.ac.jp', joinedAt: '2023-04-01' },
+            { id: 10, name: '福田', role: 'player', position: '左翼手', number: '7', year: '1年', email: 'fukuda@st.seiryo.ac.jp', joinedAt: '2024-04-01' },
+            { id: 11, name: '橋本', role: 'player', position: '中堅手', number: '8', year: '1年', email: 'hashimoto@st.seiryo.ac.jp', joinedAt: '2024-04-01' },
+            { id: 12, name: '村上', role: 'player', position: '右翼手', number: '9', year: '3年', email: 'murakami@st.seiryo.ac.jp', joinedAt: '2022-04-01' },
+            { id: 13, name: '藤原', role: 'player', position: '投手', number: '10', year: '4年', email: 'fujiwara@st.seiryo.ac.jp', joinedAt: '2021-04-01' },
+            { id: 14, name: '岡田', role: 'player', position: '投手', number: '11', year: '2年', email: 'okada@st.seiryo.ac.jp', joinedAt: '2023-04-01' },
+            { id: 15, name: '前田', role: 'player', position: '投手', number: '18', year: '1年', email: 'maeda@st.seiryo.ac.jp', joinedAt: '2024-04-01' },
+            { id: 16, name: '川村', role: 'player', position: '投手', number: '19', year: '3年', email: 'kawamura@st.seiryo.ac.jp', joinedAt: '2022-04-01' },
+            { id: 17, name: '池田', role: 'player', position: '外野手', number: '23', year: '2年', email: 'ikeda@st.seiryo.ac.jp', joinedAt: '2023-04-01' },
+            { id: 18, name: '上野マネ', role: 'player', position: 'マネージャー', year: '3年', email: 'ueno@st.seiryo.ac.jp', joinedAt: '2022-04-01' },
+            { id: 19, name: '西田マネ', role: 'player', position: 'マネージャー', year: '2年', email: 'nishida@st.seiryo.ac.jp', joinedAt: '2023-04-01' },
+            { id: 20, name: '東マネ', role: 'player', position: 'マネージャー', year: '1年', email: 'higashi@st.seiryo.ac.jp', joinedAt: '2024-04-01' }
+          ],
           wikiText: `# 星稜大野球部 Wiki
 
 ## 📅 今月のスケジュール
@@ -570,6 +609,33 @@ function TeamsPage() {
                 </div>
               </div>
               
+              {/* チームメンバー一覧 */}
+              <div className="team-members">
+                <h3>👥 チームメンバー</h3>
+                <div className="members-grid">
+                  {selectedTeam.members && selectedTeam.members.map(member => (
+                    <div key={member.id} className="member-card">
+                      <div className="member-header">
+                        <span className="member-name">{member.name}</span>
+                        {member.number && <span className="member-number">#{member.number}</span>}
+                      </div>
+                      <div className="member-info">
+                        <span className="member-position">{member.position}</span>
+                        {member.year && <span className="member-year">{member.year}</span>}
+                      </div>
+                      <div className="member-role">
+                        {member.role === 'admin' && <span className="role-tag admin">監督</span>}
+                        {member.role === 'coach' && <span className="role-tag coach">コーチ</span>}
+                        {member.role === 'player' && member.position === 'マネージャー' && <span className="role-tag manager">マネージャー</span>}
+                      </div>
+                      <div className="member-joined">
+                        入部: {new Date(member.joinedAt).toLocaleDateString('ja-JP')}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* チーム機能アクセス */}
               <div className="team-functions">
                 <h3>🛠️ チーム機能</h3>
