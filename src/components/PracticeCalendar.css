@@ -82,6 +82,7 @@
   width: 100%;
   border: 1px solid #e0e0e0;
   background: white;
+  gap: 0;
 }
 
 .calendar-day {
@@ -333,7 +334,7 @@
 /* 小さいカレンダー用の改善 */
 .calendar-day {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .calendar-day:hover {
@@ -477,6 +478,12 @@
     font-size: 12px;
   }
   
+  /* モバイルではホバー効果を無効化 */
+  .calendar-day:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
   .day-number {
     font-size: 12px !important;
     font-weight: 700 !important;
@@ -490,6 +497,12 @@
   
   .schedule-indicators {
     font-size: 0.45rem;
+  }
+  
+  .practice-indicator {
+    font-size: 0.4rem;
+    bottom: 1px;
+    right: 1px;
   }
   
   .schedule-modal-overlay {
