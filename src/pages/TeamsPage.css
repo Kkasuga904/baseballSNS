@@ -1,0 +1,928 @@
+.teams-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.teams-container {
+  max-width: 100%;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-header h1 {
+  color: #2e7d46;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.page-description {
+  color: #666;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.team-actions-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.create-team-btn {
+  background: #2e7d46;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(46, 125, 70, 0.2);
+}
+
+.create-team-btn:hover {
+  background: #3a9855;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(46, 125, 70, 0.3);
+}
+
+/* チーム一覧グリッド */
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+/* チームカード（大サイズ） */
+.team-card-large {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 2px solid #f0f0f0;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.team-card-large::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2e7d46, #4caf50);
+}
+
+.team-card-large:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-color: #2e7d46;
+}
+
+.team-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.team-info h3 {
+  color: #2e7d46;
+  font-size: 1.4rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.team-description {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.team-role-badge {
+  background: #2e7d46;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* チーム統計 */
+.team-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.team-stats .stat-item {
+  text-align: center;
+}
+
+.team-stats .stat-value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2e7d46;
+  margin-bottom: 0.25rem;
+}
+
+.team-stats .stat-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* チームアクション */
+.team-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.team-action-btn {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.team-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-action-btn.primary {
+  background: #2e7d46;
+  border-color: #2e7d46;
+  color: white;
+  grid-column: 1 / -1;
+}
+
+.team-action-btn.primary:hover {
+  background: #3a9855;
+}
+
+.team-action-btn.admin {
+  background: #ff9800;
+  border-color: #ff9800;
+  color: white;
+}
+
+.team-action-btn.admin:hover {
+  background: #ffb74d;
+}
+
+/* チームメタ情報 */
+.team-meta {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* チームなしの状態 */
+.no-teams {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.no-teams-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.no-teams-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.no-teams h3 {
+  color: #2e7d46;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.no-teams p {
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* モーダルスタイル */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* チーム詳細展開 */
+.team-details-expanded {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 2px solid #2e7d46;
+  animation: slideIn 0.3s ease-out;
+}
+
+.team-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* チーム基本情報 */
+.team-info-section h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.info-item label {
+  font-weight: 600;
+  color: #555;
+}
+
+.info-item span {
+  color: #333;
+}
+
+.role-badge {
+  background: #2e7d46;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.invite-code {
+  font-family: monospace;
+  background: #e9ecef;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* 詳細統計 */
+.team-stats-detailed h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats-grid-detailed {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+}
+
+.stat-title {
+  font-weight: 700;
+  color: #2e7d46;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.stat-row:not(:last-child) {
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.stat-number {
+  font-weight: bold;
+  color: #2e7d46;
+  font-size: 1.1rem;
+}
+
+/* チーム機能 */
+.team-functions h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.function-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.function-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.function-btn:hover {
+  border-color: #2e7d46;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 125, 70, 0.1);
+}
+
+.function-btn.admin {
+  border-color: #ff9800;
+}
+
+.function-btn.admin:hover {
+  border-color: #f57c00;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2);
+}
+
+.function-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.function-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.function-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.function-desc {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* チームスケジュール */
+.team-schedule h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.schedule-item {
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 2px solid #e9ecef;
+  transition: all 0.2s;
+}
+
+.schedule-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-item.game {
+  border-color: #ff9800;
+  background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%);
+}
+
+.schedule-item.practice {
+  border-color: #2e7d46;
+  background: linear-gradient(135deg, #f1f8e9 0%, #ffffff 100%);
+}
+
+.schedule-date {
+  flex-shrink: 0;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.date-text {
+  background: #2e7d46;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.schedule-item.game .date-text {
+  background: #ff9800;
+}
+
+.schedule-content {
+  flex: 1;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.schedule-type {
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.schedule-type.game {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.schedule-type.practice {
+  background: #e8f5e8;
+  color: #2e7d46;
+}
+
+.schedule-time {
+  color: #666;
+  font-weight: 500;
+}
+
+.schedule-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.schedule-location {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.schedule-description {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.view-more-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-more-btn:hover {
+  background: #e9ecef;
+  border-color: #2e7d46;
+  color: #2e7d46;
+}
+
+/* チームWiki */
+.team-wiki h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wiki-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.edit-wiki-btn {
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.edit-wiki-btn:hover {
+  background: #f57c00;
+  transform: translateY(-1px);
+}
+
+.wiki-content {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.wiki-text {
+  white-space: pre-wrap;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+}
+
+.wiki-editor {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.wiki-textarea {
+  width: 100%;
+  min-height: 400px;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+
+.wiki-textarea:focus {
+  outline: none;
+  border-color: #2e7d46;
+  box-shadow: 0 0 0 3px rgba(46, 125, 70, 0.1);
+}
+
+.wiki-editor-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.save-btn {
+  background: #2e7d46;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.save-btn:hover {
+  background: #3a9855;
+  transform: translateY(-1px);
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* 最近の活動 */
+.recent-activities h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.activity-list {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.activity-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.activity-title {
+  color: #333;
+  font-weight: 500;
+}
+
+.activity-time {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.section-header h2 {
+  color: #2e7d46;
+  margin: 0;
+}
+
+.close-btn {
+  background: #ff4458;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: #ff6b6b;
+  transform: scale(1.1);
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .teams-page {
+    padding: 1rem 0.5rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .teams-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .team-card-large {
+    padding: 1.5rem;
+  }
+  
+  .team-stats {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .team-actions {
+    grid-template-columns: 1fr;
+  }
+  
+  .team-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .modal-overlay {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+  
+  /* チーム詳細のモバイル対応 */
+  .team-details-expanded {
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .team-details-content {
+    gap: 1.5rem;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .stats-grid-detailed {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .function-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .function-btn {
+    padding: 0.75rem;
+  }
+  
+  .function-icon {
+    font-size: 1.25rem;
+  }
+  
+  .activity-item {
+    padding: 0.5rem;
+  }
+  
+  .activity-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  /* スケジュールのモバイル対応 */
+  .schedule-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .schedule-date {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.75rem;
+    justify-content: flex-start;
+  }
+  
+  .date-text {
+    width: auto;
+    display: inline-block;
+  }
+  
+  .schedule-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  /* Wikiのモバイル対応 */
+  .wiki-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .wiki-textarea {
+    min-height: 300px;
+    font-size: 0.85rem;
+  }
+  
+  .wiki-editor-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

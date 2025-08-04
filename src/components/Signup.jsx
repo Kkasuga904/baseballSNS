@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../App'
 import { useNavigate, Link } from 'react-router-dom'
-import GoogleAuthNotice from './GoogleAuthNotice'
 import './Login.css'
 
 function Signup() {
@@ -50,55 +49,27 @@ function Signup() {
   }
 
   const handleGoogleSignup = async () => {
-    // Firebase設定がない場合は通知を表示
-    if (!signInWithGoogle || !import.meta.env.VITE_FIREBASE_API_KEY) {
-      setShowGoogleNotice(true)
+    if (!signInWithGoogle) {
+      setError('Google認証機能が利用できません')
       return
     }
     
     setLoading(true)
     setError('')
     
-    const { data, error, needsProfileSetup } = await signInWithGoogle()
+    const { data, error } = await signInWithGoogle()
     
     if (error) {
-      setError('Googleアカウントでの登録に失敗しました')
+      setError('Googleアカウントでの登録に失敗しました: ' + error.message)
       setLoading(false)
     } else {
+      // Google認証はSupabaseのOAuthリダイレクトを使用するため、
+      // この画面は自動的に閉じられます
       setSuccess(true)
       setLoading(false)
-      setTimeout(() => {
-        navigate(needsProfileSetup ? '/profile-setup' : '/')
-      }, 1500)
     }
   }
 
-  const handleDemoGoogleSignup = async () => {
-    setShowGoogleNotice(false)
-    setLoading(true)
-    setError('')
-    
-    // デモ用のGoogle風認証
-    const googleEmail = `user${Date.now()}@gmail.com`
-    const googlePassword = 'google123'
-    
-    setEmail(googleEmail)
-    setPassword(googlePassword)
-    setConfirmPassword(googlePassword)
-    
-    const { error } = await signUp(googleEmail, googlePassword)
-    
-    if (error) {
-      setError('デモ登録に失敗しました')
-      setLoading(false)
-    } else {
-      setSuccess(true)
-      setLoading(false)
-      setTimeout(() => {
-        navigate('/profile-setup')
-      }, 1500)
-    }
-  }
 
   const handleAppleSignup = async () => {
     // Appleアカウント風の登録（実際には自動生成されたメールで登録）
@@ -126,35 +97,6 @@ function Signup() {
 
   return (
     <div className="auth-container">
-      {showGoogleNotice && (
-        <GoogleAuthNotice
-          onClose={handleDemoGoogleSignup}
-          onProceed={async () => {
-            setShowGoogleNotice(false)
-            // Firebase設定がある場合のみ実際のGoogle認証を実行
-            if (signInWithGoogle && import.meta.env.VITE_FIREBASE_API_KEY) {
-              setLoading(true)
-              setError('')
-              
-              const { data, error, needsProfileSetup } = await signInWithGoogle()
-              
-              if (error) {
-                setError('Googleアカウントでの登録に失敗しました')
-                setLoading(false)
-              } else {
-                setSuccess(true)
-                setLoading(false)
-                setTimeout(() => {
-                  navigate(needsProfileSetup ? '/profile-setup' : '/')
-                }, 1500)
-              }
-            } else {
-              // Firebase設定がない場合はデモ認証
-              handleDemoGoogleSignup()
-            }
-          }}
-        />
-      )}
       
       <div className="auth-card">
         <h2>⚾ 新規登録</h2>
@@ -186,7 +128,7 @@ function Signup() {
             <label htmlFor="email">メールアドレス</label>
             <input
               id="email"
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

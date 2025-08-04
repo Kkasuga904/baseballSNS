@@ -14,6 +14,7 @@
  */
 
 import React, { useState, useMemo, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './PracticeCalendar.css'
 
 /**
@@ -26,6 +27,7 @@ import './PracticeCalendar.css'
  */
 function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
   console.log('PracticeCalendar component mounted')
+  const navigate = useNavigate()
   
   // 現在表示中の年月を管理
   const [currentDate, setCurrentDate] = useState(() => {
@@ -207,33 +209,8 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
     touchEndX.current = 0
   }
   
-  /**
-   * マウスホイールでの月切り替え
-   */
-  const handleWheel = (e) => {
-    e.preventDefault()
-    
-    if (isTransitioning) return
-    
-    if (e.deltaY > 0) {
-      changeMonth(1)
-    } else if (e.deltaY < 0) {
-      changeMonth(-1)
-    }
-  }
-  
-  // ホイールイベントのリスナー設定
-  useEffect(() => {
-    const calendar = calendarRef.current
-    if (calendar) {
-      // パッシブリスナーを無効にしてpreventDefaultを有効化
-      calendar.addEventListener('wheel', handleWheel, { passive: false })
-      
-      return () => {
-        calendar.removeEventListener('wheel', handleWheel)
-      }
-    }
-  }, [isTransitioning])
+  // マウスホイールでの月切り替えは無効化
+  // ユーザビリティの観点から、誤操作を防ぐため削除
 
   /**
    * カレンダーの日付セルをレンダリング
@@ -288,25 +265,38 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
        * 日付セルクリック時の処理
        * 練習記録と予定の詳細を表示
        */
-      const handleDayClick = () => {
+      const handleDayClick = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        console.log('Day clicked:', dateStr, 'Window width:', window.innerWidth)
+        
+        // デバイスの判定（モバイルデバイスかどうかをユーザーエージェントで判定）
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+        const isPC = !isMobile
+        
+        if (isPC) {
+          // PCの場合は新しいタブで開く
+          console.log('Opening in new tab')
+          window.open(`/practice-record?date=${dateStr}`, '_blank')
+        } else {
+          // モバイルの場合は親コンポーネントのコールバックを実行（練習記録フォームを開く）
+          console.log('Mobile: calling onDateClick')
+          if (onDateClick) {
+            onDateClick(dateStr)
+          }
+        }
+        
         // その日の練習記録をフィルタリング
         const practicesOnDate = practices.filter(p => 
           p.practiceData && p.practiceData.date === dateStr
         )
         
-        // 練習または予定がある場合
-        if (practicesOnDate.length > 0 || daySchedules.length > 0) {
-          // 親コンポーネントのコールバックを実行
-          if (onDateClick) {
-            onDateClick(dateStr)
-          }
-          
-          // 予定がある場合はモーダルを表示
-          if (daySchedules.length > 0) {
-            setSelectedDateSchedules(daySchedules)
-            setSelectedModalDate(dateStr)
-            setShowScheduleModal(true)
-          }
+        // 予定がある場合はモーダルも表示（PCの場合はスキップ）
+        if (!isPC && (daySchedules.length > 0 || practicesOnDate.length > 0)) {
+          setSelectedDateSchedules(daySchedules)
+          setSelectedModalDate(dateStr)
+          setShowScheduleModal(true)
         }
       }
       
@@ -318,7 +308,6 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
             calendar-day 
             ${hasPractice ? 'has-practice' : ''} 
             ${isToday ? 'today' : ''}
-            ${(hasPractice || daySchedules.length > 0) ? 'clickable' : ''}
           `}
           style={{
             WebkitTransform: 'translateZ(0)',
@@ -425,33 +414,25 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
     >
       {/* カレンダーヘッダー：年月表示と月切り替えボタン */}
       <div className="calendar-header">
-        <button onClick={() => changeMonth(-1)} className="month-nav">
+        <button onClick={() => changeMonth(-1)} className="month-nav prev">
           ‹
         </button>
-        <h3>
-          {monthYear.year}年{monthYear.month + 1}月
-        </h3>
-        <button onClick={() => changeMonth(1)} className="month-nav">
+        <h3>{monthYear.year}年{monthYear.month + 1}月</h3>
+        <button onClick={() => changeMonth(1)} className="month-nav next">
           ›
         </button>
       </div>
       
       {/* 曜日ヘッダー */}
-      <div className="calendar-grid">
-        <div className="calendar-weekdays">
-          {['日', '月', '火', '水', '木', '金', '土'].map(day => (
-            <div key={day} className="weekday">{day}</div>
-          ))}
-        </div>
-        
-        {/* カレンダー本体 */}
-        <div className="calendar-days">
-          {renderCalendar()}
-          {/* デバッグ用：固定の日付を表示 */}
-          {/* <div className="calendar-day">1</div>
-          <div className="calendar-day">2</div>
-          <div className="calendar-day">3</div> */}
-        </div>
+      <div className="calendar-weekdays">
+        {['日', '月', '火', '水', '木', '金', '土'].map(day => (
+          <div key={day} className="weekday">{day}</div>
+        ))}
+      </div>
+      
+      {/* カレンダー本体 */}
+      <div className="calendar-days">
+        {renderCalendar()}
       </div>
       
       {/* スケジュール詳細モーダル */}

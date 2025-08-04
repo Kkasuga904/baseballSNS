@@ -90,6 +90,16 @@ export const AuthProvider = ({ children }) => {
       })
     }
     
+    // テストアカウントの自動作成
+    if (!users.find(u => u.email === 'test')) {
+      users.push({
+        id: 'test_user',
+        email: 'test',
+        password: 'test',
+        createdAt: new Date().toISOString()
+      })
+    }
+    
     // ユーザーリストを保存
     localStorage.setItem('baseballSNSUsers', JSON.stringify(users))
     

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Game Category Cache</title>
+</head>
+<body>
+    <h1>LocalStorage Cache Cleaner</h1>
+    <button onclick="clearGameCache()">Clear Game Category Cache</button>
+    <button onclick="clearAllPracticeCache()">Clear All Practice Item Cache</button>
+    <div id="output"></div>
+
+    <script>
+        function clearGameCache() {
+            const keys = Object.keys(localStorage);
+            const gameKeys = keys.filter(key => key.includes('customPracticeItems') && key.includes('game'));
+            
+            gameKeys.forEach(key => {
+                localStorage.removeItem(key);
+                console.log('Removed:', key);
+            });
+            
+            document.getElementById('output').innerHTML = `
+                <p>Cleared ${gameKeys.length} game cache entries:</p>
+                <ul>${gameKeys.map(key => `<li>${key}</li>`).join('')}</ul>
+                <p>Please refresh your baseball app to see the new game category items.</p>
+            `;
+        }
+        
+        function clearAllPracticeCache() {
+            const keys = Object.keys(localStorage);
+            const practiceKeys = keys.filter(key => key.includes('customPracticeItems'));
+            
+            practiceKeys.forEach(key => {
+                localStorage.removeItem(key);
+                console.log('Removed:', key);
+            });
+            
+            document.getElementById('output').innerHTML = `
+                <p>Cleared ${practiceKeys.length} practice cache entries:</p>
+                <ul>${practiceKeys.map(key => `<li>${key}</li>`).join('')}</ul>
+                <p>Please refresh your baseball app to see all updated category items.</p>
+            `;
+        }
+        
+        // Show current localStorage data
+        window.onload = function() {
+            const keys = Object.keys(localStorage);
+            const practiceKeys = keys.filter(key => key.includes('customPracticeItems'));
+            
+            if (practiceKeys.length > 0) {
+                document.getElementById('output').innerHTML = `
+                    <h3>Current Practice Item Cache:</h3>
+                    <ul>${practiceKeys.map(key => `<li>${key}</li>`).join('')}</ul>
+                `;
+            } else {
+                document.getElementById('output').innerHTML = '<p>No practice item cache found.</p>';
+            }
+        };
+    </script>
+</body>
+</html>

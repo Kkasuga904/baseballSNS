@@ -9,7 +9,7 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 
 // 認証システムの選択
 // Firebase設定がある場合はFirebaseAuthContext、Supabase設定がある場合はAuthContext、それ以外はSimpleAuthContextを使用
@@ -54,17 +54,24 @@ export const useAuth = hasFirebaseConfig ? useFirebaseAuth : (hasSupabaseConfig 
 
 // コンポーネントのインポート
 import Navigation from './components/Navigation'
+import MobileNavigation from './components/MobileNavigation'
 import Timeline from './pages/Timeline'
 import MyPage from './pages/MyPage'
 import CalendarView from './pages/CalendarView'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
 import Disclaimer from './pages/Disclaimer'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
+import PracticeRecordPage from './pages/PracticeRecordPage'
+import Measurements from './pages/Measurements'
+import TeamsPage from './pages/TeamsPage'
 // MVP版ではチーム機能は無効化
 // import TeamDetail from './pages/TeamDetail'
 // import Teams from './pages/Teams'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import AuthCallback from './pages/AuthCallback'
 import CompactLogin from './components/CompactLogin'
 import ProfileSetup from './components/ProfileSetup'
 import ForgotPassword from './components/ForgotPassword'
@@ -75,8 +82,9 @@ import PWAInstallBanner from './components/PWAInstallBanner'
 import OfflineIndicator from './components/OfflineIndicator'
 import { TeamProvider } from './contexts/TeamContext'
 import { PostProvider } from './contexts/PostContext'
-import { setupDemoTeam, joinDemoTeam, addDemoUserToTeam } from './utils/demoTeamSetup'
 import { useOfflineSync } from './hooks/useOfflineSync'
+import { ensureDemoUserExists } from './utils/demoUser'
+import { initializeAdminData } from './utils/adminInitialData'
 import './App.css'
 import './admin-theme.css'
 
@@ -87,6 +95,9 @@ import './admin-theme.css'
 function AppContent() {
   // 現在ログイン中のユーザー情報を取得
   const { user } = useAuth()
+  
+  // React Routerのナビゲーション
+  const navigate = useNavigate()
   
   // オフライン同期機能
   const { isOnline, pendingSync } = useOfflineSync()
@@ -329,71 +340,25 @@ function AppContent() {
 
   // 初回ロード時にデモチームのセットアップ確認
   useEffect(() => {
-    // デモチームが存在するか確認
-    const teams = JSON.parse(localStorage.getItem('baseballSNS_teams') || '[]');
-    const demoTeamExists = teams.some(team => team.id === 'demo-team-001');
-    
-    if (demoTeamExists) {
-      // デモチームは存在するが、現在のユーザーがメンバーでない可能性があるため
-      // デモユーザーを追加（既に存在する場合は何もしない）
-      addDemoUserToTeam();
+    // 管理人アカウントでログインしている場合、初期データを設定
+    if (user && user.email === 'over9131120@gmail.com') {
+      initializeAdminData();
     }
-  }, []);
-
-  // デモチームセットアップ
-  const handleSetupDemoTeam = () => {
-    const wasSetup = setupDemoTeam();
-    if (wasSetup) {
-      // 現在のユーザーをチームに参加させる
-      if (user) {
-        joinDemoTeam(user.id || user.email);
-      }
-      // デモユーザーも追加
-      addDemoUserToTeam();
-      alert('デモチーム「新神田ウイングス」を作成しました！\nマイページで確認してください。');
-      window.location.reload();
-    } else {
-      // 既に存在する場合もデモユーザーを追加
-      if (user) {
-        const joined = joinDemoTeam(user.id || user.email);
-        if (joined) {
-          alert('デモチームに参加しました！');
-          window.location.reload();
-        } else {
-          alert('既にチームに参加しています。');
-        }
-      }
-      addDemoUserToTeam();
-    }
-  };
+  }, [user])
 
   // JSXレンダリング部分
   return (
     <div className="app">
         {/* アプリケーションヘッダー */}
         <header className="app-header">
-          <h1>⚾ BaseLog</h1>
+          <h1 
+            onClick={() => navigate('/mypage')} 
+            style={{ cursor: 'pointer' }}
+            title="マイページへ"
+          >
+            ⚾ BaseLog
+          </h1>
           <p>野球の記録と交流をひとつに</p>
-          {/* デモチームセットアップボタン */}
-          {user && (
-            <button 
-              onClick={handleSetupDemoTeam}
-              style={{
-                position: 'absolute',
-                right: '20px',
-                top: '20px',
-                padding: '8px 16px',
-                backgroundColor: '#2e7d46',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
-            >
-              デモチームを作成
-            </button>
-          )}
         </header>
         
         {/* ナビゲーションバー（ログイン時のみ表示） */}
@@ -420,6 +385,9 @@ function AppContent() {
           {/* 新規登録画面 */}
           <Route path="/signup" element={<Signup />} />
           
+          {/* 認証コールバック画面 */}
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          
           {/* プロフィール設定画面 */}
           <Route path="/profile-setup" element={<ProfileSetup />} />
           
@@ -442,6 +410,7 @@ function AppContent() {
                 setMyPageData={updateMyPageData}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
+                addPost={addPost}
               />
             </ProtectedRoute>
           } />
@@ -453,12 +422,12 @@ function AppContent() {
             </ProtectedRoute>
           } />
           
-          {/* チーム一覧 - MVP版では無効化 */}
-          {/* <Route path="/teams" element={
+          {/* チーム一覧 */}
+          <Route path="/teams" element={
             <ProtectedRoute>
-              <Teams />
+              <TeamsPage />
             </ProtectedRoute>
-          } /> */}
+          } />
           
           {/* ユーザープロフィール画面 */}
           <Route path="/profile/:userId" element={
@@ -471,6 +440,13 @@ function AppContent() {
           <Route path="/profile" element={
             <ProtectedRoute>
               <Profile posts={posts} myPageData={myPageData} />
+            </ProtectedRoute>
+          } />
+          
+          {/* 測定結果画面 - ログイン必須 */}
+          <Route path="/measurements" element={
+            <ProtectedRoute>
+              <Measurements />
             </ProtectedRoute>
           } />
           
@@ -490,7 +466,27 @@ function AppContent() {
           
           {/* 免責事項ページ */}
           <Route path="/disclaimer" element={<Disclaimer />} />
+          
+          {/* プライバシーポリシーページ */}
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          
+          {/* 利用規約ページ */}
+          <Route path="/terms" element={<TermsOfService />} />
+          
+          {/* 練習記録ページ */}
+          <Route path="/practice-record" element={
+            <ProtectedRoute>
+              <PracticeRecordPage 
+                addPost={addPost}
+                myPageData={myPageData}
+                setMyPageData={updateMyPageData}
+              />
+            </ProtectedRoute>
+          } />
         </Routes>
+        
+        {/* モバイル用固定ナビゲーション（ログイン時のみ表示） */}
+        {user && <MobileNavigation />}
         
         {/* フッター */}
         <Footer />
@@ -503,6 +499,15 @@ function AppContent() {
  * RouterとAuthProviderでアプリ全体をラップ
  */
 function App() {
+  // アプリ起動時にデモユーザーを作成
+  useEffect(() => {
+    ensureDemoUserExists().then(result => {
+      if (result.created) {
+        console.log('デモユーザーを作成しました')
+      }
+    })
+  }, [])
+
   return (
     <Router>
       <AuthProvider>

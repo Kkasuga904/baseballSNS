@@ -183,12 +183,12 @@ function CalendarView({ posts = [], myPageData = { schedules: [] }, setMyPageDat
 
       <div className="calendar-controls">
         <div className="month-navigation">
-          <button className="month-nav-btn" onClick={() => changeMonth(-1)}>
-            <span>前月</span>
+          <button className="month-nav-btn prev" onClick={() => changeMonth(-1)}>
+            <span className="arrow">‹</span>
           </button>
           <h3 className="current-month">{monthYear.year}年 {monthNames[monthYear.month]}</h3>
-          <button className="month-nav-btn" onClick={() => changeMonth(1)}>
-            <span>翌月</span>
+          <button className="month-nav-btn next" onClick={() => changeMonth(1)}>
+            <span className="arrow">›</span>
           </button>
         </div>
         

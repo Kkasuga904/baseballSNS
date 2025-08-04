@@ -15,7 +15,10 @@ function Profile() {
   
   const [isEditing, setIsEditing] = useState(false)
   const [profile, setProfile] = useState(() => {
-    const profileKey = `baseballSNSProfile_${displayUserId}`
+    // 管理者アカウントの場合は専用のキーから読み込み
+    const profileKey = displayUserId === 'over9131120@gmail.com' 
+      ? 'baseballSNSAdminProfile'
+      : `baseballSNSProfile_${displayUserId}`
     const savedProfile = localStorage.getItem(profileKey)
     return savedProfile ? JSON.parse(savedProfile) : null
   })
@@ -55,7 +58,10 @@ function Profile() {
   }
   
   const handleSave = () => {
-    const profileKey = `baseballSNSProfile_${displayUserId}`
+    // 管理者アカウントの場合は専用のキーに保存
+    const profileKey = displayUserId === 'over9131120@gmail.com' 
+      ? 'baseballSNSAdminProfile'
+      : `baseballSNSProfile_${displayUserId}`
     localStorage.setItem(profileKey, JSON.stringify(editData))
     setProfile(editData)
     setAvatarPreview(null)
@@ -343,6 +349,16 @@ function Profile() {
                   onChange={(e) => setEditData({...editData, nickname: e.target.value})}
                   placeholder="ニックネームを入力"
                 />
+              </div>
+              <div className="form-field">
+                <label>本名（任意）</label>
+                <input
+                  type="text"
+                  value={editData.realName || ''}
+                  onChange={(e) => setEditData({...editData, realName: e.target.value})}
+                  placeholder="本名を入力"
+                />
+                <small className="privacy-note">※本名は公開されません</small>
               </div>
               <div className="form-field">
                 <label>スポーツ</label>

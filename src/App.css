@@ -6,6 +6,13 @@
   position: relative;
 }
 
+/* モバイル用の下部余白 */
+@media (max-width: 768px) {
+  .app {
+    padding-bottom: 60px;
+  }
+}
+
 .app-header {
   background: linear-gradient(135deg, #1e5631 0%, #2e7d46 100%);
   color: white;

@@ -1,5 +1,5 @@
 .calendar-view {
-  max-width: 1400px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -56,27 +56,52 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   background: white;
-  padding: 1rem;
-  border-radius: 12px;
+  padding: 0.75rem;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .month-navigation {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
 }
 
 .month-nav-btn {
-  padding: 0.5rem 1rem;
+  position: absolute;
+  width: 36px;
+  height: 36px;
   background: white;
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-weight: bold;
+}
+
+.month-nav-btn.prev {
+  left: 0;
+}
+
+.month-nav-btn.next {
+  right: 0;
+}
+
+.month-nav-btn .arrow {
+  font-size: 24px;
+  line-height: 1;
+  color: #2e7d46;
+  opacity: 0.8;
 }
 
 .month-nav-btn:hover {
@@ -84,12 +109,16 @@
   background: #e8f5e9;
 }
 
+.month-nav-btn:hover .arrow {
+  opacity: 1;
+}
+
 .current-month {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #2e7d46;
-  margin: 0;
-  min-width: 200px;
+  margin: 0 auto;
   text-align: center;
+  font-weight: bold;
 }
 
 .today-btn {
@@ -138,8 +167,8 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   background: white;
-  border-radius: 12px 12px 0 0;
-  padding: 1rem;
+  border-radius: 8px 8px 0 0;
+  padding: 0.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -147,7 +176,8 @@
   text-align: center;
   font-weight: bold;
   color: #666;
-  padding: 0.5rem;
+  padding: 0.25rem;
+  font-size: 0.8rem;
 }
 
 .weekday.sunday {
@@ -162,19 +192,39 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   background: white;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 8px 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  gap: 1px;
 }
 
 .calendar-day {
-  min-height: 120px;
+  min-height: 60px;
   border: 1px solid #e0e0e0;
-  padding: 0.5rem;
+  padding: 0.3rem;
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
   overflow: hidden;
+}
+
+/* PC画面でカレンダーの日付セルを小さく */
+@media (min-width: 1024px) {
+  .calendar-day {
+    min-height: 50px;
+    padding: 0.25rem;
+    font-size: 0.85rem;
+  }
+  
+  .day-number {
+    font-size: 0.85rem;
+  }
+  
+  .schedule-indicator,
+  .practice-indicator {
+    font-size: 9px;
+    padding: 1px 3px;
+  }
 }
 
 .calendar-day:hover:not(.empty) {
@@ -215,7 +265,7 @@
 
 .day-number {
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: #333;
 }
 
@@ -421,7 +471,17 @@
   
   .month-navigation {
     width: 100%;
-    justify-content: center;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .month-nav-btn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .month-nav-btn .arrow {
+    font-size: 20px;
   }
   
   .calendar-day {

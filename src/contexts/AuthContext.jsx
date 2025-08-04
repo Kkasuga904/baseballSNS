@@ -84,6 +84,23 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const signInWithGoogle = async () => {
+    if (!isSupabaseConfigured) {
+      return { data: null, error: new Error('Supabaseが設定されていません。.envファイルを確認してください。') }
+    }
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      })
+      return { data, error }
+    } catch (err) {
+      return { data: null, error: err }
+    }
+  }
+
   const signOut = async () => {
     if (!isSupabaseConfigured) {
       return { error: null }
@@ -129,6 +146,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     signUp,
     signIn,
+    signInWithGoogle,
     signOut,
     resetPassword,
     updatePassword,

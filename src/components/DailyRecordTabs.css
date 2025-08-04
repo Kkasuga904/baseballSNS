@@ -2,7 +2,6 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
   margin-bottom: 2rem;
   position: relative;
   z-index: 5;
@@ -12,6 +11,7 @@
   background: linear-gradient(135deg, #3a9855, #4cb565);
   color: white;
   padding: 1rem 1.5rem;
+  border-radius: 12px 12px 0 0;
 }
 
 .tabs-header h3 {

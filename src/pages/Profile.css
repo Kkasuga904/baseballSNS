@@ -673,6 +673,16 @@
   margin-bottom: 1rem;
 }
 
+.form-field .privacy-note {
+  display: block;
+  background: none;
+  padding: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
 .school-input-group {
   display: flex;
   gap: 1rem;

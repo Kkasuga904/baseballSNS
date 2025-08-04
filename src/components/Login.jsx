@@ -47,47 +47,33 @@ function Login() {
         }
       }
     } else {
-      // Firebase設定がない場合は従来のデモログイン
-      setEmail('demo@baseball-sns.com')
-      setPassword('demo123')
-      setTimeout(() => {
-        handleSubmit({ preventDefault: () => {} })
-      }, 500)
+      // Firebase設定がない場合はエラー表示
+      setError('Google認証が設定されていません')
+      setLoading(false)
     }
   }
 
   const handleAppleLogin = () => {
-    // Appleログイン風の動作（実際には簡易ログイン）
-    setEmail('apple.user@icloud.com')
-    setPassword('apple123')
-    setTimeout(() => {
-      handleSubmit({ preventDefault: () => {} })
-    }, 500)
+    // Appleログインは未実装
+    setError('Apple認証は現在利用できません')
   }
 
-  const useDemoAccount = (demoEmail, demoPassword) => {
-    setEmail(demoEmail)
-    setPassword(demoPassword)
-  }
-
-  const resetDemoData = () => {
-    if (confirm('デモデータをリセットしますか？\n※すべてのローカルデータが削除されます')) {
-      // LocalStorageのデモ関連データをクリア
-      localStorage.removeItem('baseballSNSUsers')
-      localStorage.removeItem('baseballSNSUser')
-      localStorage.removeItem('baseballSNSPosts')
-      localStorage.removeItem('baseballSNSAdminData')
-      localStorage.removeItem('baseballSNS_teams')
-      
-      // ユーザー固有データをクリア
-      Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('baseballSNSMyPageData_')) {
-          localStorage.removeItem(key)
-        }
-      })
-      
-      alert('デモデータをリセットしました。ページを再読み込みします。')
-      window.location.reload()
+  const handleDemoLogin = async () => {
+    setLoading(true)
+    setError('')
+    
+    // デモユーザーの認証情報
+    const demoEmail = 'demo@baselog.jp'
+    const demoPassword = 'demo123456'
+    
+    const { error } = await signIn(demoEmail, demoPassword)
+    
+    if (error) {
+      // デモユーザーが存在しない場合は作成を促す
+      setError('デモユーザーが見つかりません。管理者に連絡してください。')
+      setLoading(false)
+    } else {
+      navigate('/')
     }
   }
 
@@ -111,43 +97,13 @@ function Login() {
         
         <div className="divider">または</div>
         
-        <button 
-          type="button" 
-          className="demo-quick-login"
-          onClick={() => useDemoAccount('demo@baseball-sns.com', 'demo123')}
-        >
-          🎯 デモアカウントで試す
-        </button>
-        
-        <button 
-          type="button" 
-          className="demo-quick-login admin-demo"
-          onClick={() => useDemoAccount('over9131120@gmail.com', 'Sawamura18')}
-        >
-          👑 管理者デモアカウント
-        </button>
-        
-        <button 
-          type="button" 
-          className="reset-demo-data"
-          onClick={resetDemoData}
-          style={{
-            backgroundColor: '#dc3545',
-            color: 'white',
-            fontSize: '12px',
-            padding: '8px 12px',
-            marginTop: '10px'
-          }}
-        >
-          🔄 デモデータをリセット
-        </button>
         
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="email">メールアドレス</label>
             <input
               id="email"
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -196,6 +152,28 @@ function Login() {
         
         <div className="auth-links">
           <Link to="/signup">新規登録はこちら</Link>
+        </div>
+        
+        <div style={{ marginTop: '20px' }}>
+          <button 
+            type="button" 
+            onClick={handleDemoLogin} 
+            className="demo-login-button"
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: '12px',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '16px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              opacity: loading ? 0.6 : 1
+            }}
+          >
+            {loading ? 'ログイン中...' : 'デモユーザーでログイン'}
+          </button>
         </div>
       </div>
     </div>

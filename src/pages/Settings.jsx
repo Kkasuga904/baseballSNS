@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../App';
 import './Settings.css';
 
@@ -44,6 +44,30 @@ function Settings() {
     language: profile?.settings?.language || 'ja',
     timeFormat: profile?.settings?.timeFormat || '24h'
   });
+  
+  // ドリルメニュー設定
+  const [drillMenuSettings, setDrillMenuSettings] = useState(() => {
+    const saved = localStorage.getItem('allPracticeCategories');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    // デフォルトのドリルメニュー
+    return {
+      batting: { label: '打撃練習', icon: '🏏' },
+      pitching: { label: '投球練習', icon: '⚾' },
+      fielding: { label: '守備練習', icon: '🧤' },
+      running: { label: '走塁練習', icon: '🏃' },
+      training: { label: 'トレーニング', icon: '💪' },
+      stretch: { label: 'ストレッチ', icon: '🧘' },
+      mbthrow: { label: 'MBスロー', icon: '🏐' },
+      plyometrics: { label: 'プライオメトリックス', icon: '🦘' },
+      sprint: { label: 'スプリント', icon: '💨' },
+      game: { label: '試合', icon: '🏟️' },
+      rest: { label: '休養日', icon: '😴' }
+    };
+  });
+  const [showAddDrillModal, setShowAddDrillModal] = useState(false);
+  const [newDrill, setNewDrill] = useState({ label: '', icon: '' });
 
   // プロフィールが読み込まれたら設定を更新
   useEffect(() => {
@@ -79,6 +103,9 @@ function Settings() {
         ...privacySettings,
         ...displaySettings
       };
+      
+      // ドリルメニュー設定も保存
+      localStorage.setItem('allPracticeCategories', JSON.stringify(drillMenuSettings));
       
       // プロフィールを更新して保存
       const updatedProfile = { ...profile, settings };
@@ -293,6 +320,99 @@ function Settings() {
         </div>
       </div>
       
+      <div className="settings-section">
+        <h2>ドリルメニュー設定</h2>
+        <div className="drill-menu-info">
+          <p>練習記録で使用するドリルメニューをカスタマイズできます。</p>
+        </div>
+        
+        <div className="drill-menu-list">
+          <h3>ドリルメニュー一覧</h3>
+          <div className="drill-items">
+            {Object.entries(drillMenuSettings).map(([key, drill]) => (
+              <div key={key} className="drill-item">
+                <span>{drill.icon} {drill.label}</span>
+                <button
+                  className="delete-drill-button"
+                  onClick={() => {
+                    if (window.confirm(`「${drill.label}」を削除しますか？`)) {
+                      const updated = { ...drillMenuSettings };
+                      delete updated[key];
+                      setDrillMenuSettings(updated);
+                    }
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <button
+          className="add-drill-button"
+          onClick={() => setShowAddDrillModal(true)}
+        >
+          + 新しいドリルを追加
+        </button>
+      </div>
+      
+      {/* ドリル追加モーダル */}
+      {showAddDrillModal && (
+        <div className="modal-overlay" onClick={() => setShowAddDrillModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>新しいドリルメニューを追加</h3>
+            <div className="form-group">
+              <label>ドリル名</label>
+              <input
+                type="text"
+                value={newDrill.label}
+                onChange={(e) => setNewDrill({ ...newDrill, label: e.target.value })}
+                placeholder="例：メンタルトレーニング"
+                maxLength="20"
+              />
+            </div>
+            <div className="form-group">
+              <label>アイコン（絵文字）</label>
+              <input
+                type="text"
+                value={newDrill.icon}
+                onChange={(e) => setNewDrill({ ...newDrill, icon: e.target.value })}
+                placeholder="例：🧠"
+                maxLength="2"
+              />
+            </div>
+            <div className="modal-buttons">
+              <button
+                className="cancel-button"
+                onClick={() => {
+                  setShowAddDrillModal(false);
+                  setNewDrill({ label: '', icon: '' });
+                }}
+              >
+                キャンセル
+              </button>
+              <button
+                className="add-button"
+                onClick={() => {
+                  if (newDrill.label && newDrill.icon) {
+                    const key = 'custom_' + Date.now();
+                    setDrillMenuSettings({
+                      ...drillMenuSettings,
+                      [key]: newDrill
+                    });
+                    setShowAddDrillModal(false);
+                    setNewDrill({ label: '', icon: '' });
+                  }
+                }}
+              >
+                追加
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <div className="settings-actions">
         <button 
           className="save-button"
@@ -301,6 +421,18 @@ function Settings() {
         >
           {loading ? '保存中...' : '設定を保存'}
         </button>
+      </div>
+      
+      <div className="settings-section">
+        <h2>法的情報</h2>
+        <div className="legal-links">
+          <Link to="/privacy" className="legal-link">
+            プライバシーポリシー →
+          </Link>
+          <Link to="/disclaimer" className="legal-link">
+            免責事項 →
+          </Link>
+        </div>
       </div>
       
       <div className="settings-section danger-zone">

@@ -9,6 +9,91 @@
   isolation: isolate;
 }
 
+.modern-form {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.practice-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.practice-form-header h3 {
+  color: #2e7d46;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.modern-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modern-form-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  text-align: center;
+}
+
+.back-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  border-radius: 50%;
+}
+
+.back-button:hover {
+  background: #f0f0f0;
+}
+
+.header-spacer {
+  width: 40px;
+}
+
+.close-form-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f0;
+  color: #666;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-form-button:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
 .practice-form h3 {
   color: #2e7d46;
   margin-bottom: 1.5rem;
@@ -61,6 +146,12 @@
   gap: 0.5rem;
 }
 
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.5rem;
+}
+
 .category-button {
   display: flex;
   flex-direction: column;
@@ -72,6 +163,7 @@
   cursor: pointer;
   transition: all 0.2s;
   font-size: 0.85rem;
+  position: relative;
 }
 
 .category-button:hover {
@@ -82,6 +174,36 @@
 .category-button.active {
   border-color: #2e7d46;
   background-color: #e8f5e8;
+}
+
+.category-button .delete-button {
+  display: none;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff4458;
+  color: white;
+  border: 2px solid white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.category-button:hover .delete-button {
+  display: flex;
+}
+
+.category-button .delete-button:hover {
+  background: #ff6b6b;
+  transform: scale(1.1);
 }
 
 .category-icon {
@@ -159,23 +281,383 @@
   min-height: 100px;
 }
 
-.submit-button {
-  background: linear-gradient(135deg, #2e7d46, #3a9855);
-  color: white;
-  padding: 0.75rem 2rem;
-  border-radius: 25px;
+/* タブスタイル */
+.form-tabs {
+  display: flex;
+  background: #f0f0f0;
+  padding: 4px;
+  border-radius: 8px;
+  margin: 0 1rem;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  font-size: 0.95rem;
+  color: #666;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.tab-button:hover {
+  color: #333;
+}
+
+.tab-button.active {
+  color: #333;
+  font-weight: 600;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* フォームコンテンツ */
+.modern-form-content {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  overflow-y: auto;
+  background: #f8f9fa;
+}
+
+.form-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.section-icon {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  margin-left: 2rem;
+}
+
+.required {
+  color: #f44336;
+  margin-left: 4px;
+}
+
+/* 日付入力 */
+.date-section {
+  cursor: pointer;
+}
+
+.date-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 2rem;
+  width: calc(100% - 2rem);
+  cursor: pointer;
+}
+
+.date-input-wrapper:hover .date-input {
+  border-color: #2196f3;
+  background: white;
+}
+
+.date-input {
+  width: 100%;
+  padding: 0.75rem 3rem 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   font-size: 1rem;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 1rem;
+  font-size: 1.2rem;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Hide native calendar icon */
+.date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.text-input {
+  width: calc(100% - 2rem);
+  margin-left: 2rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8f9fa;
+}
+
+.text-input:focus,
+.date-input:focus {
+  outline: none;
+  border-color: #2196f3;
+  background: white;
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  font-size: 1.2rem;
+  pointer-events: none;
+}
+
+/* コンディションボタン */
+.condition-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-left: 2rem;
+}
+
+.condition-button {
+  flex: 1;
+  padding: 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: #f8f9fa;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.condition-button:hover {
+  border-color: #2196f3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.condition-button.active {
+  border-color: #2196f3;
+  background: #e3f2fd;
+}
+
+/* ドリル入力 */
+.drill-list {
+  margin-left: 2rem;
+}
+
+.drill-input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.drill-select {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #f8f9fa;
+}
+
+.drill-select:focus {
+  outline: none;
+  border-color: #2196f3;
+  background: white;
+}
+
+.count-input {
+  width: 100px;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.count-input:focus {
+  outline: none;
+  border-color: #2196f3;
+  background: white;
+}
+
+.add-drill-button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 2px dashed #2196f3;
+  background: white;
+  color: #2196f3;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.add-drill-button:hover {
+  background: #e3f2fd;
+  border-style: solid;
+}
+
+.remove-drill-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ff4458;
+  background: white;
+  color: #ff4458;
+  font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.remove-drill-button:hover {
+  background: #ff4458;
+  color: white;
+}
+
+/* ノートエリア */
+.notes-textarea {
   width: 100%;
-  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8f9fa;
+  resize: vertical;
+  min-height: 150px;
+  font-family: inherit;
+}
+
+.notes-textarea:focus {
+  outline: none;
+  border-color: #2196f3;
+  background: white;
+}
+
+/* 送信ボタン */
+.submit-button {
+  background: #4CAF50;
+  color: white;
+  padding: 1rem 3rem;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 2rem auto 1rem;
+  border: none;
+  display: block;
 }
 
 .submit-button:hover {
+  background: #45a049;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* カテゴリー追加ボタン */
+.category-button.add-category {
+  border-style: dashed;
+  border-color: #2e7d46;
+  background-color: #f8fbf8;
+}
+
+.category-button.add-category:hover {
+  background-color: #e8f5e8;
+  border-style: solid;
+}
+
+/* モーダル関連のスタイル */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+  color: #2e7d46;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+.cancel-button {
+  padding: 0.5rem 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  background: white;
+  color: #666;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #f5f5f5;
+  border-color: #d0d0d0;
+}
+
+.add-button {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  background: #2e7d46;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-button:hover {
+  background: #3a9855;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .training-parts-selector {
@@ -332,22 +814,23 @@
 }
 
 .reflection-textarea {
-  width: 100%;
-  min-height: 150px;
-  padding: 1rem;
-  border: 1px solid #d4e8d4;
+  width: calc(100% - 2rem);
+  margin-left: 2rem;
+  min-height: 100px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.6;
   resize: vertical;
-  background: white;
+  background: #f8f9fa;
   transition: border-color 0.3s;
 }
 
 .reflection-textarea:focus {
   outline: none;
-  border-color: #2e7d46;
-  box-shadow: 0 0 0 3px rgba(46, 125, 70, 0.1);
+  border-color: #2196f3;
+  background: white;
 }
 
 .reflection-textarea::placeholder {
@@ -355,9 +838,378 @@
   line-height: 1.8;
 }
 
+/* 時間入力 */
+.time-input {
+  width: calc(100% - 2rem);
+  margin-left: 2rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f8f9fa;
+}
+
+.time-input:focus {
+  outline: none;
+  border-color: #2196f3;
+  background: white;
+}
+
+/* 睡眠時間セクション */
+.sleep-inputs-container {
+  margin-left: 2rem;
+  width: calc(100% - 2rem);
+}
+
+.sleep-inputs-row {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.sleep-input-wrapper {
+  flex: 1;
+  min-width: 200px;
+  cursor: pointer;
+}
+
+.sleep-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.time-display {
+  position: relative;
+  background: #333;
+  border-radius: 8px;
+  padding: 0.75rem 3rem 0.75rem 1rem;
+  border: 1px solid #444;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.sleep-input-wrapper:hover .time-display {
+  background: #444;
+  border-color: #2196f3;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.sleep-time-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.time-select {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.time-select option {
+  background: #333;
+  color: #fff;
+}
+
+.hour-select {
+  width: 40px;
+  text-align: center;
+}
+
+.minute-select {
+  width: 40px;
+  text-align: center;
+}
+
+.time-separator {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 2px;
+}
+
+.time-placeholder {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+}
+
+.time-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* Hide native time picker indicator */
+.sleep-time-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Force 24-hour format */
+.sleep-time-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Ensure 24-hour display */
+input[type="time"]::-webkit-datetime-edit-ampm-field {
+  display: none;
+}
+
+.sleep-duration {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #e3f2fd;
+  border-radius: 8px;
+  color: #1976d2;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* 自由記入欄 */
+.free-text-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 2rem;
+  margin-bottom: 0.75rem;
+  width: calc(100% - 2rem);
+}
+
+.free-text-hint {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.open-fullscreen-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #2196f3;
+  border-radius: 6px;
+  background: white;
+  color: #2196f3;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.open-fullscreen-button:hover {
+  background: #e3f2fd;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.free-text-textarea {
+  width: calc(100% - 2rem);
+  margin-left: 2rem;
+  min-height: 200px;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  resize: vertical;
+  background: #f8f9fa;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.free-text-textarea:focus {
+  outline: none;
+  border-color: #2196f3;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.free-text-textarea::placeholder {
+  color: #999;
+}
+
+/* 目標リスト */
+.goals-list {
+  margin-left: 2rem;
+  width: calc(100% - 2rem);
+}
+
+.goal-input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.goal-input {
+  flex: 1;
+  width: 100% !important;
+  margin-left: 0 !important;
+}
+
+.remove-goal-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ff4458;
+  background: white;
+  color: #ff4458;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.remove-goal-button:hover {
+  background: #ff4458;
+  color: white;
+}
+
+.add-goal-button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 2px dashed #2196f3;
+  background: white;
+  color: #2196f3;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.add-goal-button:hover {
+  background: #e3f2fd;
+  border-style: solid;
+}
+
+/* 食事入力 */
+.meal-inputs {
+  margin-left: 2rem;
+}
+
+.meal-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.meal-label {
+  min-width: 40px;
+  font-weight: 500;
+  color: #666;
+}
+
+.meal-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #f8f9fa;
+}
+
+.meal-input:focus {
+  outline: none;
+  border-color: #2196f3;
+  background: white;
+}
+
 @media (max-width: 768px) {
   .practice-form {
     padding: 1rem;
+  }
+  
+  .modern-form {
+    height: 100vh;
+    border-radius: 0;
+  }
+  
+  .modern-form-header {
+    padding: 1rem;
+  }
+  
+  .modern-form-content {
+    padding: 1rem;
+  }
+  
+  .condition-button {
+    padding: 1.5rem;
+    font-size: 2rem;
+  }
+  
+  .form-section {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+  }
+  
+  .form-label {
+    margin-left: 1.5rem;
+  }
+  
+  .date-input,
+  .text-input,
+  .time-input,
+  .reflection-textarea {
+    width: calc(100% - 1.5rem);
+    margin-left: 1.5rem;
+  }
+  
+  .drill-list,
+  .meal-inputs {
+    margin-left: 1.5rem;
+  }
+  
+  .condition-buttons {
+    margin-left: 1.5rem;
+  }
+  
+  .sleep-inputs-container {
+    margin-left: 1.5rem;
+    width: calc(100% - 1.5rem);
+  }
+  
+  .sleep-inputs-row {
+    gap: 1rem;
+  }
+  
+  .sleep-input-wrapper {
+    min-width: 150px;
+  }
+  
+  .time-display {
+    padding: 0.75rem 2.5rem 0.75rem 0.75rem;
   }
   
   .menu-item {
@@ -393,6 +1245,31 @@
   .part-label {
     font-size: 0.85rem;
   }
+}
+
+/* PCでのモーダル表示時のスタイル */
+.practice-form-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.practice-form-modal .modern-form {
+  height: 100%;
+  max-height: 90vh;
+}
+
+.practice-form-modal .modern-form-content {
+  max-height: calc(90vh - 140px);
 }
 
 .video-upload-area {

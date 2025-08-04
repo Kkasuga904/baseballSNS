@@ -7,8 +7,8 @@ function Footer() {
     <footer className="app-footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h3>野球SNS</h3>
-          <p>野球ファンのためのコミュニティ</p>
+          <h3>BaseLog</h3>
+          <p>野球の記録と交流をひとつに</p>
         </div>
         
         <div className="footer-section">
@@ -25,14 +25,14 @@ function Footer() {
           <h4>サポート</h4>
           <ul className="footer-links">
             <li><Link to="/disclaimer#contact">お問い合わせ</Link></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); alert('プライバシーポリシーは準備中です') }}>プライバシーポリシー</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); alert('利用規約は準備中です') }}>利用規約</a></li>
+            <li><Link to="/privacy">プライバシーポリシー</Link></li>
+            <li><Link to="/terms">利用規約</Link></li>
           </ul>
         </div>
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; 2025 野球SNS. All rights reserved.</p>
+        <p>&copy; 2025 BaseLog. All rights reserved.</p>
       </div>
     </footer>
   )

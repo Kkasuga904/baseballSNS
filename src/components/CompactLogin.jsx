@@ -58,20 +58,8 @@ function CompactLogin() {
         navigate(needsProfileSetup ? '/profile-setup' : '/')
       }
     } else {
-      // デモモード
-      const demoEmail = isSignup ? `user${Date.now()}@gmail.com` : 'demo@baseball-sns.com'
-      const demoPassword = isSignup ? 'demo123' : 'demo123'
-      
-      const { error } = isSignup 
-        ? await signUp(demoEmail, demoPassword)
-        : await signIn(demoEmail, demoPassword)
-      
-      if (error) {
-        setError('認証に失敗しました')
-        setLoading(false)
-      } else {
-        navigate(isSignup ? '/profile-setup' : '/')
-      }
+      setError('Google認証が設定されていません')
+      setLoading(false)
     }
   }
 

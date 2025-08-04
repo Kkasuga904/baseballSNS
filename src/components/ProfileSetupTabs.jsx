@@ -11,8 +11,9 @@ function ProfileSetupTabs() {
     sport: '', // baseball or softball
     throwingHand: '', // right or left
     battingHand: '', // right or left
-    positions: [], // 複数ポジション
+    positions: [''], // 複数ポジション（初期状態で1つ）
     nickname: '',
+    realName: '', // 本名
     category: '', // カテゴリ
     grade: '', // 学年
     pitcherTypes: [], // 投手タイプ（複数）
@@ -145,6 +146,18 @@ function ProfileSetupTabs() {
                       className="nickname-input"
                       required
                     />
+                  </div>
+
+                  <div className="form-section">
+                    <h3>本名（任意）</h3>
+                    <input
+                      type="text"
+                      value={formData.realName}
+                      onChange={(e) => setFormData({ ...formData, realName: e.target.value })}
+                      placeholder="山田太郎"
+                      className="realname-input"
+                    />
+                    <p className="privacy-note">※本名は公開されません</p>
                   </div>
 
                   <div className="form-section">
@@ -307,26 +320,76 @@ function ProfileSetupTabs() {
 
                   <div className="form-section">
                     <h3>メインポジション</h3>
-                    <select
-                      value={formData.positions[0] || ''}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value) {
-                          setFormData({ ...formData, positions: [value] });
-                        } else {
-                          setFormData({ ...formData, positions: [], pitcherTypes: [] });
-                        }
-                      }}
-                      className="position-select"
-                      required
-                    >
-                      <option value="">ポジションを選択してください</option>
-                      {(positions[formData.sport || 'baseball']).map(pos => (
-                        <option key={pos.value} value={pos.value}>
-                          {pos.label}
-                        </option>
+                    <div className="positions-container">
+                      {formData.positions.map((position, index) => (
+                        <div key={index} className="position-item">
+                          <select
+                            value={position}
+                            onChange={(e) => {
+                              const newPositions = [...formData.positions];
+                              const newValue = e.target.value;
+                              if (newValue) {
+                                newPositions[index] = newValue;
+                              } else {
+                                newPositions.splice(index, 1);
+                              }
+                              setFormData({ 
+                                ...formData, 
+                                positions: newPositions,
+                                // ピッチャーが選択されていない場合は投手タイプをクリア
+                                pitcherTypes: newPositions.includes('pitcher') ? formData.pitcherTypes : []
+                              });
+                            }}
+                            className="position-select"
+                          >
+                            <option value="">ポジションを選択</option>
+                            {(positions[formData.sport || 'baseball']).map(pos => (
+                              <option 
+                                key={pos.value} 
+                                value={pos.value}
+                                disabled={formData.positions.includes(pos.value) && pos.value !== position}
+                              >
+                                {pos.label}
+                              </option>
+                            ))}
+                          </select>
+                          {formData.positions.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newPositions = formData.positions.filter((_, i) => i !== index);
+                                setFormData({ 
+                                  ...formData, 
+                                  positions: newPositions,
+                                  pitcherTypes: newPositions.includes('pitcher') ? formData.pitcherTypes : []
+                                });
+                              }}
+                              className="remove-position-btn"
+                              title="削除"
+                            >
+                              ✕
+                            </button>
+                          )}
+                        </div>
                       ))}
-                    </select>
+                      
+                      {/* ポジション追加ボタン */}
+                      {formData.positions.length < (positions[formData.sport || 'baseball']).length && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({ 
+                              ...formData, 
+                              positions: [...formData.positions, ''] 
+                            });
+                          }}
+                          className="add-position-btn"
+                        >
+                          <span className="plus-icon">＋</span>
+                          <span>ポジションを追加</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   {formData.positions.includes('pitcher') && (

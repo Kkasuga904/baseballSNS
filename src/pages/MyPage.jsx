@@ -29,13 +29,14 @@ import RoutineTracker from '../components/RoutineTracker'
 import BodyMetricsChart from '../components/BodyMetricsChart'
 import MonthlyStats from '../components/MonthlyStats'
 import TeamManagement from '../components/TeamManagement'
-import ClearDataButton from '../components/ClearDataButton'
 import DiaryForm from '../components/DiaryForm'
 import DiaryList from '../components/DiaryList'
 import DiaryView from '../components/DiaryView'
 import GameRecord from '../components/GameRecord'
 import GameRecordList from '../components/GameRecordList'
 import PerformanceChart from '../components/PerformanceChart'
+import PracticeCalendar from '../components/PracticeCalendar'
+import PracticeForm from '../components/PracticeForm'
 import { TeamRoleLabels } from '../models/team'
 import './MyPage.css'
 
@@ -56,7 +57,7 @@ import './MyPage.css'
  * @param {string} props.selectedDate - 選択中の日付（YYYY-MM-DD形式）
  * @param {Function} props.setSelectedDate - 選択日付を更新する関数
  */
-function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate }) {
+function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate, addPost }) {
   // 認証情報を取得
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -67,6 +68,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   const [viewingDiary, setViewingDiary] = useState(null)
   const [showGameRecord, setShowGameRecord] = useState(false)
   const [editingGame, setEditingGame] = useState(null)
+  const [showPracticeForm, setShowPracticeForm] = useState(false)
   
   // ユーザーの所属チーム一覧を取得（ユーザー情報を明示的に渡す）
   const userTeams = React.useMemo(() => {
@@ -123,10 +125,37 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
    * @param {Object} practiceData - 練習データ
    */
   const handleAddPractice = (practiceData) => {
-    setMyPageData(prev => ({
-      ...prev,
-      practices: [...prev.practices, { ...practiceData, id: Date.now() }]
-    }))
+    console.log('handleAddPractice called with:', practiceData)
+    
+    // MyPageDataに追加
+    setMyPageData(prev => {
+      const newData = {
+        ...prev,
+        practices: [...(prev.practices || []), { ...practiceData, id: Date.now() }]
+      }
+      console.log('Updated myPageData:', newData)
+      return newData
+    })
+    
+    // タイムラインにも追加（練習記録として投稿）
+    if (addPost) {
+      const practiceCategories = {
+        batting: '打撃練習',
+        pitching: '投球練習',
+        fielding: '守備練習',
+        running: '走塁練習',
+        training: 'トレーニング',
+        stretch: 'ストレッチ',
+        game: '試合',
+        rest: '休養日'
+      }
+      
+      addPost({
+        type: 'practice',
+        content: `${practiceData.category ? practiceCategories[practiceData.category] || '練習' : '練習'}を記録しました`,
+        practiceData: practiceData
+      })
+    }
   }
   
   /**
@@ -290,6 +319,20 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
       
       <div className="mypage-layout">
         <div className="mypage-main">
+          {/* 練習カレンダー: 月間の練習記録表示 - 最上部に配置 */}
+          <div className="practice-calendar-section">
+            <h3>📅 練習カレンダー</h3>
+            <PracticeCalendar
+              practices={posts}
+              onDateClick={(date) => {
+                setSelectedDate(date)
+                setShowPracticeForm(true)
+              }}
+              schedules={myPageData.schedules || []}
+            />
+          </div>
+          
+          
           {/* 所属チーム一覧 */}
           <div className="my-teams-section">
             <div className="section-header">
@@ -308,7 +351,10 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                   <div
                     key={teamData.id}
                     className="team-card"
-                    onClick={() => navigate(`/team/${teamData.id}`)}
+                    onClick={() => {
+                      console.log('Team card clicked:', teamData.name);
+                      navigate('/teams');
+                    }}
                   >
                     <h4>{teamData.name}</h4>
                     {teamData.description && (
@@ -335,20 +381,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           
           {/* ルーティントラッカー: 日々の習慣を記録 */}
           <RoutineTracker />
-          
-          {/* 日別記録タブ: 各種データの入力フォーム */}
-          {selectedDate && (
-            <DailyRecordTabs
-              selectedDate={selectedDate}
-              onAddPractice={handleAddPractice}
-              onAddVideo={handleAddVideo}
-              onAddSchedule={handleAddSchedule}
-              onAddMeal={handleAddMeal}
-              onAddSupplement={handleAddSupplement}
-              onAddSleep={handleAddSleep}
-              onAddBodyMetrics={handleAddBodyMetrics}
-            />
-          )}
           
           {/* 週次サマリー: 1週間の練習概要 */}
           <WeeklySummary practices={posts} />
@@ -564,6 +596,23 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
         </div>
       )}
       
+      {/* 練習記録フォームモーダル */}
+      {showPracticeForm && (
+        <div className="modal-overlay" onClick={() => setShowPracticeForm(false)}>
+          <div className="modal-content practice-form-modal" onClick={(e) => e.stopPropagation()}>
+            <PracticeForm
+              selectedDate={selectedDate}
+              onClose={() => setShowPracticeForm(false)}
+              onSubmit={(practiceData) => {
+                handleAddPractice(practiceData)
+                setShowPracticeForm(false)
+              }}
+            />
+          </div>
+        </div>
+      )}
+      
+      
       {/* 日記詳細モーダル */}
       {viewingDiary && (
         <DiaryView
@@ -572,9 +621,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           onEdit={handleEditDiary}
         />
       )}
-      
-      {/* データクリアボタン（開発用） */}
-      <ClearDataButton />
     </div>
   )
 }

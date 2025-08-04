@@ -16,7 +16,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../App'
-import PracticeCalendar from './PracticeCalendar'
+import TrainingCalendar from './TrainingCalendar'
 import './Navigation.css'
 
 /**
@@ -354,14 +354,14 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
             <span className="nav-label">マイページ</span>
           </Link>
           
-          {/* チーム（MVP版では非表示） */}
-          {/* <Link
+          {/* チーム */}
+          <Link
             to="/teams"
             className={`nav-item ${location.pathname.startsWith('/team') ? 'active' : ''}`}
           >
             <span className="nav-icon">🏟️</span>
             <span className="nav-label">チーム</span>
-          </Link> */}
+          </Link>
           
           {/* プロフィール */}
           <Link
@@ -370,6 +370,15 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
           >
             <span className="nav-icon">👤</span>
             <span className="nav-label">プロフィール</span>
+          </Link>
+          
+          {/* 測定結果 */}
+          <Link
+            to="/measurements"
+            className={`nav-item ${location.pathname === '/measurements' ? 'active' : ''}`}
+          >
+            <span className="nav-icon">📊</span>
+            <span className="nav-label">測定結果</span>
           </Link>
           
           {/* アプリ */}
@@ -412,7 +421,7 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
       </nav>
       
       {/* ドラッグ可能なフローティングカレンダー */}
-      {location.pathname !== '/calendar' && (
+      {/* {location.pathname !== '/calendar' && (
         <div 
           className={`nav-calendar ${isCalendarMinimized ? 'minimized' : ''} ${isDragging ? 'dragging' : ''}`}
           style={{
@@ -420,32 +429,42 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
             top: `${calendarPosition.y}px`,
           }}
         >
-          {/* カレンダーヘッダー（ドラッグ可能エリア） */}
           <div 
             className="calendar-header-section"
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
+            style={{ cursor: 'move' }}
           >
-            <h3>📅 練習カレンダー</h3>
+            <h3 style={{ color: '#2c5aa0', margin: 0 }}>⚾ BaseLog</h3>
             <button 
               className="calendar-minimize-btn"
               onClick={toggleCalendarMinimize}
               title={isCalendarMinimized ? "展開" : "最小化"}
+              style={{ 
+                background: '#f0f0f0',
+                border: 'none',
+                borderRadius: '50%',
+                width: '24px',
+                height: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
             >
-              {isCalendarMinimized ? '📅' : '−'}
+              {isCalendarMinimized ? '＋' : '−'}
             </button>
           </div>
           
-          {/* カレンダー本体 */}
           {!isCalendarMinimized && (
-            <PracticeCalendar 
+            <TrainingCalendar 
               practices={posts} 
               onDateClick={onDateClick}
               schedules={schedules}
             />
           )}
         </div>
-      )}
+      )} */}
     </>
   )
 }
