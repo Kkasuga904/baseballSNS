@@ -113,12 +113,9 @@
   position: relative;
   cursor: pointer;
   transition: background-color 0.2s;
-  font-size: 22px;
   padding: 2px;
   background-color: white;
   box-sizing: border-box;
-  color: #333;
-  font-weight: normal;
   min-height: 60px;
   min-width: 0;
   width: 100%;
@@ -173,14 +170,13 @@
 
 .day-number {
   display: block !important;
-  font-size: 22px;
-  color: inherit;
-  font-weight: normal;
-  line-height: 1;
-  text-align: center;
-  opacity: 1;
   position: relative;
   z-index: 1;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .practice-indicator {
@@ -438,8 +434,7 @@
   }
   
   .day-number {
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 18px;
   }
   
   .practice-indicator {
@@ -475,7 +470,6 @@
   .calendar-day {
     min-height: 50px;
     padding: 12px 6px;
-    font-size: 16px;
   }
   
   .weekday {
@@ -523,12 +517,10 @@
   .calendar-day {
     min-height: 30px;
     padding: 2px;
-    font-size: 10px;
   }
   
   .day-number {
-    font-size: 10px !important;
-    display: block !important;
+    font-size: 12px;
   }
   
   .month-nav {

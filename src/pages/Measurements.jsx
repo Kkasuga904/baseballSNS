@@ -1,41 +1,32 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo, useCallback, useMemo } from 'react'
 import { useAuth } from '../App'
 import { useLocation } from 'react-router-dom'
 import './Measurements.css'
 
-function Measurements() {
+const Measurements = memo(function Measurements() {
   const { user } = useAuth()
   const location = useLocation()
   
-  // 全体的なクリックイベントを防ぐ
+  // カレンダーの表示を防ぐ
   useEffect(() => {
     // 測定ページでない場合は何もしない
     if (location.pathname !== '/measurements') return
     
-    const handleClick = (e) => {
-      // カレンダー関連の要素のみブロック
-      if (e.target.closest('.practice-calendar') || 
-          e.target.closest('.calendar') ||
-          e.target.closest('.react-calendar') ||
-          e.target.closest('[class*="calendar"]')) {
-        // 測定ページ内であればカレンダーをブロック
-        const measurementPage = e.target.closest('.measurements-page')
-        if (measurementPage) {
-          e.preventDefault()
-          e.stopPropagation()
-          e.stopImmediatePropagation()
-          return false
-        }
+    // date inputのクリックを防ぐ
+    const preventDatePicker = (e) => {
+      if (e.target.type === 'date') {
+        e.preventDefault()
+        e.stopPropagation()
+        return false
       }
     }
     
-    // キャプチャフェーズで処理
-    document.addEventListener('click', handleClick, true)
-    window.addEventListener('click', handleClick, true)
+    document.addEventListener('click', preventDatePicker, true)
+    document.addEventListener('focus', preventDatePicker, true)
     
     return () => {
-      document.removeEventListener('click', handleClick, true)
-      window.removeEventListener('click', handleClick, true)
+      document.removeEventListener('click', preventDatePicker, true)
+      document.removeEventListener('focus', preventDatePicker, true)
     }
   }, [location.pathname])
   
@@ -124,7 +115,7 @@ function Measurements() {
   }, [measurementItems, user])
   
   // 測定データ追加
-  const addMeasurement = () => {
+  const addMeasurement = useCallback(() => {
     const hasData = Object.keys(newMeasurement.items).some(key => newMeasurement.items[key])
     if (!hasData) {
       alert('測定データを入力してください')
@@ -157,17 +148,17 @@ function Measurements() {
     // 通知を表示
     setNotification('測定データを追加しました！')
     setTimeout(() => setNotification(null), 3000)
-  }
+  }, [measurements, newMeasurement, measurementItems])
   
   // 測定データ削除
-  const deleteMeasurement = (category, id) => {
+  const deleteMeasurement = useCallback((category, id) => {
     if (window.confirm('この測定データを削除しますか？')) {
       setMeasurements({
         ...measurements,
         [category]: measurements[category].filter(m => m.id !== id)
       })
     }
-  }
+  }, [measurements])
   
   // カテゴリータブ切り替え
   const [activeCategory, setActiveCategory] = useState('athletic')
@@ -222,7 +213,7 @@ function Measurements() {
   }
   
   // 測定項目の追加
-  const addMeasurementItem = (category) => {
+  const addMeasurementItem = useCallback((category) => {
     if (!newItemForm.key || !newItemForm.label || !newItemForm.unit) {
       alert('項目名、ラベル、単位を入力してください')
       return
@@ -248,16 +239,16 @@ function Measurements() {
     })
     
     setNewItemForm({ key: '', label: '', unit: '', icon: '📊', hasRM: false })
-  }
+  }, [measurementItems, newItemForm])
   
   // 測定項目の削除
-  const deleteMeasurementItem = (category, key) => {
+  const deleteMeasurementItem = useCallback((category, key) => {
     if (window.confirm(`「${measurementItems[category][key].label}」を削除しますか？`)) {
       const newItems = { ...measurementItems }
       delete newItems[category][key]
       setMeasurementItems(newItems)
     }
-  }
+  }, [measurementItems])
   
   // 測定項目の編集
   const updateMeasurementItem = (category, key, updates) => {
@@ -275,7 +266,7 @@ function Measurements() {
   }
   
   // 特定の測定項目の履歴を取得
-  const getItemHistory = (category, itemKey) => {
+  const getItemHistory = useCallback((category, itemKey) => {
     return measurements[category]
       .filter(m => m.items[itemKey])
       .map(m => ({
@@ -283,7 +274,7 @@ function Measurements() {
         value: parseFloat(m.items[itemKey])
       }))
       .sort((a, b) => new Date(a.date) - new Date(b.date))
-  }
+  }, [measurements])
   
   return (
     <>
@@ -529,15 +520,12 @@ function Measurements() {
             <label>
               測定日:
               <input
-                type="date"
+                type="text"
                 value={newMeasurement.date}
-                onClick={(e) => e.stopPropagation()}
-                onChange={(e) => {
+                readOnly
+                onClick={(e) => {
+                  e.preventDefault()
                   e.stopPropagation()
-                  setNewMeasurement({
-                    ...newMeasurement,
-                    date: e.target.value
-                  })
                 }}
                 className="date-input"
               />
@@ -545,9 +533,7 @@ function Measurements() {
           </div>
           
           <div className="measurement-inputs" onClick={(e) => e.stopPropagation()}>
-            {Object.entries(measurementItems[activeCategory]).map(([key, item]) => {
-              console.log(`${key}: hasRM = ${item.hasRM}`) // デバッグ用
-              return (
+            {Object.entries(measurementItems[activeCategory]).map(([key, item]) => (
               <div key={key} className="measurement-input-item" onClick={(e) => e.stopPropagation()}>
                 <label onClick={(e) => e.stopPropagation()}>
                   <div className="label-row">
@@ -604,7 +590,7 @@ function Measurements() {
                   </div>
                 </label>
               </div>
-            )})}
+            ))}
           </div>
           
           <button type="button" onClick={addMeasurement} className="add-button">
@@ -804,6 +790,6 @@ function Measurements() {
     )}
     </>
   )
-}
+})
 
 export default Measurements
