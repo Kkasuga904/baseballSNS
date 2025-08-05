@@ -66,7 +66,7 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: minmax(50px, auto);
+  grid-auto-rows: 60px;
   width: 100%;
   background: white;
   border: 1px solid #e0e0e0;
@@ -84,7 +84,8 @@
   font-weight: normal;
   color: #666;
   background: #f8f8f8;
-  height: 100%;
+  min-height: 60px;
+  box-sizing: border-box;
 }
 
 .weekday:nth-child(7n) {
@@ -114,7 +115,7 @@
   box-sizing: border-box;
   color: #333;
   font-weight: normal;
-  height: 100%;
+  min-height: 60px;
 }
 
 .calendar-day.empty {
@@ -404,10 +405,6 @@
   font-size: 0.9rem;
 }
 
-.calendar-cell {
-  height: 100%;
-  box-sizing: border-box;
-}
 
 /* PC画面（大画面）向けのスタイル */
 @media (min-width: 1200px) {
@@ -461,17 +458,17 @@
   }
   
   .calendar-grid {
-    grid-auto-rows: minmax(50px, auto);
+    grid-auto-rows: 50px;
   }
   
   .calendar-day {
-    height: auto;
     min-height: 50px;
     padding: 12px 6px;
     font-size: 16px;
   }
   
   .weekday {
+    min-height: 50px;
     padding: 5px 3px;
     font-size: 11px;
   }
@@ -503,15 +500,17 @@
   }
   
   .calendar-grid {
-    grid-auto-rows: minmax(24px, auto);
+    grid-auto-rows: 30px;
   }
   
   .weekday {
+    min-height: 30px;
     padding: 3px 1px;
     font-size: 9px;
   }
   
   .calendar-day {
+    min-height: 30px;
     padding: 2px;
     font-size: 10px;
   }

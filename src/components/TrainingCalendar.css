@@ -131,7 +131,7 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: minmax(35px, auto);
+  grid-auto-rows: 60px;
   width: 100%;
   background: white;
   gap: 0;
