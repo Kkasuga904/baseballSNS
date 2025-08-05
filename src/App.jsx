@@ -512,15 +512,18 @@ function AppContent() {
  * RouterとAuthProviderでアプリ全体をラップ
  */
 function App() {
-  // アプリ起動時にデモユーザーを作成
+  // アプリ起動時にデモユーザーを作成（Supabase設定時のみ）
   useEffect(() => {
-    ensureDemoUserExists().then(result => {
-      if (result.created) {
-        if (process.env.NODE_ENV === 'development') {
-          console.log('デモユーザーを作成しました')
+    // Supabaseが設定されている場合のみデモユーザーを作成
+    if (hasSupabaseConfig) {
+      ensureDemoUserExists().then(result => {
+        if (result.created) {
+          if (process.env.NODE_ENV === 'development') {
+            console.log('デモユーザーを作成しました')
+          }
         }
-      }
-    })
+      })
+    }
   }, [])
 
   return (

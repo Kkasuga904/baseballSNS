@@ -1,4 +1,11 @@
-import { supabase } from '../lib/supabase'
+// Supabaseインポート（設定がある場合のみ使用）
+let supabase = null;
+try {
+  const supabaseModule = require('../lib/supabase');
+  supabase = supabaseModule.supabase;
+} catch (e) {
+  // Supabaseが設定されていない場合は無視
+}
 
 // デモユーザーの情報
 export const DEMO_USER = {
@@ -17,9 +24,12 @@ export const DEMO_USER = {
 export async function ensureDemoUserExists() {
   try {
     // Supabaseが設定されていない場合はスキップ
+    if (!supabase) {
+      return { success: false, error: 'Supabase not configured' }
+    }
+    
     const url = import.meta.env?.VITE_SUPABASE_URL || '';
     if (!url || url.includes('placeholder') || url.includes('your-')) {
-      console.log('Supabase未設定のため、デモユーザー作成をスキップします')
       return { success: false, error: 'Supabase not configured' }
     }
 
