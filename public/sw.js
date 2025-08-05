@@ -16,7 +16,7 @@
  * バージョンを変更することで古いキャッシュをクリアできます
  * デプロイ時は自動的にタイムスタンプを付与することを推奨
  */
-const CACHE_VERSION = '2025-08-02T11-54-39-093Z'; // バージョンを変更するとキャッシュが更新されます
+const CACHE_VERSION = '2025-08-05T12-55-51-528Z'; // バージョンを変更するとキャッシュが更新されます
 const CACHE_NAME = `baselog-v${CACHE_VERSION}`;
 const DATA_CACHE_NAME = `baselog-data-v${CACHE_VERSION}`;
 const BUILD_TIME = new Date().toISOString(); // ビルド時刻を記録

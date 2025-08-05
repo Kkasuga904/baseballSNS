@@ -458,7 +458,6 @@ function PracticeForm({ onSubmit, selectedDate, onClose }) {
     if (filteredMenu.length === 0 && formData.category !== 'pitching') {
       if (formData.category === 'game') {
         // 試合の場合は振り返り項目が必須ではない（任意）
-        console.log('試合カテゴリ：振り返り項目は任意')
       } else {
         alert('練習メニューを少なくとも1つ入力してください')
         return

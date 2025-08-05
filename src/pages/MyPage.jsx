@@ -125,7 +125,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
    * @param {Object} practiceData - 練習データ
    */
   const handleAddPractice = (practiceData) => {
-    console.log('handleAddPractice called with:', practiceData)
     
     // MyPageDataに追加
     setMyPageData(prev => {
@@ -133,7 +132,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
         ...prev,
         practices: [...(prev.practices || []), { ...practiceData, id: Date.now() }]
       }
-      console.log('Updated myPageData:', newData)
       return newData
     })
     
@@ -230,7 +228,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   const handleAddBodyMetrics = (metricsData) => {
     // BodyMetricsFormコンポーネント内でlocalStorageに保存済み
     // ここでは必要に応じて追加の処理を行う
-    console.log('Body metrics recorded:', metricsData)
   }
 
   /**
@@ -352,7 +349,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                     key={teamData.id}
                     className="team-card"
                     onClick={() => {
-                      console.log('Team card clicked:', teamData.name);
                       navigate('/teams');
                     }}
                   >

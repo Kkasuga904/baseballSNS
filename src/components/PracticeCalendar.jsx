@@ -26,13 +26,11 @@ import './PracticeCalendar.css'
  * @param {Array} props.schedules - スケジュール（予定）の配列
  */
 function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
-  console.log('PracticeCalendar component mounted')
   const navigate = useNavigate()
   
   // 現在表示中の年月を管理
   const [currentDate, setCurrentDate] = useState(() => {
     const date = new Date()
-    console.log('Initial currentDate:', date.toString())
     return date
   })
   
@@ -128,11 +126,12 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
   const getDaysInMonth = (date) => {
     // 翌月の0日目 = 今月の最終日
     if (!date || !(date instanceof Date)) {
-      console.error('Invalid date passed to getDaysInMonth:', date)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Invalid date passed to getDaysInMonth:', date)
+      }
       return 31 // デフォルト値
     }
     const result = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-    console.log('getDaysInMonth:', date.toString(), 'result:', result)
     return result
   }
 
@@ -144,11 +143,12 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
    */
   const getFirstDayOfMonth = (date) => {
     if (!date || !(date instanceof Date)) {
-      console.error('Invalid date passed to getFirstDayOfMonth:', date)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Invalid date passed to getFirstDayOfMonth:', date)
+      }
       return 0 // デフォルト値（日曜日）
     }
     const result = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
-    console.log('getFirstDayOfMonth:', date.toString(), 'result:', result)
     return result
   }
 
@@ -158,18 +158,14 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
    * @param {number} increment - 変更する月数（-1: 前月、1: 翌月）
    */
   const changeMonth = (increment) => {
-    console.log('changeMonth called with increment:', increment)
     if (isTransitioning) {
-      console.log('isTransitioning is true, returning early')
       return
     }
     
     setIsTransitioning(true)
     setCurrentDate(prev => {
-      console.log('Previous date:', prev)
       const newDate = new Date(prev)
       newDate.setMonth(prev.getMonth() + increment)
-      console.log('New date:', newDate)
       return newDate
     })
     
@@ -230,23 +226,11 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
    */
   const renderCalendar = () => {
     try {
-      console.log('=== renderCalendar START ===')
-      console.log('currentDate:', currentDate)
-      console.log('currentDate type:', typeof currentDate)
-      console.log('currentDate instanceof Date:', currentDate instanceof Date)
     
     const daysInMonth = getDaysInMonth(currentDate)
     const firstDay = getFirstDayOfMonth(currentDate)
     const days = []
     
-    console.log('Calendar info:', { 
-      daysInMonth, 
-      firstDay, 
-      currentDate: currentDate?.toString(),
-      monthYear,
-      year: currentDate?.getFullYear(),
-      month: currentDate?.getMonth()
-    })
     
     // 月初めの空白セルを追加
     for (let i = 0; i < firstDay; i++) {
@@ -254,11 +238,9 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
     }
     
     // 各日付のセルを生成
-    console.log('Creating days, daysInMonth:', daysInMonth)
     for (let day = 1; day <= daysInMonth; day++) {
       // YYYY-MM-DD形式の日付文字列を作成
       const dateStr = `${monthYear.year}-${String(monthYear.month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-      console.log('Creating day:', day, dateStr, typeof day)
       
       // その日に練習があるかチェック
       const hasPractice = practiceDates.has(dateStr)
@@ -285,7 +267,6 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
           e.nativeEvent.stopImmediatePropagation()
         }
         
-        console.log('Day clicked:', dateStr, 'Window width:', window.innerWidth)
         
         // デバイスの判定（モバイルデバイスかどうかをユーザーエージェントで判定）
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
@@ -293,11 +274,9 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
         
         if (isPC) {
           // PCの場合は新しいタブで開く
-          console.log('Opening in new tab')
           window.open(`/practice-record?date=${dateStr}`, '_blank')
         } else {
           // モバイルの場合は親コンポーネントのコールバックを実行（練習記録フォームを開く）
-          console.log('Mobile: calling onDateClick')
           if (onDateClick) {
             onDateClick(dateStr)
           }
@@ -381,15 +360,12 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
       )
     }
     
-    console.log('Total days created:', days.length)
-    console.log('First few days:', days.slice(0, 5).map(d => d.props.children))
-    console.log('User Agent:', navigator.userAgent)
-    console.log('Is PWA:', window.matchMedia('(display-mode: standalone)').matches)
-    console.log('=== renderCalendar END ===')
     
     // デバッグ用：days配列が空の場合はダミーデータを返す
     if (days.length === 0) {
-      console.warn('No days created! Returning dummy data')
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('No days created! Returning dummy data')
+      }
       const dummyDays = []
       for (let i = 1; i <= 31; i++) {
         dummyDays.push(
@@ -426,7 +402,9 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
     
     return days
     } catch (error) {
-      console.error('renderCalendar error:', error)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('renderCalendar error:', error)
+      }
       // エラー時は空の配列を返す
       return []
     }
@@ -456,7 +434,6 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            console.log('Previous month button clicked')
             changeMonth(-1)
           }}
           onTouchStart={(e) => {
@@ -465,7 +442,6 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
           onTouchEnd={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            console.log('Previous month button touched')
             changeMonth(-1)
           }}
           className="month-nav prev"
@@ -477,7 +453,6 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            console.log('Next month button clicked')
             changeMonth(1)
           }}
           onTouchStart={(e) => {
@@ -486,7 +461,6 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
           onTouchEnd={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            console.log('Next month button touched')
             changeMonth(1)
           }}
           className="month-nav next"

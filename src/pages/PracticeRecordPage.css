@@ -9,6 +9,39 @@
   margin: 0 auto;
 }
 
+/* フォーム切り替えボタン */
+.form-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  background: white;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6c757d;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.toggle-btn.active {
+  background: #007bff;
+  color: white;
+}
+
+.toggle-btn:not(.active):hover {
+  background: #f8f9fa;
+}
+
 @media (max-width: 768px) {
   .practice-record-page {
     padding: 0;

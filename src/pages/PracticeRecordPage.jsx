@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import PracticeForm from '../components/PracticeForm'
+import SimplifiedPracticeForm from '../components/SimplifiedPracticeForm'
 import { useAuth } from '../App'
 import './PracticeRecordPage.css'
 
@@ -9,6 +10,7 @@ function PracticeRecordPage({ addPost, myPageData, setMyPageData }) {
   const navigate = useNavigate()
   const { user } = useAuth()
   const selectedDate = searchParams.get('date') || new Date().toISOString().split('T')[0]
+  const [useSimpleForm, setUseSimpleForm] = useState(true) // デフォルトで簡易フォームを使用
   
   // 練習記録を追加するハンドラー
   const handleAddPractice = (practiceData) => {
@@ -55,11 +57,36 @@ function PracticeRecordPage({ addPost, myPageData, setMyPageData }) {
   return (
     <div className="practice-record-page">
       <div className="practice-record-container">
-        <PracticeForm
-          selectedDate={selectedDate}
-          onClose={handleClose}
-          onSubmit={handleAddPractice}
-        />
+        {/* フォーム切り替えボタン */}
+        <div className="form-toggle">
+          <button
+            className={`toggle-btn ${useSimpleForm ? 'active' : ''}`}
+            onClick={() => setUseSimpleForm(true)}
+          >
+            シンプル入力
+          </button>
+          <button
+            className={`toggle-btn ${!useSimpleForm ? 'active' : ''}`}
+            onClick={() => setUseSimpleForm(false)}
+          >
+            詳細入力
+          </button>
+        </div>
+        
+        {/* フォーム表示 */}
+        {useSimpleForm ? (
+          <SimplifiedPracticeForm 
+            onSubmit={handleAddPractice}
+            selectedDate={selectedDate}
+            onClose={handleClose}
+          />
+        ) : (
+          <PracticeForm
+            selectedDate={selectedDate}
+            onClose={handleClose}
+            onSubmit={handleAddPractice}
+          />
+        )}
       </div>
     </div>
   )

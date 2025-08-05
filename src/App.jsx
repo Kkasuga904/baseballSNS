@@ -40,12 +40,16 @@ try {
   }
   
   // デバッグ用ログ
-  console.log('Firebase Config Check:', { firebaseApiKey, hasFirebaseConfig });
-  console.log('Auth Provider Selected:', hasFirebaseConfig ? 'Firebase' : (hasSupabaseConfig ? 'Supabase' : 'SimpleAuth'));
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Firebase Config Check:', { firebaseApiKey, hasFirebaseConfig });
+    console.log('Auth Provider Selected:', hasFirebaseConfig ? 'Firebase' : (hasSupabaseConfig ? 'Supabase' : 'SimpleAuth'));
+  }
 } catch (e) {
   hasSupabaseConfig = false;
   hasFirebaseConfig = false;
-  console.log('Auth config error, falling back to SimpleAuth:', e);
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Auth config error, falling back to SimpleAuth:', e);
+  }
 }
 
 // 条件に応じて認証プロバイダーとフックをエクスポート
@@ -503,7 +507,9 @@ function App() {
   useEffect(() => {
     ensureDemoUserExists().then(result => {
       if (result.created) {
-        console.log('デモユーザーを作成しました')
+        if (process.env.NODE_ENV === 'development') {
+          console.log('デモユーザーを作成しました')
+        }
       }
     })
   }, [])
