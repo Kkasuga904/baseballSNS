@@ -4,8 +4,8 @@
   padding: 16px;
   position: relative;
   z-index: 0;
-  width: 80%;
-  max-width: 800px;
+  width: 100%;
+  max-width: 400px;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -69,15 +69,19 @@
   text-align: center;
   font-weight: bold;
   color: #333;
-  font-size: 13px;
-  background: #f5f5f5;
+  font-size: 12px;
+  background: #f8f8f8;
   border: 1px solid #e0e0e0;
   border-bottom: none;
+  gap: 0;
 }
 
 .weekday {
-  padding: 8px 4px;
+  padding: 6px 4px;
   border-right: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .weekday:last-child {
@@ -86,12 +90,10 @@
 
 .calendar-weekdays .weekday:first-child {
   color: #ff0000;
-  background: #fff5f5;
 }
 
 .calendar-weekdays .weekday:last-child {
   color: #0000ff;
-  background: #f5f5ff;
 }
 
 
@@ -100,25 +102,26 @@
   grid-template-columns: repeat(7, 1fr);
   width: 100%;
   background: white;
-  border-collapse: collapse;
+  gap: 0;
+  border: 1px solid #e0e0e0;
 }
 
 .calendar-day {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
   position: relative;
   cursor: pointer;
   transition: background-color 0.2s;
   font-size: 14px;
-  padding: 12px 8px;
+  padding: 10px 5px;
   background-color: white;
   box-sizing: border-box;
   color: #333;
   font-weight: 500;
-  aspect-ratio: 1.2;
-  min-height: 45px;
+  height: 40px;
 }
 
 .calendar-day.empty {
@@ -142,13 +145,19 @@
 /* 日曜日のセル（1, 8, 15, 22, 29番目） */
 .calendar-day:nth-child(7n+1):not(.empty) {
   color: #ff0000;
-  background: #fff5f5;
+  background: #fff8f8;
 }
 
 /* 土曜日のセル（7, 14, 21, 28, 35番目） */
 .calendar-day:nth-child(7n):not(.empty) {
   color: #0000ff;
-  background: #f5f5ff;
+  background: #f8f8ff;
+  border-right: none;
+}
+
+/* 最終行の下線を削除 */
+.calendar-day:nth-last-child(-n+7) {
+  border-bottom: none;
 }
 
 .calendar-day:nth-child(7n+1).today,
@@ -354,10 +363,8 @@
   overflow: hidden;
 }
 
-.calendar-day:hover {
-  z-index: 10;
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+.calendar-day:hover:not(.empty) {
+  background-color: #f0f0f0;
 }
 
 /* PC画面ではホバー効果を控えめに */
@@ -407,36 +414,31 @@
 /* PC画面（大画面）向けのスタイル */
 @media (min-width: 1200px) {
   .practice-calendar {
-    padding: 12px;
+    padding: 20px;
+    max-width: 450px;
   }
   
   .calendar-header {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
   
   .calendar-header h3 {
-    font-size: 16px;
+    font-size: 18px;
   }
   
   .month-nav {
-    width: 28px;
-    height: 28px;
-    font-size: 1rem;
-  }
-  
-  /* モバイルでの月切り替えボタンサイズ調整 */
-  @media (max-width: 768px) {
-    .month-nav {
-      width: 24px;
-      height: 24px;
-      font-size: 0.9rem;
-    }
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
   }
   
   .calendar-day {
-    padding: 8px 4px;
-    font-size: 12px;
-    min-height: 40px;
+    height: 45px;
+    font-size: 14px;
+  }
+  
+  .calendar-weekdays {
+    font-size: 13px;
   }
   
   .day-number {
@@ -486,12 +488,13 @@
 /* モバイル画面向け */
 @media (max-width: 768px) {
   .practice-calendar {
-    padding: 8px;
+    padding: 10px;
     width: 100%;
+    max-width: 100%;
   }
   
   .calendar-header h3 {
-    font-size: 14px;
+    font-size: 16px;
   }
   
   .calendar-weekdays {
@@ -499,19 +502,23 @@
   }
   
   .weekday {
-    padding: 6px 2px;
+    padding: 5px 2px;
   }
   
   .calendar-day {
-    padding: 8px 4px;
+    height: 35px;
+    padding: 5px 2px;
     font-size: 12px;
-    min-height: 35px;
+  }
+  
+  .month-nav {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
   }
   
   /* モバイルではホバー効果を無効化 */
   .calendar-day:hover {
-    transform: none;
-    box-shadow: none;
     background-color: inherit;
   }
   
