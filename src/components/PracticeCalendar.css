@@ -482,7 +482,7 @@
   .practice-calendar {
     padding: 8px;
     width: 100%;
-    max-width: 240px;
+    max-width: 100%;
     margin: 0 auto;
   }
   
@@ -491,19 +491,21 @@
   }
   
   .calendar-grid {
-    grid-auto-rows: minmax(30px, auto);
+    grid-auto-rows: minmax(40px, auto);
     gap: 2px;
     padding: 2px;
   }
   
   .weekday {
-    min-height: 25px;
-    font-size: 9px;
+    min-height: 28px;
+    font-size: 10px;
+    aspect-ratio: auto;
   }
   
   .calendar-day {
-    min-height: 30px;
-    padding: 2px;
+    min-height: 40px;
+    padding: 4px;
+    aspect-ratio: 1.4 / 1;
   }
   
   .day-number {
