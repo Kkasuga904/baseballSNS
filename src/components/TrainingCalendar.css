@@ -3,10 +3,9 @@
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 8px;
-  max-width: 240px;
+  padding: 16px;
+  max-width: 100%;
   width: 100%;
-  margin: 0 auto;
 }
 
 /* ヘッダー */
@@ -16,7 +15,7 @@
 }
 
 .calendar-header h2 {
-  font-size: 12px;
+  font-size: 20px;
   color: #2c5aa0;
   margin: 0;
   font-weight: bold;
@@ -66,15 +65,15 @@
 .nav-btn {
   background: #f0f0f0;
   border: none;
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .nav-btn:hover {
@@ -82,10 +81,10 @@
 }
 
 .current-month {
-  font-size: 12px;
+  font-size: 18px;
   font-weight: bold;
   color: #333;
-  min-width: 80px;
+  min-width: 100px;
   text-align: center;
 }
 
@@ -102,10 +101,10 @@
 
 .weekday {
   text-align: center;
-  font-size: 9px;
-  font-weight: bold;
-  padding: 3px 1px;
-  color: #333;
+  font-size: 11px;
+  font-weight: normal;
+  padding: 4px;
+  color: #666;
   border-right: 1px solid #e0e0e0;
   display: flex;
   align-items: center;
@@ -128,6 +127,7 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(35px, auto);
   width: 100%;
   background: white;
   gap: 0;
@@ -139,16 +139,17 @@
   background: white;
   border-right: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
-  padding: 2px;
+  padding: 8px 4px;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  font-size: 10px;
-  font-weight: 500;
-  height: 24px;
+  font-size: 11px;
+  font-weight: normal;
+  height: auto;
+  min-height: 35px;
 }
 
 .calendar-cell:hover:not(.empty) {
@@ -277,36 +278,72 @@
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
+/* タブレット画面向け */
+@media (min-width: 769px) and (max-width: 1199px) {
   .training-calendar {
-    padding: 6px;
-    max-width: 100%;
+    padding: 12px;
+    max-width: 500px;
+    margin: 0 auto;
   }
   
   .calendar-cell {
-    height: 20px;
-    padding: 1px;
-    font-size: 9px;
+    min-height: 50px;
+    padding: 12px 6px;
+    font-size: 16px;
   }
   
   .weekday {
-    font-size: 8px;
-    padding: 2px 1px;
+    font-size: 11px;
+    padding: 5px 3px;
   }
   
   .calendar-header h2 {
-    font-size: 11px;
+    font-size: 16px;
   }
   
   .current-month {
-    font-size: 11px;
+    font-size: 16px;
   }
   
   .nav-btn {
-    width: 18px;
-    height: 18px;
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .training-calendar {
+    padding: 8px;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+  
+  .calendar-cell {
+    min-height: 24px;
+    padding: 2px;
+    font-size: 10px;
+  }
+  
+  .weekday {
     font-size: 9px;
+    padding: 3px 1px;
+  }
+  
+  .calendar-header h2 {
+    font-size: 12px;
+  }
+  
+  .current-month {
+    font-size: 12px;
+    min-width: 80px;
+  }
+  
+  .nav-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
   }
   
   .weekday {
