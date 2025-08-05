@@ -110,6 +110,9 @@ function AppContent() {
   // カレンダーで選択された日付を管理
   const [selectedDate, setSelectedDate] = useState(null)
   
+  // アプリケーションのローディング状態
+  const [isAppLoading, setIsAppLoading] = useState(true)
+  
   /**
    * マイページ専用データの状態管理
    * LocalStorageを使用してユーザーごとにデータを永続化
