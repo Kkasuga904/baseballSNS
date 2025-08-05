@@ -350,6 +350,11 @@ function AppContent() {
     }
   }, [user])
 
+  // ローディング中の表示
+  if (isAppLoading) {
+    return <LoadingSpinner fullPage size="large" message="データを読み込んでいます..." />
+  }
+  
   // JSXレンダリング部分
   return (
     <div className="app">

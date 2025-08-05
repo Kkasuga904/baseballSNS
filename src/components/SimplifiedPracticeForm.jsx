@@ -7,6 +7,7 @@
 
 import React, { useState, useEffect } from 'react'
 import StarRating from './StarRating'
+import LoadingSpinner from './LoadingSpinner'
 import { useAuth } from '../App'
 import './SimplifiedPracticeForm.css'
 
@@ -29,6 +30,8 @@ function SimplifiedPracticeForm({ onSubmit, selectedDate, onClose }) {
   // 入力ステップの管理
   const [currentStep, setCurrentStep] = useState(1)
   const [showOptionalFields, setShowOptionalFields] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [validationErrors, setValidationErrors] = useState({})
   
   // カテゴリー定義（簡素化）
   const categories = [
@@ -66,27 +69,56 @@ function SimplifiedPracticeForm({ onSubmit, selectedDate, onClose }) {
     handleInputChange('menu', formData.menu.filter(m => m !== item))
   }
   
-  const handleSubmit = (e) => {
+  const validateStep = (step) => {
+    const errors = {}
+    
+    if (step >= 1) {
+      if (!formData.date) {
+        errors.date = '練習日を選択してください'
+      }
+      if (!formData.category) {
+        errors.category = '練習カテゴリーを選択してください'
+      }
+    }
+    
+    setValidationErrors(errors)
+    return Object.keys(errors).length === 0
+  }
+  
+  const handleSubmit = async (e) => {
     e.preventDefault()
     
-    // 必須項目のバリデーション
-    if (!formData.category) {
-      alert('練習カテゴリーを選択してください')
+    // 全ステップのバリデーション
+    if (!validateStep(3)) {
+      alert('必須項目を入力してください')
       return
     }
     
-    // 送信データの整形
-    const submitData = {
-      ...formData,
-      userId: user?.id || 'anonymous',
-      timestamp: new Date().toISOString()
-    }
+    setIsSubmitting(true)
     
-    onSubmit(submitData)
+    try {
+      // 送信データの整形
+      const submitData = {
+        ...formData,
+        userId: user?.id || 'anonymous',
+        timestamp: new Date().toISOString()
+      }
+      
+      // 送信処理（シミュレートのため少し待つ）
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      onSubmit(submitData)
+    } catch (error) {
+      alert('保存に失敗しました。もう一度お試しください。')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
   
   const nextStep = () => {
-    if (currentStep < 3) setCurrentStep(currentStep + 1)
+    if (validateStep(currentStep) && currentStep < 3) {
+      setCurrentStep(currentStep + 1)
+    }
   }
   
   const prevStep = () => {
@@ -128,9 +160,18 @@ function SimplifiedPracticeForm({ onSubmit, selectedDate, onClose }) {
               <input
                 type="date"
                 value={formData.date}
-                onChange={(e) => handleInputChange('date', e.target.value)}
+                onChange={(e) => {
+                  handleInputChange('date', e.target.value)
+                  if (validationErrors.date) {
+                    setValidationErrors(prev => ({ ...prev, date: null }))
+                  }
+                }}
+                className={validationErrors.date ? 'error' : ''}
                 required
               />
+              {validationErrors.date && (
+                <span className="error-message">{validationErrors.date}</span>
+              )}
             </div>
             
             {/* カテゴリー（必須） */}
@@ -142,13 +183,21 @@ function SimplifiedPracticeForm({ onSubmit, selectedDate, onClose }) {
                     key={cat.value}
                     type="button"
                     className={`category-button ${formData.category === cat.value ? 'selected' : ''}`}
-                    onClick={() => handleInputChange('category', cat.value)}
+                    onClick={() => {
+                      handleInputChange('category', cat.value)
+                      if (validationErrors.category) {
+                        setValidationErrors(prev => ({ ...prev, category: null }))
+                      }
+                    }}
                   >
                     <span className="category-icon">{cat.icon}</span>
                     <span className="category-label">{cat.label}</span>
                   </button>
                 ))}
               </div>
+              {validationErrors.category && (
+                <span className="error-message">{validationErrors.category}</span>
+              )}
             </div>
             
             <button
@@ -286,8 +335,12 @@ function SimplifiedPracticeForm({ onSubmit, selectedDate, onClose }) {
               <button type="button" className="prev-button" onClick={prevStep}>
                 ← 戻る
               </button>
-              <button type="submit" className="submit-button">
-                記録を保存
+              <button 
+                type="submit" 
+                className="submit-button"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? <LoadingSpinner size="small" /> : '記録を保存'}
               </button>
             </div>
           </div>
