@@ -83,6 +83,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
   // 後で使うためにイベントを保存（但し今は使わない）
   deferredPrompt = e;
   console.log('PWAインストールプロンプトを無効化しました');
+  
+  // グローバル変数として保存（コンポーネントからアクセス可能にする）
+  window.deferredPrompt = e;
 });
 
 // アプリがインストールされたときの処理

@@ -167,6 +167,13 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
    * Android/デスクトップとiOSで異なる処理を実行
    */
   const handleInstallClick = async () => {
+    // 開発環境ではPWAインストール機能を無効化
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.log('開発環境のため、PWAインストール機能は無効です')
+      alert('PWAインストール機能は本番環境でのみ利用可能です')
+      return
+    }
+    
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
     
     if (isIOS) {
