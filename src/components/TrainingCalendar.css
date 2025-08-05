@@ -118,6 +118,8 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(50px, auto);
+  gap: 0;
   width: 100%;
   border: 1px solid #e0e0e0;
   background: white;
@@ -125,7 +127,6 @@
 
 /* カレンダーセル */
 .calendar-cell {
-  aspect-ratio: 1;
   background: white;
   border-right: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
@@ -136,7 +137,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  min-height: 35px;
+  min-height: 50px;
+  height: 100%;
   font-size: 14px;
   font-weight: 500;
 }
@@ -268,8 +270,12 @@
     padding: 12px;
   }
   
+  .calendar-grid {
+    grid-auto-rows: minmax(40px, auto);
+  }
+  
   .calendar-cell {
-    min-height: 30px;
+    min-height: 40px;
     padding: 4px 2px;
     font-size: 12px;
   }
