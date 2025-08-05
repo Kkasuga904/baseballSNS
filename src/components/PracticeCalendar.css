@@ -66,60 +66,53 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: 60px;
+  grid-auto-rows: minmax(60px, auto);
+  gap: 4px;
   width: 100%;
   background: white;
   border: 1px solid #e0e0e0;
-  gap: 0;
-  table-layout: fixed;
+  padding: 4px;
 }
 
 .weekday {
-  padding: 2px;
-  border-right: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 11px;
   font-weight: normal;
   color: #666;
   background: #f8f8f8;
-  min-height: 60px;
-  min-width: 0;
-  width: 100%;
+  min-height: 40px;
   box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-}
-
-.weekday:nth-child(7n) {
-  border-right: none;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
 }
 
 .weekday:nth-child(1) {
   color: #ff0000;
+  background: #fff8f8;
 }
 
 .weekday:nth-child(7) {
   color: #0000ff;
+  background: #f8f8ff;
 }
 
 .calendar-day {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-right: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
   position: relative;
+  border-radius: 8px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 4px;
+  overflow: visible;
   cursor: pointer;
   transition: background-color 0.2s;
-  padding: 2px;
-  background-color: white;
   box-sizing: border-box;
   min-height: 60px;
-  min-width: 0;
-  width: 100%;
-  overflow: visible;
+  border: 1px solid #e0e0e0;
 }
 
 .calendar-day.empty {
@@ -150,13 +143,8 @@
 .calendar-day:nth-child(7n):not(.empty) {
   color: #0000ff;
   background: #f8f8ff;
-  border-right: none;
 }
 
-/* 最終行の下線を削除 */
-.calendar-day:nth-last-child(-n+7) {
-  border-bottom: none;
-}
 
 .calendar-day:nth-child(7n+1).today,
 .calendar-day:nth-child(7n).today {
@@ -169,14 +157,12 @@
 }
 
 .day-number {
-  display: block !important;
-  position: relative;
+  display: block;
   z-index: 1;
   font-size: 14px;
   font-weight: bold;
   color: #333;
-  line-height: 1.2;
-  text-align: center;
+  margin-bottom: 2px;
 }
 
 .practice-indicator {
@@ -505,12 +491,13 @@
   }
   
   .calendar-grid {
-    grid-auto-rows: 30px;
+    grid-auto-rows: minmax(30px, auto);
+    gap: 2px;
+    padding: 2px;
   }
   
   .weekday {
-    min-height: 30px;
-    padding: 3px 1px;
+    min-height: 25px;
     font-size: 9px;
   }
   
