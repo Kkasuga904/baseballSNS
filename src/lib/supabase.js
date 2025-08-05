@@ -21,17 +21,30 @@ const getEnvVar = (key, defaultValue) => {
 const supabaseUrl = getEnvVar('VITE_SUPABASE_URL', 'https://xyzcompanyprojectid.supabase.co');
 const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTcwMDAwMDAwMH0.placeholder');
 
-// Supabase設定がない場合の警告
-if (supabaseUrl === 'https://xyzcompanyprojectid.supabase.co' || supabaseAnonKey === 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTcwMDAwMDAwMH0.placeholder') {
+// Supabase設定がない場合の警告とダミーオブジェクトの作成
+const isPlaceholder = supabaseUrl === 'https://xyzcompanyprojectid.supabase.co' || 
+                     supabaseUrl.includes('placeholder') || 
+                     supabaseUrl.includes('your-') ||
+                     supabaseAnonKey === 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTcwMDAwMDAwMH0.placeholder' ||
+                     supabaseAnonKey.includes('placeholder');
+
+if (isPlaceholder) {
   console.warn('⚠️ Supabase設定が見つかりません。.envファイルを作成して、VITE_SUPABASE_URLとVITE_SUPABASE_ANON_KEYを設定してください。')
 }
 
 let supabase = null
 
-try {
-  supabase = createClient(supabaseUrl, supabaseAnonKey)
-} catch (error) {
-  console.error('Supabase初期化エラー:', error)
+// プレースホルダーの場合はSupabaseクライアントを作成しない
+if (!isPlaceholder) {
+  try {
+    supabase = createClient(supabaseUrl, supabaseAnonKey)
+  } catch (error) {
+    console.error('Supabase初期化エラー:', error)
+  }
+}
+
+// Supabaseが作成されなかった場合はダミーオブジェクトを使用
+if (!supabase) {
   // ダミーのsupabaseオブジェクトを作成（エラーを防ぐため）
   supabase = {
     auth: {
