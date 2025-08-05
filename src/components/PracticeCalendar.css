@@ -71,21 +71,25 @@
   background: white;
   border: 1px solid #e0e0e0;
   gap: 0;
+  table-layout: fixed;
 }
 
 .weekday {
-  padding: 4px;
+  padding: 2px;
   border-right: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   font-size: 11px;
   font-weight: normal;
   color: #666;
   background: #f8f8f8;
   min-height: 60px;
+  min-width: 0;
+  width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
 }
 
 .weekday:nth-child(7n) {
@@ -101,21 +105,23 @@
 }
 
 .calendar-day {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   border-right: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
   position: relative;
   cursor: pointer;
   transition: background-color 0.2s;
   font-size: 22px;
-  padding: 4px;
+  padding: 2px;
   background-color: white;
   box-sizing: border-box;
   color: #333;
   font-weight: normal;
   min-height: 60px;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 .calendar-day.empty {
@@ -181,6 +187,8 @@
   font-size: 0.4rem;
   line-height: 1;
   color: #2e7d46;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .calendar-day.has-schedule {
@@ -203,6 +211,8 @@
   gap: 0;
   font-size: 0.4rem;
   line-height: 1;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .schedule-indicator {
