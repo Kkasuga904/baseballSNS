@@ -196,8 +196,13 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
   /**
    * タッチ終了時の処理
    */
-  const handleTouchEnd = () => {
-    const swipeThreshold = 30 // スワイプと判定する最小距離（より敏感に）
+  const handleTouchEnd = (e) => {
+    // 日付セル上でのタッチ終了の場合は処理しない
+    if (e.target.closest('.calendar-day')) {
+      return
+    }
+    
+    const swipeThreshold = 50 // スワイプ判定の閾値を上げる
     const diff = touchStartX.current - touchEndX.current
     
     if (Math.abs(diff) > swipeThreshold) {
@@ -275,6 +280,11 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
         e.preventDefault()
         e.stopPropagation()
         
+        // タッチイベントの伝播を防ぐ
+        if (e.nativeEvent) {
+          e.nativeEvent.stopImmediatePropagation()
+        }
+        
         console.log('Day clicked:', dateStr, 'Window width:', window.innerWidth)
         
         // デバイスの判定（モバイルデバイスかどうかをユーザーエージェントで判定）
@@ -321,6 +331,28 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
             transform: 'translateZ(0)'
           }}
           onClick={handleDayClick}
+          onTouchStart={(e) => {
+            e.stopPropagation()
+            // タッチ開始位置を記録してスワイプ判定を改善
+            const touch = e.touches[0]
+            e.currentTarget.dataset.touchStartX = touch.clientX
+            e.currentTarget.dataset.touchStartY = touch.clientY
+          }}
+          onTouchEnd={(e) => {
+            e.stopPropagation()
+            
+            // タッチ終了位置を取得
+            const touch = e.changedTouches[0]
+            const startX = parseFloat(e.currentTarget.dataset.touchStartX || '0')
+            const startY = parseFloat(e.currentTarget.dataset.touchStartY || '0')
+            const diffX = Math.abs(touch.clientX - startX)
+            const diffY = Math.abs(touch.clientY - startY)
+            
+            // 移動が小さい場合のみクリックとして処理（タップ判定）
+            if (diffX < 10 && diffY < 10) {
+              handleDayClick(e)
+            }
+          }}
         >
           <span className="day-number">{day}</span>
           
