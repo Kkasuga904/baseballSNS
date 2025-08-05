@@ -63,49 +63,39 @@
   padding-left: 2px;
 }
 
-.calendar-weekdays {
+.calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  font-weight: normal;
-  color: #666;
-  font-size: 11px;
-  background: #f8f8f8;
+  grid-auto-rows: minmax(35px, auto);
+  width: 100%;
+  background: white;
   border: 1px solid #e0e0e0;
-  border-bottom: none;
   gap: 0;
 }
 
 .weekday {
   padding: 6px 4px;
   border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
+  font-weight: normal;
+  color: #666;
+  background: #f8f8f8;
 }
 
-.weekday:last-child {
+.weekday:nth-child(7n) {
   border-right: none;
 }
 
-.calendar-weekdays .weekday:first-child {
+.weekday:nth-child(1) {
   color: #ff0000;
 }
 
-.calendar-weekdays .weekday:last-child {
+.weekday:nth-child(7) {
   color: #0000ff;
-}
-
-
-.calendar-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: minmax(80px, auto);
-  width: 100%;
-  background: white;
-  gap: 0;
-  border: 1px solid #e0e0e0;
 }
 
 .calendar-day {
@@ -465,7 +455,7 @@
     max-width: 500px;
   }
   
-  .calendar-days {
+  .calendar-grid {
     grid-auto-rows: minmax(50px, auto);
   }
   
@@ -474,10 +464,6 @@
     min-height: 50px;
     padding: 12px 6px;
     font-size: 16px;
-  }
-  
-  .calendar-weekdays {
-    font-size: 11px;
   }
   
   .weekday {
@@ -511,17 +497,14 @@
     font-size: 12px;
   }
   
-  .calendar-weekdays {
-    font-size: 9px;
+  .calendar-grid {
+    grid-auto-rows: minmax(24px, auto);
   }
   
   .weekday {
     padding: 3px 1px;
     font-size: 9px;
-  }
-  
-  .calendar-days {
-    grid-auto-rows: minmax(24px, auto);
+    min-height: 24px;
   }
   
   .calendar-day {

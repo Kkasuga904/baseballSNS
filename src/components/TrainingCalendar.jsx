@@ -128,17 +128,15 @@ function TrainingCalendar({ practices = [], onDateClick, schedules = [] }) {
             <button onClick={() => changeMonth(1)} className="nav-btn">▶</button>
           </div>
           
-          {/* 曜日ヘッダー */}
-          <div className="weekday-header">
+          {/* 曜日とカレンダーを統合したグリッド */}
+          <div className="calendar-grid">
+            {/* 曜日ヘッダー */}
             {['日', '月', '火', '水', '木', '金', '土'].map((day, index) => (
-              <div key={day} className={`weekday ${index === 0 ? 'sunday' : index === 6 ? 'saturday' : ''}`}>
+              <div key={`weekday-${index}`} className={`weekday ${index === 0 ? 'sunday' : index === 6 ? 'saturday' : ''}`}>
                 {day}
               </div>
             ))}
-          </div>
-          
-          {/* カレンダーグリッド */}
-          <div className="calendar-grid">
+            {/* カレンダー本体 */}
             {renderCalendar()}
           </div>
         </div>

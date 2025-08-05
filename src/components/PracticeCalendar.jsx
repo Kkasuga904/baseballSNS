@@ -463,15 +463,13 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
         </button>
       </div>
       
-      {/* 曜日ヘッダー */}
-      <div className="calendar-weekdays">
-        {['日', '月', '火', '水', '木', '金', '土'].map(day => (
-          <div key={day} className="weekday">{day}</div>
+      {/* 曜日とカレンダーを統合したグリッド */}
+      <div className="calendar-grid">
+        {/* 曜日ヘッダー */}
+        {['日', '月', '火', '水', '木', '金', '土'].map((day, i) => (
+          <div key={`weekday-${i}`} className="weekday">{day}</div>
         ))}
-      </div>
-      
-      {/* カレンダー本体 */}
-      <div className="calendar-days">
+        {/* カレンダー本体 */}
         {renderCalendar()}
       </div>
       
