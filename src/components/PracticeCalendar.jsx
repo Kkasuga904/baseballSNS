@@ -158,12 +158,18 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
    * @param {number} increment - 変更する月数（-1: 前月、1: 翌月）
    */
   const changeMonth = (increment) => {
-    if (isTransitioning) return
+    console.log('changeMonth called with increment:', increment)
+    if (isTransitioning) {
+      console.log('isTransitioning is true, returning early')
+      return
+    }
     
     setIsTransitioning(true)
     setCurrentDate(prev => {
+      console.log('Previous date:', prev)
       const newDate = new Date(prev)
       newDate.setMonth(prev.getMonth() + increment)
+      console.log('New date:', newDate)
       return newDate
     })
     
@@ -414,11 +420,45 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
     >
       {/* カレンダーヘッダー：年月表示と月切り替えボタン */}
       <div className="calendar-header">
-        <button onClick={() => changeMonth(-1)} className="month-nav prev">
+        <button 
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            console.log('Previous month button clicked')
+            changeMonth(-1)
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation()
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            console.log('Previous month button touched')
+            changeMonth(-1)
+          }}
+          className="month-nav prev"
+        >
           ‹
         </button>
         <h3>{monthYear.year}年{monthYear.month + 1}月</h3>
-        <button onClick={() => changeMonth(1)} className="month-nav next">
+        <button 
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            console.log('Next month button clicked')
+            changeMonth(1)
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation()
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            console.log('Next month button touched')
+            changeMonth(1)
+          }}
+          className="month-nav next"
+        >
           ›
         </button>
       </div>

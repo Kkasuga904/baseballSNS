@@ -702,6 +702,110 @@
   transform: translateY(-1px);
 }
 
+/* チームメンバー一覧 */
+.team-members h3 {
+  color: #2e7d46;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.member-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.member-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: #2e7d46;
+}
+
+.member-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.member-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.member-number {
+  background: #2e7d46;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.member-info {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.member-position {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.member-year {
+  background: #e9ecef;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.member-role {
+  margin-bottom: 0.5rem;
+}
+
+.role-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.role-tag.admin {
+  background: #ff5722;
+  color: white;
+}
+
+.role-tag.coach {
+  background: #ff9800;
+  color: white;
+}
+
+.role-tag.manager {
+  background: #9c27b0;
+  color: white;
+}
+
+.member-joined {
+  font-size: 0.8rem;
+  color: #888;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+}
+
 /* 最近の活動 */
 .recent-activities h3 {
   color: #2e7d46;
@@ -924,5 +1028,19 @@
   .cancel-btn {
     width: 100%;
     text-align: center;
+  }
+  
+  /* メンバー一覧のモバイル対応 */
+  .members-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .member-card {
+    padding: 0.75rem;
+  }
+  
+  .member-info {
+    flex-direction: column;
+    gap: 0.25rem;
   }
 }
