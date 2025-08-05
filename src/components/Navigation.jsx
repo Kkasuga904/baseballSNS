@@ -347,53 +347,44 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
       {/* メインナビゲーションバー */}
       <nav className="navigation">
         <div className="nav-items">
-          {/* タイムライン */}
-          <Link
+          {/* タイムライン - MVP段階では不要 */}
+          {/* <Link
             to="/"
             className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}
           >
             <span className="nav-icon">🏠</span>
             <span className="nav-label">タイムライン</span>
-          </Link>
+          </Link> */}
           
-          {/* マイページ */}
+          {/* Diary（練習記録） */}
           <Link
             to="/mypage"
             className={`nav-item ${location.pathname === '/mypage' ? 'active' : ''}`}
           >
-            <span className="nav-icon">📄</span>
-            <span className="nav-label">マイページ</span>
+            <span className="nav-icon">📓</span>
+            <span className="nav-label">Diary</span>
           </Link>
           
-          {/* チーム */}
+          {/* Calendar（練習カレンダー） */}
           <Link
-            to="/teams"
-            className={`nav-item ${location.pathname.startsWith('/team') ? 'active' : ''}`}
+            to="/calendar"
+            className={`nav-item ${location.pathname === '/calendar' ? 'active' : ''}`}
           >
-            <span className="nav-icon">🏟️</span>
-            <span className="nav-label">チーム</span>
+            <span className="nav-icon">📅</span>
+            <span className="nav-label">Calendar</span>
           </Link>
           
-          {/* プロフィール */}
-          <Link
-            to="/profile"
-            className={`nav-item ${location.pathname.startsWith('/profile') ? 'active' : ''}`}
-          >
-            <span className="nav-icon">👤</span>
-            <span className="nav-label">プロフィール</span>
-          </Link>
-          
-          {/* 測定結果 */}
+          {/* Stats（測定 or 初期データ記録） */}
           <Link
             to="/measurements"
             className={`nav-item ${location.pathname === '/measurements' ? 'active' : ''}`}
           >
             <span className="nav-icon">📊</span>
-            <span className="nav-label">測定結果</span>
+            <span className="nav-label">Stats</span>
           </Link>
           
-          {/* アプリ */}
-          {showInstallButton && (
+          {/* アプリ - MVP段階では不要 */}
+          {/* {showInstallButton && (
             <button 
               className="nav-item install-button"
               onClick={handleInstallClick}
@@ -402,7 +393,7 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
               <span className="nav-icon">📱</span>
               <span className="nav-label">アプリ</span>
             </button>
-          )}
+          )} */}
           
           {/* 管理者 */}
           {(user.isAdmin || user.email === 'over9131120@gmail.com') && (
@@ -412,22 +403,22 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
             </div>
           )}
           
-          {/* 設定 */}
+          {/* Settings */}
           <Link
             to="/settings"
             className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}
           >
             <span className="nav-icon">⚙️</span>
-            <span className="nav-label">設定</span>
+            <span className="nav-label">Settings</span>
           </Link>
           
-          {/* ログアウト */}
-          <button 
+          {/* ログアウト - 設定ページに移動 */}
+          {/* <button 
             onClick={handleSignOut} 
             className="nav-item logout-button"
           >
             <span className="nav-label">ログアウト</span>
-          </button>
+          </button> */}
         </div>
       </nav>
       

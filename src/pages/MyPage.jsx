@@ -59,7 +59,7 @@ import './MyPage.css'
  */
 function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate, addPost }) {
   // 認証情報を取得
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const { getUserTeams, isInitialized } = useTeam()
   const [showTeamManagement, setShowTeamManagement] = useState(false)
@@ -69,6 +69,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   const [showGameRecord, setShowGameRecord] = useState(false)
   const [editingGame, setEditingGame] = useState(null)
   const [showPracticeForm, setShowPracticeForm] = useState(false)
+  const [activeTab, setActiveTab] = useState('diary') // タブの状態管理
   
   // ユーザーの所属チーム一覧を取得（ユーザー情報を明示的に渡す）
   const userTeams = React.useMemo(() => {
@@ -96,6 +97,14 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
         post.practiceData.date === selectedDate
       )
     : []
+  
+  /**
+   * ログアウト処理
+   */
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/login')
+  }
   
   /**
    * マイページ専用データの日付別フィルタリング
@@ -312,26 +321,145 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   // コンポーネントのレンダリング
   return (
     <div className="mypage">
-      <h2>📝 マイページ - 練習記録</h2>
+      <h2>📓 Diary - 練習記録</h2>
+      
+      {/* タブナビゲーション */}
+      <div className="tab-navigation">
+        <button 
+          className={`tab-button ${activeTab === 'diary' ? 'active' : ''}`}
+          onClick={() => setActiveTab('diary')}
+        >
+          📝 Diary（練習記録）
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'calendar' ? 'active' : ''}`}
+          onClick={() => setActiveTab('calendar')}
+        >
+          📅 Calendar（練習カレンダー）
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'stats' ? 'active' : ''}`}
+          onClick={() => setActiveTab('stats')}
+        >
+          📊 Stats（測定記録）
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
+          onClick={() => setActiveTab('settings')}
+        >
+          ⚙️ Settings
+        </button>
+      </div>
       
       <div className="mypage-layout">
         <div className="mypage-main">
-          {/* 練習カレンダー: 月間の練習記録表示 - 最上部に配置 */}
-          <div className="practice-calendar-section">
-            <h3>📅 練習カレンダー</h3>
-            <PracticeCalendar
-              practices={posts}
-              onDateClick={(date) => {
-                setSelectedDate(date)
-                setShowPracticeForm(true)
-              }}
-              schedules={myPageData.schedules || []}
-            />
-          </div>
+          {/* タブコンテンツ */}
+          {activeTab === 'diary' && (
+            <>
+              {/* 練習記録フォームへのボタン */}
+              <div className="diary-section">
+                <div className="section-header">
+                  <h3>📝 練習記録</h3>
+                  <button 
+                    onClick={() => setShowPracticeForm(true)}
+                    className="btn-primary"
+                  >
+                    ＋ 新しい練習を記録
+                  </button>
+                </div>
+                
+                {/* 最近の練習記録 */}
+                <div className="recent-practices">
+                  <h4>最近の練習記録</h4>
+                  {posts.filter(p => p.type === 'practice').length > 0 ? (
+                    posts
+                      .filter(p => p.type === 'practice')
+                      .slice(0, 5)
+                      .map(practice => (
+                        <div key={practice.id} className="practice-detail">
+                          <PracticeRecord practiceData={practice.practiceData} />
+                        </div>
+                      ))
+                  ) : (
+                    <p>練習記録がありません</p>
+                  )}
+                </div>
+                
+                {/* 日記機能 */}
+                <div className="diary-list-section">
+                  <h4>練習日記</h4>
+                  <button 
+                    onClick={() => setShowDiaryForm(true)}
+                    className="btn-secondary"
+                  >
+                    日記を書く
+                  </button>
+                  <DiaryList 
+                    diaries={myPageData.diaries || []}
+                    onEdit={(diary) => {
+                      setEditingDiary(diary)
+                      setShowDiaryForm(true)
+                    }}
+                    onView={(diary) => setViewingDiary(diary)}
+                    onDelete={handleDeleteDiary}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+          
+          {activeTab === 'calendar' && (
+            <div className="practice-calendar-section">
+              <h3>📅 練習カレンダー</h3>
+              <PracticeCalendar
+                practices={posts}
+                onDateClick={(date) => {
+                  setSelectedDate(date)
+                  setShowPracticeForm(true)
+                }}
+                schedules={myPageData.schedules || []}
+              />
+            </div>
+          )}
+          
+          {activeTab === 'stats' && (
+            <div className="stats-section">
+              <h3>📊 測定記録</h3>
+              <p>体重・球速・肩の柔軟性などピッチャー特化情報</p>
+              {/* 測定データの表示をここに追加 */}
+            </div>
+          )}
+          
+          {activeTab === 'settings' && (
+            <div className="settings-section">
+              <h3>⚙️ 設定</h3>
+              <div className="settings-content">
+                <div className="setting-item">
+                  <h4>アカウント設定</h4>
+                  <p>メールアドレス: {user?.email}</p>
+                </div>
+                <div className="setting-item">
+                  <h4>データエクスポート</h4>
+                  <button className="btn-secondary">
+                    練習データをダウンロード
+                  </button>
+                </div>
+                <div className="setting-item">
+                  <h4>ログアウト</h4>
+                  <button 
+                    onClick={handleSignOut}
+                    className="btn-danger"
+                  >
+                    ログアウト
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           
           
-          {/* 所属チーム一覧 */}
-          <div className="my-teams-section">
+          {/* 所属チーム一覧 - MVP段階では不要 */}
+          {/* <div className="my-teams-section">
             <div className="section-header">
               <h3>🏟️ 所属チーム</h3>
               <button
@@ -373,19 +501,19 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 </button>
               </div>
             )}
-          </div>
+          </div> */}
           
-          {/* ルーティントラッカー: 日々の習慣を記録 */}
-          <RoutineTracker />
+          {/* ルーティントラッカー: 日々の習慣を記録 - MVP段階では不要 */}
+          {/* <RoutineTracker /> */}
           
-          {/* 週次サマリー: 1週間の練習概要 */}
-          <WeeklySummary practices={posts} />
+          {/* 週次サマリー: 1週間の練習概要 - MVP段階では不要 */}
+          {/* <WeeklySummary practices={posts} /> */}
           
-          {/* 練習統計: 練習内容の集計・分析 */}
-          <PracticeStats practices={posts} />
+          {/* 練習統計: 練習内容の集計・分析 - MVP段階では不要 */}
+          {/* <PracticeStats practices={posts} /> */}
           
-          {/* 身体測定チャート: 体重・体脂肪率等の推移 */}
-          <BodyMetricsChart />
+          {/* 身体測定チャート: 体重・体脂肪率等の推移 - MVP段階では不要 */}
+          {/* <BodyMetricsChart /> */}
           
           {/* 月次統計: 月間の成績サマリー */}
           <MonthlyStats />
