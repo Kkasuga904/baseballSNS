@@ -354,6 +354,14 @@ function AppContent() {
     }
   }, [user])
 
+  // ローディング状態の初期化
+  useEffect(() => {
+    // 初期化処理が完了したらローディングを解除
+    setTimeout(() => {
+      setIsAppLoading(false)
+    }, 500)
+  }, [])
+  
   // ローディング中の表示
   if (isAppLoading) {
     return <LoadingSpinner fullPage size="large" message="データを読み込んでいます..." />

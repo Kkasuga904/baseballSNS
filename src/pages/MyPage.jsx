@@ -404,6 +404,28 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                     onDelete={handleDeleteDiary}
                   />
                 </div>
+                
+                {/* 試合記録セクション */}
+                <div className="game-record-section">
+                  <div className="section-header">
+                    <h3>⚾ 試合記録</h3>
+                    <button
+                      onClick={() => {
+                        setEditingGame(null)
+                        setShowGameRecord(true)
+                      }}
+                      className="btn-primary"
+                    >
+                      試合記録を追加
+                    </button>
+                  </div>
+                  
+                  <GameRecordList
+                    records={myPageData.games || []}
+                    onEdit={handleEditGame}
+                    onDelete={handleDeleteGame}
+                  />
+                </div>
               </div>
             </>
           )}
@@ -515,21 +537,20 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           {/* 身体測定チャート: 体重・体脂肪率等の推移 - MVP段階では不要 */}
           {/* <BodyMetricsChart /> */}
           
-          {/* 月次統計: 月間の成績サマリー */}
-          <MonthlyStats />
+          {/* 月次統計: 月間の成績サマリー - MVP段階では不要 */}
+          {/* <MonthlyStats /> */}
           
-          {/* 栄養チャート: 食事・サプリメントの栄養分析 */}
-          {/* データが存在する場合のみ表示（条件付きレンダリング） */}
-          {((myPageData.meals && myPageData.meals.length > 0) || 
+          {/* 栄養チャート: 食事・サプリメントの栄養分析 - MVP段階では不要 */}
+          {/* {((myPageData.meals && myPageData.meals.length > 0) || 
             (myPageData.supplements && myPageData.supplements.length > 0)) && (
             <NutritionChart 
               meals={myPageData.meals || []} 
               supplements={myPageData.supplements || []} 
             />
-          )}
+          )} */}
           
-          {/* 選択日付の全記録: 日別の詳細データ表示 */}
-          {selectedDate && (
+          {/* 選択日付の全記録: 日別の詳細データ表示 - MVP段階では不要 */}
+          {/* {selectedDate && (
             <div className="selected-date-records">
               <h3>{selectedDate} の記録</h3>
               <DailyRecords
@@ -542,22 +563,16 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 sleep={selectedDateData.sleep}
               />
             </div>
-          )}
+          )} */}
           
-          {/* 今後の予定: 未来のスケジュール一覧 */}
-          <div className="upcoming-schedules">
+          {/* 今後の予定: 未来のスケジュール一覧 - MVP段階では不要 */}
+          {/* <div className="upcoming-schedules">
             <h3>📅 今後の予定</h3>
             {(() => {
               // 今日の日付を取得（時刻を0:00にリセット）
               const today = new Date()
               today.setHours(0, 0, 0, 0)
               
-              /**
-               * 今後の予定をフィルタリング・ソート・制限
-               * 1. 今日以降の予定のみ抽出
-               * 2. 日付順（昇順）でソート
-               * 3. 最大10件に制限
-               */
               const upcomingSchedules = myPageData.schedules
                 .filter(schedule => {
                   const scheduleDate = new Date(schedule.date || schedule.startDate)
@@ -580,7 +595,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 <div className="schedule-list">
                   {upcomingSchedules.map(schedule => (
                     <div key={schedule.id} className="schedule-list-item">
-                      {/* 日付表示（日本語フォーマット） */}
                       <div className="schedule-date">
                         {new Date(schedule.date || schedule.startDate).toLocaleDateString('ja-JP', {
                           month: 'long',  // 「1月」のような表示
@@ -588,17 +602,16 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                           weekday: 'short' // 「月」「火」などの曜日
                         })}
                       </div>
-                      {/* スケジュール詳細コンポーネント */}
                       <ScheduleItem schedule={schedule} />
                     </div>
                   ))}
                 </div>
               )
             })()}
-          </div>
+          </div> */}
           
-          {/* 最近の練習記録: タイムラインからの最新5件 */}
-          <div className="recent-practices">
+          {/* 最近の練習記録: タイムラインからの最新5件 - MVP段階では不要 */}
+          {/* <div className="recent-practices">
             <h3>最近の練習記録</h3>
             {posts.length > 0 ? (
               // 最新5件の練習記録を表示
@@ -615,10 +628,10 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 タイムラインから練習記録を投稿してみましょう！
               </p>
             )}
-          </div>
+          </div> */}
           
-          {/* 日記セクション */}
-          <div className="diary-section">
+          {/* 日記セクション - MVP段階では不要 */}
+          {/* <div className="diary-section">
             <div className="section-header">
               <h3>📓 野球日記</h3>
               <button
@@ -638,10 +651,10 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
               onDelete={handleDeleteDiary}
               onView={handleViewDiary}
             />
-          </div>
+          </div> */}
           
-          {/* 試合記録セクション */}
-          <div className="game-record-section">
+          {/* 試合記録セクション - MVP段階では不要 */}
+          {/* <div className="game-record-section">
             <div className="section-header">
               <h3>⚾ 試合記録</h3>
               <button
@@ -660,13 +673,13 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
               onEdit={handleEditGame}
               onDelete={handleDeleteGame}
             />
-          </div>
+          </div> */}
           
-          {/* 成績推移グラフ */}
-          <PerformanceChart
+          {/* 成績推移グラフ - MVP段階では不要 */}
+          {/* <PerformanceChart
             games={myPageData.games || []}
             practices={myPageData.practices || []}
-          />
+          /> */}
         </div>
       </div>
       

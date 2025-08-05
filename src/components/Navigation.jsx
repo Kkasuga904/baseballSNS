@@ -365,23 +365,23 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
             <span className="nav-label">Diary</span>
           </Link>
           
-          {/* Calendar（練習カレンダー） */}
-          <Link
+          {/* Calendar（練習カレンダー） - 統合されるためコメントアウト */}
+          {/* <Link
             to="/calendar"
             className={`nav-item ${location.pathname === '/calendar' ? 'active' : ''}`}
           >
             <span className="nav-icon">📅</span>
             <span className="nav-label">Calendar</span>
-          </Link>
+          </Link> */}
           
-          {/* Stats（測定 or 初期データ記録） */}
-          <Link
+          {/* Stats（測定 or 初期データ記録） - 統合されるためコメントアウト */}
+          {/* <Link
             to="/measurements"
             className={`nav-item ${location.pathname === '/measurements' ? 'active' : ''}`}
           >
             <span className="nav-icon">📊</span>
             <span className="nav-label">Stats</span>
-          </Link>
+          </Link> */}
           
           {/* アプリ - MVP段階では不要 */}
           {/* {showInstallButton && (
@@ -403,14 +403,14 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
             </div>
           )}
           
-          {/* Settings */}
-          <Link
+          {/* Settings - 統合されるためコメントアウト */}
+          {/* <Link
             to="/settings"
             className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}
           >
             <span className="nav-icon">⚙️</span>
             <span className="nav-label">Settings</span>
-          </Link>
+          </Link> */}
           
           {/* ログアウト - 設定ページに移動 */}
           {/* <button 
@@ -422,7 +422,7 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
         </div>
       </nav>
       
-      {/* ドラッグ可能なフローティングカレンダー */}
+      {/* ドラッグ可能なフローティングカレンダー - MVP段階では不要 */}
       {/* {location.pathname !== '/calendar' && (
         <div 
           className={`nav-calendar ${isCalendarMinimized ? 'minimized' : ''} ${isDragging ? 'dragging' : ''}`}

@@ -12,50 +12,55 @@ function MobileNavigation() {
   
   return (
     <nav className="mobile-navigation">
-      <Link
+      {/* タイムライン - MVP段階では不要 */}
+      {/* <Link
         to="/"
         className={`mobile-nav-item ${location.pathname === '/' ? 'active' : ''}`}
         onClick={handleNavClick}
       >
         <span className="mobile-nav-icon">🏠</span>
         <span className="mobile-nav-label">タイムライン</span>
-      </Link>
+      </Link> */}
       
+      {/* Diary（練習記録） */}
       <Link
         to="/mypage"
         className={`mobile-nav-item ${location.pathname === '/mypage' ? 'active' : ''}`}
         onClick={handleNavClick}
       >
-        <span className="mobile-nav-icon">📄</span>
-        <span className="mobile-nav-label">マイページ</span>
+        <span className="mobile-nav-icon">📓</span>
+        <span className="mobile-nav-label">Diary</span>
       </Link>
       
-      <Link
+      {/* プロフィール - MVP段階では不要 */}
+      {/* <Link
         to="/profile"
         className={`mobile-nav-item ${location.pathname.startsWith('/profile') ? 'active' : ''}`}
         onClick={handleNavClick}
       >
         <span className="mobile-nav-icon">👤</span>
         <span className="mobile-nav-label">プロフィール</span>
-      </Link>
+      </Link> */}
       
-      <Link
+      {/* 測定結果 - マイページに統合されるためコメントアウト */}
+      {/* <Link
         to="/measurements"
         className={`mobile-nav-item ${location.pathname === '/measurements' ? 'active' : ''}`}
         onClick={handleNavClick}
       >
         <span className="mobile-nav-icon">📊</span>
         <span className="mobile-nav-label">測定結果</span>
-      </Link>
+      </Link> */}
       
-      <Link
+      {/* 設定 - マイページに統合されるためコメントアウト */}
+      {/* <Link
         to="/settings"
         className={`mobile-nav-item ${location.pathname === '/settings' ? 'active' : ''}`}
         onClick={handleNavClick}
       >
         <span className="mobile-nav-icon">⚙️</span>
         <span className="mobile-nav-label">設定</span>
-      </Link>
+      </Link> */}
     </nav>
   )
 }
