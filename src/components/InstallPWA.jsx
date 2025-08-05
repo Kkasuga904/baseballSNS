@@ -40,21 +40,25 @@ function InstallPWA() {
   const handleInstallClick = async () => {
     if (!deferredPrompt) return
 
-    // Show the install prompt
-    deferredPrompt.prompt()
+    try {
+      // Show the install prompt
+      await deferredPrompt.prompt()
 
-    // Wait for the user to respond to the prompt
-    const { outcome } = await deferredPrompt.userChoice
+      // Wait for the user to respond to the prompt
+      const { outcome } = await deferredPrompt.userChoice
 
-    if (outcome === 'accepted') {
-      console.log('User accepted the install prompt')
-    } else {
-      console.log('User dismissed the install prompt')
+      if (outcome === 'accepted') {
+        console.log('User accepted the install prompt')
+      } else {
+        console.log('User dismissed the install prompt')
+      }
+    } catch (error) {
+      console.error('PWAインストールプロンプトエラー:', error)
+    } finally {
+      // Clear the deferred prompt
+      setDeferredPrompt(null)
+      setShowInstallButton(false)
     }
-
-    // Clear the deferred prompt
-    setDeferredPrompt(null)
-    setShowInstallButton(false)
   }
 
   // Don't show anything if app is already installed

@@ -173,15 +173,19 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
       // iOSの場合は手動インストール手順を表示
       alert('iOSでのインストール:\n1. Safari下部の共有ボタンをタップ\n2. 「ホーム画面に追加」を選択\n3. 「追加」をタップ')
     } else if (deferredPrompt) {
-      // Android/デスクトップの場合はプロンプトを表示
-      deferredPrompt.prompt()
-      const { outcome } = await deferredPrompt.userChoice
-      
-      if (outcome === 'accepted') {
-        setShowInstallButton(false)
+      try {
+        // Android/デスクトップの場合はプロンプトを表示
+        await deferredPrompt.prompt()
+        const { outcome } = await deferredPrompt.userChoice
+        
+        if (outcome === 'accepted') {
+          setShowInstallButton(false)
+        }
+      } catch (error) {
+        console.error('PWAインストールプロンプトエラー:', error)
+      } finally {
+        setDeferredPrompt(null)
       }
-      
-      setDeferredPrompt(null)
     }
   }
 
