@@ -354,10 +354,10 @@ function AppContent() {
     }
   }, [user])
 
-  // ローディング中の表示（一時的に無効化）
-  // if (isAppLoading) {
-  //   return <LoadingSpinner fullPage size="large" message="データを読み込んでいます..." />
-  // }
+  // ローディング中の表示
+  if (isAppLoading) {
+    return <LoadingSpinner fullPage size="large" message="データを読み込んでいます..." />
+  }
   
   // JSXレンダリング部分
   return (
