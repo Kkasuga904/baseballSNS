@@ -10,6 +10,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
+import LoadingSpinner from './components/LoadingSpinner'
 
 // 認証システムの選択
 // Firebase設定がある場合はFirebaseAuthContext、Supabase設定がある場合はAuthContext、それ以外はSimpleAuthContextを使用
