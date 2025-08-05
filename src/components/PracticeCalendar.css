@@ -105,8 +105,9 @@
 }
 
 .calendar-day {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-right: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
   position: relative;
@@ -121,7 +122,7 @@
   min-height: 60px;
   min-width: 0;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .calendar-day.empty {
@@ -171,13 +172,15 @@
 }
 
 .day-number {
+  display: block !important;
   font-size: 22px;
   color: inherit;
   font-weight: normal;
   line-height: 1;
-  display: block;
   text-align: center;
   opacity: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .practice-indicator {
@@ -187,8 +190,7 @@
   font-size: 0.4rem;
   line-height: 1;
   color: #2e7d46;
-  max-width: 100%;
-  overflow: hidden;
+  z-index: 2;
 }
 
 .calendar-day.has-schedule {
@@ -211,8 +213,7 @@
   gap: 0;
   font-size: 0.4rem;
   line-height: 1;
-  max-width: 100%;
-  overflow: hidden;
+  z-index: 2;
 }
 
 .schedule-indicator {
@@ -523,6 +524,11 @@
     min-height: 30px;
     padding: 2px;
     font-size: 10px;
+  }
+  
+  .day-number {
+    font-size: 10px !important;
+    display: block !important;
   }
   
   .month-nav {
