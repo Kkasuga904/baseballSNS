@@ -82,6 +82,7 @@ import TermsOfService from './pages/TermsOfService'
 import PracticeRecordPage from './pages/PracticeRecordPage'
 import Measurements from './pages/Measurements'
 import TeamsPage from './pages/TeamsPage'
+import InstallGuide from './pages/InstallGuide'
 // MVP版ではチーム機能は無効化
 // import TeamDetail from './pages/TeamDetail'
 // import Teams from './pages/Teams'
@@ -105,6 +106,7 @@ import { useOfflineSync } from './hooks/useOfflineSync'
 // import { ensureDemoUserExists } from './utils/demoUser' // メール認証システム（保留）で使用
 import { initializeAdminData } from './utils/adminInitialData'
 import './utils/clearAndReload' // 管理者権限更新ユーティリティ
+import { updatePWAIcon } from './utils/pwaCache' // PWAアイコン更新ユーティリティ
 import './App.css'
 import './admin-theme.css'
 
@@ -395,6 +397,9 @@ function AppContent() {
     setTimeout(() => {
       setIsAppLoading(false)
     }, 500)
+
+    // PWAアイコンを更新（キャッシュ対策）
+    updatePWAIcon()
   }, [])
   
   // ローディング中の表示
@@ -475,6 +480,9 @@ function AppContent() {
                 addPost={addPost}
               />
           } />
+          
+          {/* インストールガイド */}
+          <Route path="/install" element={<InstallGuide />} />
           
           {/* カレンダー画面 */}
           <Route path="/calendar" element={

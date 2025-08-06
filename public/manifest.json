@@ -12,10 +12,10 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/baselog-icon.svg",
+      "src": "/baselog-icon.svg?v=3",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/baselog-icon-48.png",
