@@ -34,6 +34,42 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .tab-navigation {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
+  }
+  
+  .tab-navigation::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .tab-button {
+    flex: 0 0 auto;
+    min-width: 85px;
+    padding: 12px 10px;
+    font-size: 12px;
+  }
+  
+  /* スクロール可能であることを示すグラデーション */
+  .tab-navigation::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.8));
+    pointer-events: none;
+  }
 }
 
 .tab-button:hover {
