@@ -268,18 +268,9 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
         }
         
         
-        // デバイスの判定（モバイルデバイスかどうかをユーザーエージェントで判定）
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-        const isPC = !isMobile
-        
-        if (isPC) {
-          // PCの場合は新しいタブで開く
-          window.open(`/practice-record?date=${dateStr}`, '_blank')
-        } else {
-          // モバイルの場合は親コンポーネントのコールバックを実行（練習記録フォームを開く）
-          if (onDateClick) {
-            onDateClick(dateStr)
-          }
+        // PC・モバイル共に日記フォームを開く
+        if (onDateClick) {
+          onDateClick(dateStr)
         }
         
         // その日の練習記録をフィルタリング
@@ -287,8 +278,8 @@ function PracticeCalendar({ practices = [], onDateClick, schedules = [] }) {
           p.practiceData && p.practiceData.date === dateStr
         )
         
-        // 予定がある場合はモーダルも表示（PCの場合はスキップ）
-        if (!isPC && (daySchedules.length > 0 || practicesOnDate.length > 0)) {
+        // 予定がある場合はモーダルも表示
+        if (daySchedules.length > 0 || practicesOnDate.length > 0) {
           setSelectedDateSchedules(daySchedules)
           setSelectedModalDate(dateStr)
           setShowScheduleModal(true)

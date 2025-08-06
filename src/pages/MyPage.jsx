@@ -413,7 +413,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 practices={posts}
                 onDateClick={(date) => {
                   setSelectedDate(date)
-                  setShowPracticeForm(true)
+                  setShowDiaryForm(true)
                 }}
                 schedules={myPageData.schedules || []}
               />
