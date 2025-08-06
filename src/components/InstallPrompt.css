@@ -1,0 +1,233 @@
+.install-prompt {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  z-index: 10000;
+  max-width: 380px;
+  width: calc(100% - 40px);
+  animation: slideUp 0.3s ease-out;
+  border: 2px solid #e8f5e8;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%) translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.install-prompt.ios {
+  bottom: auto;
+  top: 20px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.install-prompt-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.install-prompt-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.app-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.install-prompt-text {
+  flex: 1;
+}
+
+.install-prompt-text h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e2c;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.install-prompt-text p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.close-button {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background: #e0e0e0;
+}
+
+.install-prompt-features {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #666;
+}
+
+.feature-icon {
+  font-size: 20px;
+}
+
+.install-prompt-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-install {
+  flex: 1;
+  padding: 12px 24px;
+  background: linear-gradient(to bottom, #4a7c4e, #2e7d46);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.btn-install:hover {
+  background: linear-gradient(to bottom, #3a6c3e, #1e5d36);
+  transform: translateY(-1px);
+}
+
+.btn-later {
+  padding: 12px 24px;
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.btn-later:hover {
+  background: #e8e8e8;
+}
+
+/* iOS用の説明 */
+.ios-instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(to bottom, #f8fdf8, #f0f8f0);
+  border-radius: 12px;
+  margin-top: 8px;
+}
+
+.instruction-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.step-number {
+  width: 24px;
+  height: 24px;
+  background: #2e7d46;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.step-icon {
+  font-size: 18px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* モバイル対応 */
+@media (max-width: 480px) {
+  .install-prompt {
+    bottom: 10px;
+    width: calc(100% - 20px);
+    padding: 16px;
+  }
+  
+  .install-prompt.ios {
+    top: 10px;
+  }
+  
+  .install-prompt-text h3 {
+    font-size: 15px;
+  }
+  
+  .install-prompt-text p {
+    font-size: 12px;
+  }
+  
+  .btn-install,
+  .btn-later {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}

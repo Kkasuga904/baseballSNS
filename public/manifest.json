@@ -1,29 +1,57 @@
 {
-  "name": "BaseLog - 野球の記録と交流をひとつに",
+  "name": "BaseLog - 野球練習ノート",
   "short_name": "BaseLog",
-  "description": "野球の記録と交流をひとつに。練習記録、動画共有、健康管理をサポートする野球専門SNS",
+  "description": "野球の練習記録と日記を簡単に管理。スマートフォンでアプリとして使える野球ノート",
   "theme_color": "#2e7d46",
-  "background_color": "#ffffff",
+  "background_color": "#f0f8f0",
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
-  "start_url": "/?source=pwa",
-  "categories": ["sports", "social"],
+  "start_url": "/?source=pwa&mode=standalone",
+  "categories": ["sports", "productivity", "lifestyle"],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/icon.svg",
+      "src": "/baselog-icon.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
-      "src": "/icon-192.svg",
+      "src": "/baselog-icon-48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/baselog-icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/baselog-icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/baselog-icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/baselog-icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.svg",
+      "src": "/baselog-icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
