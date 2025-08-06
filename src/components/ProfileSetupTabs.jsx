@@ -22,6 +22,7 @@ function ProfileSetupTabs() {
     maxSpeed: '', // 最高球速
     pitchTypes: [], // 球種
     birthDate: '', // 生年月日
+    birthDateInput: '', // 生年月日入力フィールド
     birthYear: '', // 生年
     birthMonth: '', // 生月
     birthDay: '', // 生日
@@ -122,6 +123,22 @@ function ProfileSetupTabs() {
               {/* 基本情報タブ */}
               {activeTab === 'basic' && (
                 <div className="tab-panel">
+                  {/* デバッグ情報 */}
+                  <div style={{background: '#fffbeb', padding: '10px', marginBottom: '20px', border: '1px solid #fbbf24', borderRadius: '4px'}}>
+                    <p style={{margin: '5px 0', fontSize: '14px', color: '#92400e'}}>
+                      <strong>【デバッグ情報】</strong>
+                    </p>
+                    <p style={{margin: '5px 0', fontSize: '12px', color: '#78350f'}}>
+                      現在のタブ: "{activeTab}"
+                    </p>
+                    <p style={{margin: '5px 0', fontSize: '12px', color: '#78350f'}}>
+                      birthDateInput値: "{formData.birthDateInput || '空'}" (長さ: {(formData.birthDateInput || '').length})
+                    </p>
+                    <p style={{margin: '5px 0', fontSize: '12px', color: '#78350f'}}>
+                      birthDate値: "{formData.birthDate || '空'}"
+                    </p>
+                  </div>
+                  
                   <div className="form-section">
                     <h3>スポーツ選択</h3>
                     <select
@@ -199,38 +216,50 @@ function ProfileSetupTabs() {
 
                   <div className="form-section">
                     <h3>生年月日（任意）</h3>
+                    <div style={{marginBottom: '20px', padding: '10px', background: '#ffebee', border: '2px dashed #f44336', borderRadius: '4px'}}>
+                      <p style={{color: '#d32f2f', fontSize: '14px', marginBottom: '10px'}}>
+                        【テスト用シンプル入力フィールド】
+                      </p>
+                      <input
+                        type="text"
+                        value={formData.birthDateInput || ''}
+                        onChange={(e) => {
+                          console.log('テスト onChange:', e.target.value);
+                          setFormData(prev => ({...prev, birthDateInput: e.target.value}));
+                        }}
+                        onFocus={() => console.log('テスト フォーカス')}
+                        onClick={() => console.log('テスト クリック')}
+                        placeholder="テスト入力 - ここに入力できるか確認"
+                        style={{
+                          width: '100%',
+                          padding: '10px',
+                          border: '3px solid red',
+                          fontSize: '16px',
+                          backgroundColor: 'white',
+                          color: 'black',
+                          outline: 'none',
+                          boxSizing: 'border-box'
+                        }}
+                      />
+                      <p style={{color: '#757575', fontSize: '12px', marginTop: '5px'}}>
+                        入力値: "{formData.birthDateInput || '空'}"
+                      </p>
+                    </div>
+                    
                     <div className="birth-date-single-input">
+                      <p style={{fontSize: '12px', color: '#666', marginBottom: '5px'}}>
+                        【本来の入力フィールド（デバッグ中）】
+                      </p>
                       <input
                         type="text"
                         placeholder="19951225 (年月日で8桁)"
                         maxLength="8"
                         value={formData.birthDateInput || ''}
                         onChange={(e) => {
-                          const input = e.target.value.replace(/\D/g, '') // 数字のみ
+                          const input = e.target.value.replace(/\D/g, '');
+                          console.log('本番 onChange:', input);
                           if (input.length <= 8) {
-                            setFormData(prev => {
-                              const newData = { ...prev, birthDateInput: input }
-                              
-                              // 8桁入力された場合、自動的に分解
-                              if (input.length === 8) {
-                                const year = input.substring(0, 4)
-                                const month = input.substring(4, 6)
-                                const day = input.substring(6, 8)
-                                
-                                // 有効な日付かチェック
-                                const currentYear = new Date().getFullYear()
-                                if (year >= 1900 && year <= currentYear && 
-                                    month >= 1 && month <= 12 && 
-                                    day >= 1 && day <= 31) {
-                                  newData.birthYear = year
-                                  newData.birthMonth = parseInt(month)
-                                  newData.birthDay = parseInt(day)
-                                  newData.birthDate = `${year}-${month}-${day}`
-                                }
-                              }
-                              
-                              return newData
-                            })
+                            setFormData(prev => ({...prev, birthDateInput: input}));
                           }
                         }}
                         className="birth-single-input"
