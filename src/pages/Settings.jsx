@@ -4,7 +4,7 @@ import { useAuth } from '../App';
 import './Settings.css';
 
 function Settings() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth(); // signOutは不要
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -125,6 +125,8 @@ function Settings() {
     }
   };
   
+  // デバイス認証では不要な関数（保留）
+  /*
   const handleLogout = async () => {
     try {
       await signOut();
@@ -154,6 +156,7 @@ function Settings() {
       setMessage('アカウントの削除に失敗しました');
     }
   };
+  */
 
   return (
     <div className="settings-container">
@@ -435,6 +438,8 @@ function Settings() {
         </div>
       </div>
       
+      {/* デバイス認証では、ログアウトとアカウント削除は不要 */}
+      {/* 
       <div className="settings-section danger-zone">
         <h2>アカウント</h2>
         <button 
@@ -450,6 +455,7 @@ function Settings() {
           アカウントを削除
         </button>
       </div>
+      */}
     </div>
   );
 }
