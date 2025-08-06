@@ -7,9 +7,14 @@
  * - 手動実行: npm run update-sw
  */
 
-// CommonJS形式でインポート（Node.jsの標準的な方法）
-const fs = require('fs');
-const path = require('path');
+// ES module形式でインポート
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// ES moduleで__dirnameを取得
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const swPath = path.join(__dirname, '../public/sw.js');
 
