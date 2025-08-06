@@ -217,7 +217,7 @@ export const AuthProvider = ({ children }) => {
         setUser(appUser)
         localStorage.setItem('baseballSNSUser', JSON.stringify(appUser))
         return { data: appUser, error: null }
-      } else if (email === 'over9131120@gmail.com' && (password === 'admin123' || password === 'kakuga0619')) {
+      } else if (email === 'over9131120@gmail.com' && (password === 'admin123' || password === 'Sawamura18')) {
         // 管理者アカウントのフォールバック（両方のパスワードに対応）
         const adminUser = {
           id: 'admin_local',
@@ -250,7 +250,7 @@ export const AuthProvider = ({ children }) => {
       console.error('ログインエラー:', error)
       
       // Firebase認証が失敗した場合、管理者アカウントのフォールバック
-      if (email === 'over9131120@gmail.com' && (password === 'admin123' || password === 'kakuga0619')) {
+      if (email === 'over9131120@gmail.com' && (password === 'admin123' || password === 'Sawamura18')) {
         const adminUser = {
           id: 'admin_local',
           email: 'over9131120@gmail.com',
