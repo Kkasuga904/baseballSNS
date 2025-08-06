@@ -107,7 +107,16 @@ function SimpleDiaryList({ diaries = [], onDelete }) {
                       <div className="day-of-month">{dayOfMonth}</div>
                     </div>
                     <div className="diary-content-preview">
-                      <div className="diary-text">{diary.content}</div>
+                      <div className="diary-text">
+                        {diary.content && diary.content.includes('<') ? (
+                          <div 
+                            dangerouslySetInnerHTML={{ __html: diary.content }} 
+                            className="diary-rich-content"
+                          />
+                        ) : (
+                          diary.content
+                        )}
+                      </div>
                       <div className="diary-time">{time}</div>
                     </div>
                   </div>

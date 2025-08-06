@@ -163,6 +163,24 @@
   font-weight: 400;
 }
 
+/* リッチテキストコンテンツのスタイル */
+.diary-rich-content {
+  color: #333;
+  line-height: 1.5;
+  max-height: 3em;
+  overflow: hidden;
+}
+
+.diary-rich-content * {
+  margin: 0;
+  padding: 0;
+}
+
+.diary-rich-content img,
+.diary-rich-content iframe {
+  display: none; /* リスト表示では非表示 */
+}
+
 .diary-time {
   font-size: 13px;
   color: #00D4E4;

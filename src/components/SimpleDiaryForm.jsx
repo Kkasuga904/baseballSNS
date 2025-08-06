@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import RichTextEditor from './RichTextEditor'
 import './SimpleDiaryForm.css'
 
 function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
   const [content, setContent] = useState('')
+  const [useRichText, setUseRichText] = useState(true)
   
   // 選択された日付または現在の日時を取得
   const now = new Date()
@@ -61,13 +63,21 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
       </div>
       
       <div className="diary-content-area">
-        <textarea
-          className="diary-textarea"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="今日の練習内容を記録..."
-          autoFocus
-        />
+        {useRichText ? (
+          <RichTextEditor
+            content={content}
+            onChange={setContent}
+            placeholder="今日の練習内容を記録..."
+          />
+        ) : (
+          <textarea
+            className="diary-textarea"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="今日の練習内容を記録..."
+            autoFocus
+          />
+        )}
       </div>
     </div>
   )

@@ -32,6 +32,7 @@ import TeamManagement from '../components/TeamManagement'
 import SimpleDiaryForm from '../components/SimpleDiaryForm'
 import SimpleDiaryList from '../components/SimpleDiaryList'
 import GameRecord from '../components/GameRecord'
+import storageService from '../services/storageService'
 import GameRecordList from '../components/GameRecordList'
 import PerformanceChart from '../components/PerformanceChart'
 import PracticeCalendar from '../components/PracticeCalendar'
@@ -91,6 +92,18 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
       setActiveTab('diary')
     }
   }, [location.search])
+  
+  // コンポーネントマウント時にLocalStorageからデータを読み込む
+  useEffect(() => {
+    const loadedDiaries = storageService.loadDiaries()
+    const loadedPracticeRecords = storageService.loadPracticeRecords()
+    
+    setMyPageData(prev => ({
+      ...prev,
+      diaries: loadedDiaries,
+      practiceRecords: loadedPracticeRecords
+    }))
+  }, [])
   
   // ユーザーの所属チーム一覧を取得（ユーザー情報を明示的に渡す）
   const userTeams = React.useMemo(() => {
@@ -266,10 +279,14 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   const handleSaveDiary = (diaryData) => {
     setMyPageData(prev => {
       const diaries = prev.diaries || []
-      // 新規作成の場合
+      const updatedDiaries = [...diaries, diaryData]
+      
+      // LocalStorageに保存
+      storageService.saveDiaries(updatedDiaries)
+      
       return {
         ...prev,
-        diaries: [...diaries, diaryData]
+        diaries: updatedDiaries
       }
     })
     setShowDiaryForm(false)
@@ -277,10 +294,17 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
 
   const handleDeleteDiary = (diaryId) => {
     if (window.confirm('この日記を削除しますか？')) {
-      setMyPageData(prev => ({
-        ...prev,
-        diaries: (prev.diaries || []).filter(d => d.id !== diaryId)
-      }))
+      setMyPageData(prev => {
+        const updatedDiaries = (prev.diaries || []).filter(d => d.id !== diaryId)
+        
+        // LocalStorageから削除
+        storageService.deleteDiary(diaryId)
+        
+        return {
+          ...prev,
+          diaries: updatedDiaries
+        }
+      })
     }
   }
 

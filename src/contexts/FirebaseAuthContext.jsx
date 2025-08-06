@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe()
   }, [])
 
-  // Google認証でログイン
+  // Google認証でログイン（新規・既存を自動判別）
   const signInWithGoogle = async () => {
     if (!isFirebaseConfigured || !auth || !googleProvider) {
       return { 
@@ -69,12 +69,40 @@ export const AuthProvider = ({ children }) => {
       const result = await signInWithPopup(auth, googleProvider)
       const firebaseUser = result.user
       
+      // ユーザー情報を取得
       const appUser = {
         id: firebaseUser.uid,
         email: firebaseUser.email,
-        displayName: firebaseUser.displayName,
+        displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0],
         photoURL: firebaseUser.photoURL,
-        isAdmin: firebaseUser.email === 'over9131120@gmail.com'
+        isAdmin: firebaseUser.email === 'over9131120@gmail.com',
+        provider: 'google',
+        createdAt: firebaseUser.metadata.creationTime,
+        lastLoginAt: firebaseUser.metadata.lastSignInTime
+      }
+      
+      // 初回ログインかどうかを判定
+      const isNewUser = firebaseUser.metadata.creationTime === firebaseUser.metadata.lastSignInTime
+      
+      // ユーザーデータをローカルストレージに保存
+      const userKey = `baseballSNSUser_${firebaseUser.uid}`
+      const existingUserData = localStorage.getItem(userKey)
+      
+      if (!existingUserData || isNewUser) {
+        // 新規ユーザーの場合、初期データを作成
+        const userData = {
+          ...appUser,
+          isNewUser: true,
+          registeredAt: new Date().toISOString()
+        }
+        localStorage.setItem(userKey, JSON.stringify(userData))
+        console.log('新規ユーザーとして登録しました')
+      } else {
+        // 既存ユーザーの場合、最終ログイン時刻を更新
+        const userData = JSON.parse(existingUserData)
+        userData.lastLoginAt = new Date().toISOString()
+        localStorage.setItem(userKey, JSON.stringify(userData))
+        console.log('既存ユーザーとしてログインしました')
       }
       
       // プロフィールが未設定の場合はセットアップ画面へ
@@ -84,13 +112,23 @@ export const AuthProvider = ({ children }) => {
       return { 
         data: appUser, 
         error: null,
+        isNewUser: isNewUser || !existingUserData,
         needsProfileSetup: !savedProfile
       }
     } catch (error) {
       console.error('Google認証エラー:', error)
+      
+      // エラーの詳細に応じたメッセージ
+      let errorMessage = 'Google認証に失敗しました'
+      if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = '認証がキャンセルされました'
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'ネットワークエラーが発生しました'
+      }
+      
       return { 
         data: null, 
-        error: new Error('Google認証に失敗しました')
+        error: new Error(errorMessage)
       }
     }
   }
