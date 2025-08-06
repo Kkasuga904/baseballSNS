@@ -718,6 +718,26 @@
   margin-top: 10px;
 }
 
+.install-prompt-card {
+  background: linear-gradient(135deg, #f8fdf8, #f0f8f0);
+  border: 2px solid #4a7c4e;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.install-prompt-card h4 {
+  font-size: 1.2rem;
+  color: #2e7d46;
+  margin-bottom: 0.5rem;
+}
+
+.install-prompt-card p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
 /* Diary セクション追加スタイル */
 .diary-list-section {
   margin-top: 20px;

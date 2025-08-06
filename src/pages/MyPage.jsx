@@ -510,6 +510,18 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
             <div className="stats-section">
               <h3>📊 測定記録</h3>
               <p>体重・球速・肩の柔軟性などピッチャー特化情報</p>
+              
+              <div className="install-prompt-card">
+                <h4>📱 アプリとして使う</h4>
+                <p>ホーム画面に追加して、より便利に記録管理</p>
+                <button 
+                  className="btn-primary"
+                  onClick={() => navigate('/install')}
+                >
+                  インストール方法を見る
+                </button>
+              </div>
+              
               {/* 測定データの表示をここに追加 */}
             </div>
           )}
@@ -518,6 +530,16 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
             <div className="settings-section">
               <h3>⚙️ 設定</h3>
               <div className="settings-content">
+                <div className="setting-item">
+                  <h4>📱 ホーム画面に追加</h4>
+                  <p>BaseLogをアプリのように使えます</p>
+                  <button 
+                    className="btn-primary"
+                    onClick={() => navigate('/install')}
+                  >
+                    インストール方法を見る
+                  </button>
+                </div>
                 <div className="setting-item">
                   <h4>アカウント設定</h4>
                   <p>メールアドレス: {user?.email}</p>
