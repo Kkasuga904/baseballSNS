@@ -32,16 +32,23 @@ export const AuthProvider = ({ children }) => {
           // 既存のデバイスユーザーがいる場合
           const userData = JSON.parse(savedUser);
           if (userData.isAnonymous) {
-            // デバイスタイプに基づいて権限を更新
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const isPC = !isMobile;
+            // 管理者デバイスIDリスト
+            const ADMIN_DEVICE_IDS = [
+              // ここにあなたのPCのデバイスIDを追加
+            ];
             
-            userData.isAdmin = isPC;
-            userData.displayName = isPC ? '管理者' : 'ゲストユーザー';
-            userData.deviceType = isMobile ? 'mobile' : 'pc';
+            // ローカル開発環境かチェック
+            const isLocalAdmin = window.location.hostname === 'localhost' && 
+                                window.location.port === '3000';
+            
+            // 特定のデバイスまたはローカル環境のみ管理者
+            const isAdminDevice = ADMIN_DEVICE_IDS.includes(userData.deviceId) || isLocalAdmin;
+            
+            userData.isAdmin = isAdminDevice;
+            userData.displayName = isAdminDevice ? '管理者' : 'ゲストユーザー';
             localStorage.setItem('baseballSNSUser', JSON.stringify(userData));
             setUser(userData);
-            console.log(`既存のデバイスユーザーでログイン（${userData.deviceType}）`);
+            console.log(`既存のデバイスユーザーでログイン（${userData.displayName}）`);
           } else {
             // 匿名でないユーザーの場合は、デバイス認証に切り替え
             const result = await signInWithDevice();

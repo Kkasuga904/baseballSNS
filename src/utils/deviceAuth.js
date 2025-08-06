@@ -22,12 +22,27 @@ export const getDeviceId = () => {
 
 // デバイスユーザー情報を作成
 export const createDeviceUser = (deviceId) => {
-  // PCかモバイルかを判定
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  const isPC = !isMobile;
+  // 管理者デバイスIDリスト（あなたのPCのデバイスIDをここに設定）
+  // 初回アクセス時にコンソールに表示されるデバイスIDを確認して設定
+  const ADMIN_DEVICE_IDS = [
+    // ここにあなたのPCのデバイスIDを追加
+    // 例: 'device_12345678-90ab-cdef-1234-567890abcdef'
+  ];
   
-  // PCのみ管理者権限を付与
-  const isAdminDevice = isPC;
+  // 環境変数でも管理者を判定（ローカル開発環境用）
+  const isLocalAdmin = window.location.hostname === 'localhost' && 
+                      window.location.port === '3000';
+  
+  // 特定のデバイスIDまたはローカル開発環境の場合のみ管理者
+  const isAdminDevice = ADMIN_DEVICE_IDS.includes(deviceId) || isLocalAdmin;
+  
+  // 初回作成時にデバイスIDをコンソールに表示（管理者設定用）
+  if (!localStorage.getItem('deviceIdLogged')) {
+    console.log('=== あなたのデバイスID ===');
+    console.log(deviceId);
+    console.log('管理者にする場合は、このIDをdeviceAuth.jsのADMIN_DEVICE_IDSに追加してください');
+    localStorage.setItem('deviceIdLogged', 'true');
+  }
   
   return {
     id: deviceId,
@@ -36,7 +51,6 @@ export const createDeviceUser = (deviceId) => {
     isAnonymous: true,
     isAdmin: isAdminDevice,
     deviceId: deviceId,
-    deviceType: isMobile ? 'mobile' : 'pc',
     createdAt: new Date().toISOString()
   };
 };
