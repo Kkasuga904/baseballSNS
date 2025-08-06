@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
           email: firebaseUser.email,
           displayName: firebaseUser.displayName,
           photoURL: firebaseUser.photoURL,
-          isAdmin: firebaseUser.email === 'over9131120@gmail.com'
+          isAdmin: firebaseUser.email === (import.meta.env.VITE_ADMIN_EMAIL || 'admin@example.com')
         }
         setUser(appUser)
         
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
         email: firebaseUser.email,
         displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0],
         photoURL: firebaseUser.photoURL,
-        isAdmin: firebaseUser.email === 'over9131120@gmail.com',
+        isAdmin: firebaseUser.email === (import.meta.env.VITE_ADMIN_EMAIL || 'admin@example.com'),
         provider: 'google',
         createdAt: firebaseUser.metadata.creationTime,
         lastLoginAt: firebaseUser.metadata.lastSignInTime
@@ -150,7 +150,7 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
         displayName: email.split('@')[0],
-        isAdmin: email === 'over9131120@gmail.com',
+        isAdmin: email === (import.meta.env.VITE_ADMIN_EMAIL || 'admin@example.com'),
         createdAt: new Date().toISOString()
       }
       
@@ -176,7 +176,7 @@ export const AuthProvider = ({ children }) => {
       const appUser = {
         id: firebaseUser.uid,
         email: firebaseUser.email,
-        isAdmin: firebaseUser.email === 'over9131120@gmail.com'
+        isAdmin: firebaseUser.email === (import.meta.env.VITE_ADMIN_EMAIL || 'admin@example.com')
       }
       
       return { data: appUser, error: null }
@@ -212,16 +212,23 @@ export const AuthProvider = ({ children }) => {
           id: user.id || `local_${Date.now()}`,
           email: user.email,
           displayName: user.displayName || email.split('@')[0],
-          isAdmin: email === 'over9131120@gmail.com'
+          isAdmin: email === (import.meta.env.VITE_ADMIN_EMAIL || 'admin@example.com')
         }
         setUser(appUser)
         localStorage.setItem('baseballSNSUser', JSON.stringify(appUser))
         return { data: appUser, error: null }
-      } else if (email === 'over9131120@gmail.com' && (password === 'admin123' || password === 'Sawamura18')) {
-        // 管理者アカウントのフォールバック（両方のパスワードに対応）
+      } 
+      
+      // 環境変数から管理者情報を取得
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'admin@example.com'
+      const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'adminpass'
+      const adminFallbackPassword = import.meta.env.VITE_ADMIN_FALLBACK_PASSWORD || 'admin123'
+      
+      if (email === adminEmail && (password === adminPassword || password === adminFallbackPassword)) {
+        // 管理者アカウントのフォールバック
         const adminUser = {
           id: 'admin_local',
-          email: 'over9131120@gmail.com',
+          email: adminEmail,
           displayName: '管理者',
           isAdmin: true
         }
@@ -242,7 +249,7 @@ export const AuthProvider = ({ children }) => {
         email: firebaseUser.email,
         displayName: firebaseUser.displayName,
         photoURL: firebaseUser.photoURL,
-        isAdmin: firebaseUser.email === 'over9131120@gmail.com'
+        isAdmin: firebaseUser.email === (import.meta.env.VITE_ADMIN_EMAIL || 'admin@example.com')
       }
       
       return { data: appUser, error: null }
@@ -250,10 +257,14 @@ export const AuthProvider = ({ children }) => {
       console.error('ログインエラー:', error)
       
       // Firebase認証が失敗した場合、管理者アカウントのフォールバック
-      if (email === 'over9131120@gmail.com' && (password === 'admin123' || password === 'Sawamura18')) {
+      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'admin@example.com'
+      const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'adminpass'
+      const adminFallbackPassword = import.meta.env.VITE_ADMIN_FALLBACK_PASSWORD || 'admin123'
+      
+      if (email === adminEmail && (password === adminPassword || password === adminFallbackPassword)) {
         const adminUser = {
           id: 'admin_local',
-          email: 'over9131120@gmail.com',
+          email: adminEmail,
           displayName: '管理者',
           isAdmin: true
         }

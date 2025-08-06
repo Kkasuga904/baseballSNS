@@ -82,14 +82,26 @@ function RichTextEditor({ content, onChange, placeholder }) {
         {/* テキストサイズ */}
         <div className="toolbar-group">
           <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+            onClick={() => {
+              if (editor.isActive('heading', { level: 1 })) {
+                editor.chain().focus().setParagraph().run()
+              } else {
+                editor.chain().focus().setHeading({ level: 1 }).run()
+              }
+            }}
             className={editor.isActive('heading', { level: 1 }) ? 'active' : ''}
             title="大"
           >
             <span className="text-size-large">A</span>
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            onClick={() => {
+              if (editor.isActive('heading', { level: 2 })) {
+                editor.chain().focus().setParagraph().run()
+              } else {
+                editor.chain().focus().setHeading({ level: 2 }).run()
+              }
+            }}
             className={editor.isActive('heading', { level: 2 }) ? 'active' : ''}
             title="中"
           >
@@ -97,8 +109,8 @@ function RichTextEditor({ content, onChange, placeholder }) {
           </button>
           <button
             onClick={() => editor.chain().focus().setParagraph().run()}
-            className={editor.isActive('paragraph') ? 'active' : ''}
-            title="小"
+            className={editor.isActive('paragraph') && !editor.isActive('heading') ? 'active' : ''}
+            title="標準"
           >
             <span className="text-size-small">A</span>
           </button>
