@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import RichTextEditor from './RichTextEditor'
+import { useAutoSaveForm } from '../hooks/useAutoSave'
 import './SimpleDiaryForm.css'
 
 function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
@@ -9,6 +10,20 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
   // 選択された日付または現在の日時を取得
   const now = new Date()
   const targetDate = selectedDate ? new Date(selectedDate) : now
+  
+  // フォームIDを生成（日付ベース）
+  const formId = `diary_${selectedDate || now.toISOString().split('T')[0]}`
+  
+  // 自動保存フックを使用
+  const { save: autoSave, loadDraft, clearDraft } = useAutoSaveForm(formId, { content }, 2000)
+  
+  // コンポーネントマウント時に下書きを読み込む
+  useEffect(() => {
+    const draft = loadDraft()
+    if (draft && draft.content) {
+      setContent(draft.content)
+    }
+  }, [])
   
   // 日付表示用の文字列を生成
   const dateStr = targetDate.toLocaleDateString('en-US', {
@@ -40,13 +55,22 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
         content: content.trim(),
         createdAt: saveDate.toISOString()
       })
+      
+      // 保存後は下書きをクリア
+      clearDraft()
     }
+  }
+  
+  const handleCancel = () => {
+    // キャンセル時も下書きをクリア（保存された内容なので）
+    clearDraft()
+    onCancel()
   }
 
   return (
     <div className="simple-diary-form">
       <div className="diary-form-header">
-        <button className="back-button" onClick={onCancel}>
+        <button className="back-button" onClick={handleCancel}>
           <span className="back-arrow">←</span>
           <span className="back-text">戻る</span>
         </button>

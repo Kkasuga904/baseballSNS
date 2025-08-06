@@ -171,9 +171,17 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
     
     // MyPageDataに追加
     setMyPageData(prev => {
+      const newPractice = { ...practiceData, id: Date.now() }
+      const updatedPractices = [...(prev.practices || []), newPractice]
+      
+      // LocalStorageに保存（日付ごとの練習記録として）
+      if (practiceData.date) {
+        storageService.savePracticeRecord(practiceData.date, newPractice)
+      }
+      
       const newData = {
         ...prev,
-        practices: [...(prev.practices || []), { ...practiceData, id: Date.now() }]
+        practices: updatedPractices
       }
       return newData
     })

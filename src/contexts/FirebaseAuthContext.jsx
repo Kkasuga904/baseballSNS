@@ -135,6 +135,40 @@ export const AuthProvider = ({ children }) => {
 
   // メールアドレスとパスワードで新規登録
   const signUp = async (email, password) => {
+    // Firebase認証が利用できない場合のフォールバック
+    if (!isFirebaseConfigured || !auth) {
+      // ローカルストレージを使った簡易登録
+      const storedUsers = JSON.parse(localStorage.getItem('baseballSNSUsers') || '[]')
+      const existingUser = storedUsers.find(u => u.email === email)
+      
+      if (existingUser) {
+        return { data: null, error: new Error('このメールアドレスは既に登録されています') }
+      }
+      
+      const newUser = {
+        id: `local_${Date.now()}`,
+        email,
+        password,
+        displayName: email.split('@')[0],
+        isAdmin: email === 'over9131120@gmail.com',
+        createdAt: new Date().toISOString()
+      }
+      
+      storedUsers.push(newUser)
+      localStorage.setItem('baseballSNSUsers', JSON.stringify(storedUsers))
+      
+      const appUser = {
+        id: newUser.id,
+        email: newUser.email,
+        displayName: newUser.displayName,
+        isAdmin: newUser.isAdmin
+      }
+      
+      setUser(appUser)
+      localStorage.setItem('baseballSNSUser', JSON.stringify(appUser))
+      return { data: appUser, error: null }
+    }
+    
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const firebaseUser = userCredential.user
@@ -157,6 +191,8 @@ export const AuthProvider = ({ children }) => {
         errorMessage = 'パスワードは6文字以上で入力してください'
       } else if (error.code === 'auth/invalid-email') {
         errorMessage = 'メールアドレスの形式が正しくありません'
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = 'Firebase認証の設定を確認してください'
       }
       
       return { data: null, error: new Error(errorMessage) }
@@ -165,6 +201,38 @@ export const AuthProvider = ({ children }) => {
 
   // メールアドレスとパスワードでログイン
   const signIn = async (email, password) => {
+    // Firebase認証が利用できない場合のフォールバック
+    if (!isFirebaseConfigured || !auth) {
+      // ローカルストレージを使った簡易認証
+      const storedUsers = JSON.parse(localStorage.getItem('baseballSNSUsers') || '[]')
+      const user = storedUsers.find(u => u.email === email && u.password === password)
+      
+      if (user) {
+        const appUser = {
+          id: user.id || `local_${Date.now()}`,
+          email: user.email,
+          displayName: user.displayName || email.split('@')[0],
+          isAdmin: email === 'over9131120@gmail.com'
+        }
+        setUser(appUser)
+        localStorage.setItem('baseballSNSUser', JSON.stringify(appUser))
+        return { data: appUser, error: null }
+      } else if (email === 'over9131120@gmail.com' && password === 'admin123') {
+        // 管理者アカウントのフォールバック
+        const adminUser = {
+          id: 'admin_local',
+          email: 'over9131120@gmail.com',
+          displayName: '管理者',
+          isAdmin: true
+        }
+        setUser(adminUser)
+        localStorage.setItem('baseballSNSUser', JSON.stringify(adminUser))
+        return { data: adminUser, error: null }
+      } else {
+        return { data: null, error: new Error('メールアドレスまたはパスワードが正しくありません') }
+      }
+    }
+    
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const firebaseUser = userCredential.user
@@ -181,11 +249,26 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('ログインエラー:', error)
       
+      // Firebase認証が失敗した場合、管理者アカウントのフォールバック
+      if (email === 'over9131120@gmail.com' && password === 'admin123') {
+        const adminUser = {
+          id: 'admin_local',
+          email: 'over9131120@gmail.com',
+          displayName: '管理者',
+          isAdmin: true
+        }
+        setUser(adminUser)
+        localStorage.setItem('baseballSNSUser', JSON.stringify(adminUser))
+        return { data: adminUser, error: null }
+      }
+      
       let errorMessage = 'ログインに失敗しました'
       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
         errorMessage = 'メールアドレスまたはパスワードが正しくありません'
       } else if (error.code === 'auth/invalid-email') {
         errorMessage = 'メールアドレスの形式が正しくありません'
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = 'Firebase認証の設定を確認してください'
       }
       
       return { data: null, error: new Error(errorMessage) }

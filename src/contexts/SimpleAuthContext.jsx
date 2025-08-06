@@ -12,6 +12,7 @@
  */
 
 import React, { createContext, useState, useEffect, useContext } from 'react'
+import storageService from '../services/storageService'
 
 // 認証コンテキストの作成
 // コンテキストを使用することで、アプリ全体で認証情報を共有できます
@@ -142,6 +143,7 @@ export const AuthProvider = ({ children }) => {
     // 新規登録したユーザーで自動ログイン
     setUser(newUser)
     localStorage.setItem('baseballSNSUser', JSON.stringify(newUser))
+    storageService.saveCurrentUser(newUser)
 
     return { data: newUser, error: null }
   }
@@ -176,6 +178,7 @@ export const AuthProvider = ({ children }) => {
     // ログイン成功
     setUser(userWithoutPassword)
     localStorage.setItem('baseballSNSUser', JSON.stringify(userWithoutPassword))
+    storageService.saveCurrentUser(userWithoutPassword)
 
     return { data: userWithoutPassword, error: null }
   }
@@ -187,6 +190,7 @@ export const AuthProvider = ({ children }) => {
   const signOut = async () => {
     setUser(null)
     localStorage.removeItem('baseballSNSUser')
+    storageService.saveCurrentUser(null)
     // セッションストレージもクリア（必要に応じて）
     sessionStorage.clear()
     return { error: null }
@@ -220,6 +224,7 @@ export const AuthProvider = ({ children }) => {
     const updatedUser = { ...user, ...updates }
     setUser(updatedUser)
     localStorage.setItem('baseballSNSUser', JSON.stringify(updatedUser))
+    storageService.saveCurrentUser(updatedUser)
 
     return { data: updatedUser, error: null }
   }
@@ -303,6 +308,7 @@ export const AuthProvider = ({ children }) => {
       // 自動ログイン
       setUser(newUser)
       localStorage.setItem('baseballSNSUser', JSON.stringify(newUser))
+      storageService.saveCurrentUser(newUser)
 
       return { data: newUser, error: null }
     } catch (error) {
