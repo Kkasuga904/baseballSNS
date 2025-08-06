@@ -274,6 +274,45 @@ export const AuthProvider = ({ children }) => {
     return { data: user, error: null }
   }
 
+  /**
+   * Google認証でのサインイン（モック実装）
+   * 実際のOAuth実装の代わりに、Googleアカウント風のユーザーを作成
+   * 
+   * @returns {Promise<{data: Object|null, error: Error|null}>}
+   */
+  const signInWithGoogle = async () => {
+    try {
+      // Googleアカウント風のメールアドレスを生成
+      const googleEmail = `user${Date.now()}@gmail.com`
+      
+      // ユーザーリストを取得
+      const users = JSON.parse(localStorage.getItem('baseballSNSUsers') || '[]')
+      
+      // 新規ユーザーオブジェクトの作成
+      const newUser = {
+        id: `google_${Date.now()}`,
+        email: googleEmail,
+        provider: 'google',
+        createdAt: new Date().toISOString()
+      }
+
+      // ユーザーリストに追加
+      users.push({ ...newUser, password: 'google_auth' })
+      localStorage.setItem('baseballSNSUsers', JSON.stringify(users))
+
+      // 自動ログイン
+      setUser(newUser)
+      localStorage.setItem('baseballSNSUser', JSON.stringify(newUser))
+
+      return { data: newUser, error: null }
+    } catch (error) {
+      return { 
+        data: null, 
+        error: new Error('Google認証でエラーが発生しました') 
+      }
+    }
+  }
+
   // コンテキストに提供する値
   const value = {
     user,           // 現在のユーザー情報
@@ -281,6 +320,7 @@ export const AuthProvider = ({ children }) => {
     signUp,         // 新規登録関数
     signIn,         // ログイン関数
     signOut,        // ログアウト関数
+    signInWithGoogle, // Google認証関数
     updateProfile,  // プロフィール更新関数
     resetPassword,  // パスワードリセット関数
     updatePassword  // パスワード更新関数

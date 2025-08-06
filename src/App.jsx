@@ -60,7 +60,7 @@ export const useAuth = hasFirebaseConfig ? useFirebaseAuth : (hasSupabaseConfig 
 // コンポーネントのインポート
 import Navigation from './components/Navigation'
 import MobileNavigation from './components/MobileNavigation'
-import Timeline from './pages/Timeline'
+// import Timeline from './pages/Timeline' // タイムライン機能は一時的に無効化
 import MyPage from './pages/MyPage'
 import CalendarView from './pages/CalendarView'
 import Profile from './pages/Profile'
@@ -436,9 +436,23 @@ function AppContent() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           
           {/* タイムライン（ホーム画面） - ログイン必須 */}
-          <Route path="/" element={
+          {/* <Route path="/" element={
             <ProtectedRoute>
               <Timeline posts={posts} addPost={addPost} />
+            </ProtectedRoute>
+          } /> */}
+          
+          {/* 仮のホーム画面 - MyPageにリダイレクト */}
+          <Route path="/" element={
+            <ProtectedRoute>
+              <MyPage 
+                posts={posts}
+                myPageData={myPageData}
+                setMyPageData={updateMyPageData}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                addPost={addPost}
+              />
             </ProtectedRoute>
           } />
           

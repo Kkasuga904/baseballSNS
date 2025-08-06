@@ -57,16 +57,24 @@ function Signup() {
     setLoading(true)
     setError('')
     
-    const { data, error } = await signInWithGoogle()
+    const { data, error, needsProfileSetup } = await signInWithGoogle()
     
     if (error) {
       setError('Googleアカウントでの登録に失敗しました: ' + error.message)
       setLoading(false)
-    } else {
-      // Google認証はSupabaseのOAuthリダイレクトを使用するため、
-      // この画面は自動的に閉じられます
+    } else if (data) {
       setSuccess(true)
       setLoading(false)
+      
+      // プロフィール設定が必要な場合はプロフィール設定画面へ、
+      // そうでなければマイページへリダイレクト
+      setTimeout(() => {
+        if (needsProfileSetup) {
+          navigate('/profile-setup')
+        } else {
+          navigate('/mypage')
+        }
+      }, 1000)
     }
   }
 
