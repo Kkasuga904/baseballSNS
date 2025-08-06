@@ -1,51 +1,28 @@
-// PWAキャッシュをクリアするユーティリティ
-
-export const clearPWACache = async () => {
-  try {
-    console.log('PWAキャッシュをクリア中...');
-    
-    // Service Workerのキャッシュをクリア
-    if ('serviceWorker' in navigator) {
-      const caches = await window.caches.keys();
-      await Promise.all(
-        caches.map(cache => window.caches.delete(cache))
-      );
-      console.log('Service Workerキャッシュをクリア完了');
-    }
-    
-    // ページをリロードしてマニフェストを再読み込み
-    window.location.reload();
-    
-  } catch (error) {
-    console.error('PWAキャッシュクリアエラー:', error);
+// PWAアイコンのキャッシュを更新するユーティリティ
+export const updatePWAIcon = () => {
+  // マニフェストファイルを再読み込みしてアイコンを更新
+  const link = document.querySelector("link[rel=\"manifest\"]");
+  if (link) {
+    const href = link.getAttribute("href");
+    link.setAttribute("href", "");
+    setTimeout(() => {
+      link.setAttribute("href", href + "?v=" + Date.now());
+    }, 10);
   }
-};
 
-export const updatePWAIcon = async () => {
-  try {
-    // マニフェストを再読み込みするために、リンク要素を更新
-    const manifestLink = document.querySelector('link[rel="manifest"]');
-    if (manifestLink) {
-      const href = manifestLink.href.split('?')[0];
-      manifestLink.href = `${href}?v=${Date.now()}`;
-      console.log('マニフェストリンクを更新しました');
+  // Apple Touch Iconを更新
+  const appleIcons = document.querySelectorAll("link[rel=\"apple-touch-icon\"]");
+  appleIcons.forEach(icon => {
+    const href = icon.getAttribute("href");
+    if (href) {
+      icon.setAttribute("href", href + "?v=" + Date.now());
     }
-    
-    // ファビコンも更新
-    const faviconLink = document.querySelector('link[rel="icon"]');
-    if (faviconLink) {
-      const href = faviconLink.href.split('?')[0];
-      faviconLink.href = `${href}?v=${Date.now()}`;
-      console.log('ファビコンリンクを更新しました');
-    }
-    
-  } catch (error) {
-    console.error('PWAアイコン更新エラー:', error);
+  });
+
+  // Faviconを更新
+  const favicon = document.querySelector("link[rel=\"icon\"]");
+  if (favicon) {
+    const href = favicon.getAttribute("href");
+    favicon.setAttribute("href", href + "?v=" + Date.now());
   }
-};
-
-// グローバルに公開
-if (typeof window !== 'undefined') {
-  window.clearPWACache = clearPWACache;
-  window.updatePWAIcon = updatePWAIcon;
 }

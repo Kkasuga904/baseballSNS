@@ -17,7 +17,7 @@ function InstallGuide() {
           <p>BaseLogがアプリとして利用可能になりました</p>
           <button 
             className="btn-start"
-            onClick={() => window.location.href = '/'}
+            onClick={() => { window.location.href = '/' }}
           >
             アプリを開始
           </button>
@@ -28,19 +28,100 @@ function InstallGuide() {
 
   return (
     <div className="install-guide-page">
-      <div className="install-guide-container">
-        <div className="install-header">
-          <img src="/baselog-icon.svg" alt="BaseLog" className="app-logo" />
-          <h1>BaseLogをスマートフォンで<br/>アプリとして使用する</h1>
-          <p className="subtitle">
-            ブラウザアプリより「ホーム画面に追加」を選択することで、<br/>
-            お使いのスマートフォンのホーム画面に本ダーン計算のアイコンを作成することができます。
-          </p>
+      {/* iOS風のシェアシート */}
+      {isIOS && (
+        <div className="ios-share-sheet">
+          <div className="share-sheet-header">
+            <div className="share-sheet-title">
+              <img src="/icon-192x192.png" alt="BaseLog" className="share-icon" />
+              <div className="share-text">
+                <div className="share-title">野球練習ノート</div>
+                <div className="share-url">baselog.jp</div>
+              </div>
+              <button className="close-sheet">×</button>
+            </div>
+            <div className="options-text">Options ›</div>
+          </div>
+          
+          <div className="share-sheet-apps">
+            <div className="app-icon-wrapper">
+              <div className="app-icon airdrop">
+                <div className="icon-image">📡</div>
+              </div>
+              <span>AirDrop</span>
+            </div>
+            <div className="app-icon-wrapper">
+              <div className="app-icon messages">
+                <div className="icon-image">💬</div>
+              </div>
+              <span>Messages</span>
+            </div>
+            <div className="app-icon-wrapper">
+              <div className="app-icon mail">
+                <div className="icon-image">✉️</div>
+              </div>
+              <span>Mail</span>
+            </div>
+            <div className="app-icon-wrapper">
+              <div className="app-icon notes">
+                <div className="icon-image">📝</div>
+              </div>
+              <span>Notes</span>
+            </div>
+          </div>
+          
+          <div className="share-sheet-actions">
+            <div className="action-item">
+              <span className="action-text">Copy</span>
+              <span className="action-icon">📋</span>
+            </div>
+            <div className="action-item">
+              <span className="action-text">Add to Reading List</span>
+              <span className="action-icon">👓</span>
+            </div>
+            <div className="action-item">
+              <span className="action-text">Add Bookmark</span>
+              <span className="action-icon">📖</span>
+            </div>
+            <div className="action-item">
+              <span className="action-text">Add to Favorites</span>
+              <span className="action-icon">⭐</span>
+            </div>
+            <div className="action-item">
+              <span className="action-text">Add to Quick Note</span>
+              <span className="action-icon">📝</span>
+            </div>
+            <div className="action-item">
+              <span className="action-text">Find on Page</span>
+              <span className="action-icon">🔍</span>
+            </div>
+            <div className="action-item highlighted">
+              <span className="action-text">Add to Home Screen</span>
+              <span className="action-icon">➕</span>
+            </div>
+          </div>
+          
+          <div className="instruction-arrow">
+            <span>👆</span>
+            <p>「Add to Home Screen」をタップしてください</p>
+          </div>
         </div>
+      )}
 
-        {isIOS && (
-          <div className="install-instructions ios">
-            <h2>iPhone / iPadでの追加方法</h2>
+      {!isIOS && (
+        <div className="install-guide-container">
+          <div className="install-header">
+            <img src="/icon-192x192.png" alt="BaseLog" className="app-logo" />
+            <h1>BaseLogをスマートフォンで<br/>アプリとして使用する</h1>
+            <p className="subtitle">
+              ブラウザアプリより「ホーム画面に追加」を選択することで、<br/>
+              お使いのスマートフォンのホーム画面にBaseLogのアイコンを作成することができます。
+            </p>
+          </div>
+
+          {isAndroid && (
+            <div className="install-instructions android">
+              <h2>Androidでの追加方法</h2>
             
             <div className="instruction-card">
               <div className="step-header">
