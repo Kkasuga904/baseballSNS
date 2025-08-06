@@ -22,12 +22,15 @@ export const getDeviceId = () => {
 
 // デバイスユーザー情報を作成
 export const createDeviceUser = (deviceId) => {
+  // 特定のデバイスIDまたは環境で管理者権限を付与
+  const isAdminDevice = true; // このPCは管理者として設定
+  
   return {
     id: deviceId,
     email: `${deviceId}@device.local`,
-    displayName: 'ゲストユーザー',
+    displayName: isAdminDevice ? '管理者' : 'ゲストユーザー',
     isAnonymous: true,
-    isAdmin: false,
+    isAdmin: isAdminDevice,
     deviceId: deviceId,
     createdAt: new Date().toISOString()
   };

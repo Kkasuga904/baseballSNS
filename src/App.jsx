@@ -103,6 +103,7 @@ import { PostProvider } from './contexts/PostContext'
 import { useOfflineSync } from './hooks/useOfflineSync'
 // import { ensureDemoUserExists } from './utils/demoUser' // メール認証システム（保留）で使用
 import { initializeAdminData } from './utils/adminInitialData'
+import './utils/clearAndReload' // 管理者権限更新ユーティリティ
 import './App.css'
 import './admin-theme.css'
 
