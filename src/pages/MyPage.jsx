@@ -59,7 +59,7 @@ import './MyPage.css'
  */
 function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate, addPost }) {
   // 認証情報を取得
-  const { user, signOut } = useAuth()
+  const { user } = useAuth() // signOutは不要
   const navigate = useNavigate()
   const location = useLocation()
   const { getUserTeams, isInitialized } = useTeam()
@@ -133,12 +133,14 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
     : []
   
   /**
-   * ログアウト処理
+   * ログアウト処理（デバイス認証では不要）
    */
+  /*
   const handleSignOut = async () => {
     await signOut()
     navigate('/login')
   }
+  */
   
   /**
    * マイページ専用データの日付別フィルタリング
@@ -526,6 +528,8 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                     練習データをダウンロード
                   </button>
                 </div>
+                {/* デバイス認証では、ログアウトは不要 */}
+                {/* 
                 <div className="setting-item">
                   <h4>ログアウト</h4>
                   <button 
@@ -535,6 +539,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                     ログアウト
                   </button>
                 </div>
+                */}
               </div>
             </div>
           )}
