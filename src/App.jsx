@@ -13,12 +13,21 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import LoadingSpinner from './components/LoadingSpinner'
 
 // 認証システムの選択
-// Firebase設定がある場合はFirebaseAuthContext、Supabase設定がある場合はAuthContext、それ以外はSimpleAuthContextを使用
-import { AuthProvider as SupabaseAuthProvider, useAuth as useSupabaseAuth } from './contexts/AuthContext'
-import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './contexts/SimpleAuthContext'
-import { AuthProvider as FirebaseAuthProvider, useAuth as useFirebaseAuth } from './contexts/FirebaseAuthContext'
+// デバイス認証をデフォルトで使用
+import { AuthProvider as DeviceAuthProvider, useAuth as useDeviceAuth } from './contexts/DeviceAuthContext'
 
-// 環境変数をチェックして適切な認証システムを選択
+// メール認証システム（保留）
+// 以下の認証システムは現在使用していませんが、将来的に復活させる可能性があります
+// import { AuthProvider as SupabaseAuthProvider, useAuth as useSupabaseAuth } from './contexts/AuthContext'
+// import { AuthProvider as SimpleAuthProvider, useAuth as useSimpleAuth } from './contexts/SimpleAuthContext'
+// import { AuthProvider as FirebaseAuthProvider, useAuth as useFirebaseAuth } from './contexts/FirebaseAuthContext'
+
+// デバイス認証をデフォルトで使用
+export const AuthProvider = DeviceAuthProvider
+export const useAuth = useDeviceAuth
+
+// メール認証システムの設定チェック（保留）
+/*
 let hasSupabaseConfig = false;
 let hasFirebaseConfig = false;
 
@@ -54,8 +63,9 @@ try {
 }
 
 // 条件に応じて認証プロバイダーとフックをエクスポート
-export const AuthProvider = hasFirebaseConfig ? FirebaseAuthProvider : (hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider)
-export const useAuth = hasFirebaseConfig ? useFirebaseAuth : (hasSupabaseConfig ? useSupabaseAuth : useSimpleAuth)
+// export const AuthProvider = hasFirebaseConfig ? FirebaseAuthProvider : (hasSupabaseConfig ? SupabaseAuthProvider : SimpleAuthProvider)
+// export const useAuth = hasFirebaseConfig ? useFirebaseAuth : (hasSupabaseConfig ? useSupabaseAuth : useSimpleAuth)
+*/
 
 // コンポーネントのインポート
 import Navigation from './components/Navigation'
@@ -74,12 +84,15 @@ import TeamsPage from './pages/TeamsPage'
 // MVP版ではチーム機能は無効化
 // import TeamDetail from './pages/TeamDetail'
 // import Teams from './pages/Teams'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import AuthCallback from './pages/AuthCallback'
-import CompactLogin from './components/CompactLogin'
-import ProfileSetup from './components/ProfileSetup'
-import ForgotPassword from './components/ForgotPassword'
+
+// メール認証関連コンポーネント（保留）
+// 現在はデバイス認証を使用しているため、以下のコンポーネントは使用しません
+// import Login from './components/Login'
+// import Signup from './components/Signup'
+// import AuthCallback from './pages/AuthCallback'
+// import CompactLogin from './components/CompactLogin'
+// import ProfileSetup from './components/ProfileSetup'
+// import ForgotPassword from './components/ForgotPassword'
 import ProtectedRoute from './components/ProtectedRoute'
 // import InstallPWA from './components/InstallPWA' // インストールボタン削除
 import Footer from './components/Footer'
@@ -420,20 +433,15 @@ function AppContent() {
         
         {/* ルーティング設定 */}
         <Routes>
-          {/* ログイン画面 */}
+          {/* メール認証関連ルート（保留） */}
+          {/* デバイス認証ではログイン画面は不要のためコメントアウト */}
+          {/*
           <Route path="/login" element={<Login />} />
-          
-          {/* 新規登録画面 */}
           <Route path="/signup" element={<Signup />} />
-          
-          {/* 認証コールバック画面 */}
           <Route path="/auth/callback" element={<AuthCallback />} />
-          
-          {/* プロフィール設定画面 */}
           <Route path="/profile-setup" element={<ProfileSetup />} />
-          
-          {/* パスワードリセット画面 */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          */}
           
           {/* タイムライン（ホーム画面） - ログイン必須 */}
           {/* <Route path="/" element={
@@ -442,10 +450,9 @@ function AppContent() {
             </ProtectedRoute>
           } /> */}
           
-          {/* 仮のホーム画面 - MyPageにリダイレクト */}
+          {/* ホーム画面（デフォルト） - デバイス認証で自動ログイン */}
           <Route path="/" element={
-            <ProtectedRoute>
-              <MyPage 
+            <MyPage 
                 posts={posts}
                 myPageData={myPageData}
                 setMyPageData={updateMyPageData}
@@ -453,12 +460,10 @@ function AppContent() {
                 setSelectedDate={setSelectedDate}
                 addPost={addPost}
               />
-            </ProtectedRoute>
           } />
           
-          {/* マイページ - ログイン必須 */}
+          {/* マイページ */}
           <Route path="/mypage" element={
-            <ProtectedRoute>
               <MyPage 
                 posts={posts}
                 myPageData={myPageData}
@@ -467,49 +472,36 @@ function AppContent() {
                 setSelectedDate={setSelectedDate}
                 addPost={addPost}
               />
-            </ProtectedRoute>
           } />
           
-          {/* カレンダー画面 - ログイン必須 */}
+          {/* カレンダー画面 */}
           <Route path="/calendar" element={
-            <ProtectedRoute>
               <CalendarView posts={posts} />
-            </ProtectedRoute>
           } />
           
           {/* チーム一覧 */}
           <Route path="/teams" element={
-            <ProtectedRoute>
               <TeamsPage />
-            </ProtectedRoute>
           } />
           
           {/* ユーザープロフィール画面 */}
           <Route path="/profile/:userId" element={
-            <ProtectedRoute>
               <Profile posts={posts} myPageData={myPageData} />
-            </ProtectedRoute>
           } />
           
           {/* プロフィール（自分） */}
           <Route path="/profile" element={
-            <ProtectedRoute>
               <Profile posts={posts} myPageData={myPageData} />
-            </ProtectedRoute>
           } />
           
-          {/* 測定結果画面 - ログイン必須 */}
+          {/* 測定結果画面 */}
           <Route path="/measurements" element={
-            <ProtectedRoute>
               <Measurements />
-            </ProtectedRoute>
           } />
           
-          {/* 設定画面 - ログイン必須 */}
+          {/* 設定画面 */}
           <Route path="/settings" element={
-            <ProtectedRoute>
               <Settings />
-            </ProtectedRoute>
           } />
           
           {/* チーム詳細画面 - MVP版では無効化 */}
@@ -530,13 +522,11 @@ function AppContent() {
           
           {/* 練習記録ページ */}
           <Route path="/practice-record" element={
-            <ProtectedRoute>
               <PracticeRecordPage 
                 addPost={addPost}
                 myPageData={myPageData}
                 setMyPageData={updateMyPageData}
               />
-            </ProtectedRoute>
           } />
         </Routes>
         

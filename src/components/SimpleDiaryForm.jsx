@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import RichTextEditor from './RichTextEditor'
+import SimpleTextEditor from './SimpleTextEditor'
 import { useAutoSaveForm } from '../hooks/useAutoSave'
 import './SimpleDiaryForm.css'
 
 function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
   const [content, setContent] = useState('')
-  const [useRichText, setUseRichText] = useState(true)
+  const [useSimpleEditor, setUseSimpleEditor] = useState(true)
   
   // 選択された日付または現在の日時を取得
   const now = new Date()
@@ -87,8 +87,8 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
       </div>
       
       <div className="diary-content-area">
-        {useRichText ? (
-          <RichTextEditor
+        {useSimpleEditor ? (
+          <SimpleTextEditor
             content={content}
             onChange={setContent}
             placeholder="今日の練習内容を記録..."
