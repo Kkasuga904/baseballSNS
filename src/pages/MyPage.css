@@ -57,9 +57,9 @@
   
   .tab-button {
     flex: 0 0 auto;
-    min-width: 85px;
-    padding: 12px 10px;
-    font-size: 12px;
+    min-width: 90px;
+    padding: 14px 12px;
+    font-size: 14px;
   }
   
   /* スクロール可能であることを示すグラデーション */
@@ -240,9 +240,19 @@
 .practice-calendar-section {
   background: white;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2rem 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   margin-bottom: 2rem;
+  margin-top: 1.5rem;
+}
+
+.practice-calendar-section h3 {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2e7d46;
+  font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
 }
 
 .calendar-hint {
@@ -407,18 +417,28 @@
 }
 
 .btn-primary {
-  background-color: #2e7d46;
+  background: linear-gradient(to bottom, #4a7c4e, #2e7d46);
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(46, 125, 70, 0.2);
+  font-family: 'Noto Sans JP', sans-serif;
 }
 
 .btn-primary:hover {
-  background-color: #1e5d36;
+  background: linear-gradient(to bottom, #3a6c3e, #1e5d36);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 125, 70, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(46, 125, 70, 0.2);
 }
 
 .goals-section {
