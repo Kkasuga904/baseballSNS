@@ -93,7 +93,7 @@ import TeamsPage from './pages/TeamsPage'
 // import CompactLogin from './components/CompactLogin'
 // import ProfileSetup from './components/ProfileSetup'
 // import ForgotPassword from './components/ForgotPassword'
-import ProtectedRoute from './components/ProtectedRoute'
+// import ProtectedRoute from './components/ProtectedRoute' // デバイス認証では不要
 // import InstallPWA from './components/InstallPWA' // インストールボタン削除
 import Footer from './components/Footer'
 // import PWAInstallBanner from './components/PWAInstallBanner' // インストールバナー削除
@@ -101,7 +101,7 @@ import OfflineIndicator from './components/OfflineIndicator'
 import { TeamProvider } from './contexts/TeamContext'
 import { PostProvider } from './contexts/PostContext'
 import { useOfflineSync } from './hooks/useOfflineSync'
-import { ensureDemoUserExists } from './utils/demoUser'
+// import { ensureDemoUserExists } from './utils/demoUser' // メール認証システム（保留）で使用
 import { initializeAdminData } from './utils/adminInitialData'
 import './App.css'
 import './admin-theme.css'
@@ -544,7 +544,9 @@ function AppContent() {
  * RouterとAuthProviderでアプリ全体をラップ
  */
 function App() {
-  // アプリ起動時にデモユーザーを作成（Supabase設定時のみ）
+  // デバイス認証では自動的にユーザーが作成されるため、デモユーザー作成は不要
+  // メール認証システム（保留）でのデモユーザー作成
+  /*
   useEffect(() => {
     // Supabaseが設定されている場合のみデモユーザーを作成
     if (hasSupabaseConfig) {
@@ -557,6 +559,7 @@ function App() {
       })
     }
   }, [])
+  */
 
   return (
     <Router>
