@@ -16,12 +16,14 @@
     width: 100%;
     max-width: 100%;
     padding: 8px;
+    height: auto;
   }
   
   .calendar-grid {
     gap: 1px;
     padding: 2px;
-    grid-auto-rows: 1fr;
+    grid-auto-rows: calc((100vw - 32px) / 7 - 2px);
+    max-height: calc(100vh - 250px);
   }
   
   .calendar-day {
@@ -31,6 +33,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
   }
   
   .weekday {
@@ -47,6 +50,54 @@
   .calendar-header h3 {
     font-size: 16px;
     min-width: 120px;
+  }
+}
+
+/* iPhone対応（小さい画面） */
+@media (max-width: 390px) {
+  .practice-calendar {
+    padding: 4px;
+  }
+  
+  .calendar-grid {
+    gap: 0.5px;
+    padding: 1px;
+    grid-auto-rows: calc((100vw - 20px) / 7 - 1px);
+  }
+  
+  .calendar-day {
+    padding: 1px;
+    border-radius: 2px;
+  }
+  
+  .weekday {
+    min-height: 18px;
+    max-height: 18px;
+    font-size: 9px;
+    padding: 0;
+  }
+  
+  .day-number {
+    font-size: 10px;
+  }
+  
+  .calendar-header {
+    margin-bottom: 8px;
+  }
+  
+  .calendar-header h3 {
+    font-size: 14px;
+    min-width: 100px;
+  }
+  
+  .month-nav {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+  
+  .practice-indicator {
+    font-size: 0.3rem;
   }
 }
 
