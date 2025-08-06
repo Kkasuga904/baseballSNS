@@ -75,24 +75,27 @@ if ('serviceWorker' in navigator && !isDev) {
   console.log('[SW] 開発環境のため、Service Workerは無効化されています')
 }
 
-// PWA install prompt handling - ブラウザのデフォルト動作を無効化
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => {
-  // ブラウザのデフォルトプロンプトを無効化
-  e.preventDefault();
-  // 後で使うためにイベントを保存（但し今は使わない）
-  deferredPrompt = e;
-  console.log('PWAインストールプロンプトを無効化しました');
-  
-  // グローバル変数として保存（コンポーネントからアクセス可能にする）
-  window.deferredPrompt = e;
-});
+// PWA install prompt handling - 開発環境では完全に無効化
+if (!isDev) {
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // ブラウザのデフォルトプロンプトを無効化
+    e.preventDefault();
+    // 後で使うためにイベントを保存（但し今は使わない）
+    deferredPrompt = e;
+    console.log('PWAインストールプロンプトを無効化しました');
+    
+    // グローバル変数として保存（コンポーネントからアクセス可能にする）
+    window.deferredPrompt = e;
+  });
+}
 
-// アプリがインストールされたときの処理
-window.addEventListener('appinstalled', () => {
-  console.log('PWAがインストールされました');
-  deferredPrompt = null;
-});
+// アプリがインストールされたときの処理 - 開発環境では無効化
+if (!isDev) {
+  window.addEventListener('appinstalled', () => {
+    console.log('PWAがインストールされました');
+  });
+}
 
 // Safari デバッグ: React レンダリング開始
 try {

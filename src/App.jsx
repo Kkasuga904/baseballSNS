@@ -126,27 +126,8 @@ function AppContent() {
    * - sleep: 睡眠記録の配列
    */
   const [myPageData, setMyPageData] = useState(() => {
-    // ユーザーのメールアドレスをキーとして使用（ゲストの場合は'guest'）
-    const userKey = (user && user.email) || 'guest'
-    const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
-    
-    // 管理者アカウント専用の永続化処理
-    if (userKey === 'over9131120@gmail.com') {
-      const adminData = localStorage.getItem('baseballSNSAdminData')
-      return adminData ? JSON.parse(adminData) : {
-        practices: [],
-        videos: [],
-        schedules: [],
-        meals: [],
-        supplements: [],
-        sleep: [],
-        games: [],
-        diaries: []
-      }
-    }
-    
-    // 通常ユーザーのデータ読み込み
-    return savedData ? JSON.parse(savedData) : {
+    // デフォルトの空データ
+    const defaultData = {
       practices: [],
       videos: [],
       schedules: [],
@@ -156,6 +137,29 @@ function AppContent() {
       games: [],
       diaries: []
     }
+    
+    try {
+      // ユーザーのメールアドレスをキーとして使用（ゲストの場合は'guest'）
+      const userKey = (user && user.email) || 'guest'
+      
+      // 管理者アカウント専用の永続化処理
+      if (userKey === 'over9131120@gmail.com') {
+        const adminData = localStorage.getItem('baseballSNSAdminData')
+        if (adminData && adminData !== 'undefined') {
+          return JSON.parse(adminData)
+        }
+      } else {
+        // 通常ユーザーのデータ読み込み
+        const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
+        if (savedData && savedData !== 'undefined') {
+          return JSON.parse(savedData)
+        }
+      }
+    } catch (error) {
+      console.error('Error loading myPageData from localStorage:', error)
+    }
+    
+    return defaultData
   })
   
   /**
@@ -163,9 +167,17 @@ function AppContent() {
    * 初期値としてデモデータを含む
    */
   const [posts, setPosts] = useState(() => {
-    // LocalStorageから保存済みの投稿を読み込み
-    const savedPosts = localStorage.getItem('baseballSNSPosts')
-    return savedPosts ? JSON.parse(savedPosts) : [
+    try {
+      // LocalStorageから保存済みの投稿を読み込み
+      const savedPosts = localStorage.getItem('baseballSNSPosts')
+      if (savedPosts && savedPosts !== 'undefined') {
+        return JSON.parse(savedPosts)
+      }
+    } catch (error) {
+      console.error('Error loading posts from localStorage:', error)
+    }
+    
+    return [
     // デモ投稿データ
     {
       id: 1,
@@ -322,26 +334,34 @@ function AppContent() {
     const userKey = (user && user.email) || 'guest'
     
     if (userKey === 'over9131120@gmail.com') {
-      const adminData = localStorage.getItem('baseballSNSAdminData')
-      if (adminData) {
-        setMyPageData(JSON.parse(adminData))
+      try {
+        const adminData = localStorage.getItem('baseballSNSAdminData')
+        if (adminData && adminData !== 'undefined') {
+          setMyPageData(JSON.parse(adminData))
+        }
+      } catch (error) {
+        console.error('Error parsing admin data:', error)
       }
     } else {
-      const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
-      if (savedData) {
-        setMyPageData(JSON.parse(savedData))
-      } else {
-        // 新規ユーザーの場合は空のデータを設定
-        setMyPageData({
-          practices: [],
-          videos: [],
-          schedules: [],
-          meals: [],
-          supplements: [],
-          sleep: [],
-          games: [],
-          diaries: []
-        })
+      try {
+        const savedData = localStorage.getItem(`baseballSNSMyPageData_${userKey}`)
+        if (savedData && savedData !== 'undefined') {
+          setMyPageData(JSON.parse(savedData))
+        } else {
+          // 新規ユーザーの場合は空のデータを設定
+          setMyPageData({
+            practices: [],
+            videos: [],
+            schedules: [],
+            meals: [],
+            supplements: [],
+            sleep: [],
+            games: [],
+            diaries: []
+          })
+        }
+      } catch (error) {
+        console.error('Error loading myPageData:', error)
       }
     }
   }, [user])

@@ -1,6 +1,7 @@
 {
   "name": "baseball-sns-app",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "prebuild": "node scripts/updateServiceWorker.js",

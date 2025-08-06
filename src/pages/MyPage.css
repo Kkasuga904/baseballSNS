@@ -5,9 +5,7 @@
 }
 
 .mypage > h2 {
-  color: #2e7d46;
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
+  display: none; /* SimpleDiaryListに統合されたため非表示 */
 }
 
 /* タブナビゲーション */
@@ -352,15 +350,17 @@
 }
 
 .recent-practices {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
   margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.recent-practices h3 {
-  color: #2e7d46;
-  margin-bottom: 1rem;
+.recent-practices h4 {
+  color: #333;
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
 }
 
 .no-practices {
@@ -461,10 +461,8 @@
 
 /* 日記セクション */
 .diary-section {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: transparent;
+  padding: 0;
   margin-bottom: 20px;
 }
 
@@ -537,9 +535,6 @@
 /* Diary セクション追加スタイル */
 .diary-list-section {
   margin-top: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1rem;
 }
 
 .diary-list-section h4 {

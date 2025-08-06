@@ -21,13 +21,25 @@ export function TeamProvider({ children }) {
   
   // 初期状態でlocalStorageからデータを読み込む
   const [teams, setTeams] = useState(() => {
-    const stored = localStorage.getItem(TEAMS_KEY);
-    return stored ? JSON.parse(stored) : [];
+    try {
+      const stored = localStorage.getItem(TEAMS_KEY);
+      if (!stored || stored === 'undefined') return [];
+      return JSON.parse(stored);
+    } catch (error) {
+      console.error('[TeamContext] Error parsing teams from localStorage:', error);
+      return [];
+    }
   });
   
   const [teamMembers, setTeamMembers] = useState(() => {
-    const stored = localStorage.getItem(TEAM_MEMBERS_KEY);
-    return stored ? JSON.parse(stored) : [];
+    try {
+      const stored = localStorage.getItem(TEAM_MEMBERS_KEY);
+      if (!stored || stored === 'undefined') return [];
+      return JSON.parse(stored);
+    } catch (error) {
+      console.error('[TeamContext] Error parsing team members from localStorage:', error);
+      return [];
+    }
   });
   
   const [loading, setLoading] = useState(false);
@@ -35,22 +47,32 @@ export function TeamProvider({ children }) {
 
   // ローカルストレージから読み込み
   const loadTeamsFromStorage = useCallback(() => {
-    const storedTeams = localStorage.getItem(TEAMS_KEY);
-    console.log('[TeamContext] Loading teams from storage:', storedTeams);
-    if (storedTeams) {
-      const parsed = JSON.parse(storedTeams);
-      console.log('[TeamContext] Parsed teams:', parsed);
-      setTeams(parsed);
+    try {
+      const storedTeams = localStorage.getItem(TEAMS_KEY);
+      console.log('[TeamContext] Loading teams from storage:', storedTeams);
+      if (storedTeams && storedTeams !== 'undefined') {
+        const parsed = JSON.parse(storedTeams);
+        console.log('[TeamContext] Parsed teams:', parsed);
+        setTeams(parsed);
+      }
+    } catch (error) {
+      console.error('[TeamContext] Error loading teams:', error);
+      setTeams([]);
     }
   }, []);
 
   const loadTeamMembersFromStorage = useCallback(() => {
-    const storedMembers = localStorage.getItem(TEAM_MEMBERS_KEY);
-    console.log('[TeamContext] Loading members from storage:', storedMembers);
-    if (storedMembers) {
-      const parsed = JSON.parse(storedMembers);
-      console.log('[TeamContext] Parsed members:', parsed);
-      setTeamMembers(parsed);
+    try {
+      const storedMembers = localStorage.getItem(TEAM_MEMBERS_KEY);
+      console.log('[TeamContext] Loading members from storage:', storedMembers);
+      if (storedMembers && storedMembers !== 'undefined') {
+        const parsed = JSON.parse(storedMembers);
+        console.log('[TeamContext] Parsed members:', parsed);
+        setTeamMembers(parsed);
+      }
+    } catch (error) {
+      console.error('[TeamContext] Error loading team members:', error);
+      setTeamMembers([]);
     }
   }, []);
   

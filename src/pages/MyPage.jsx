@@ -29,9 +29,8 @@ import RoutineTracker from '../components/RoutineTracker'
 import BodyMetricsChart from '../components/BodyMetricsChart'
 import MonthlyStats from '../components/MonthlyStats'
 import TeamManagement from '../components/TeamManagement'
-import DiaryForm from '../components/DiaryForm'
-import DiaryList from '../components/DiaryList'
-import DiaryView from '../components/DiaryView'
+import SimpleDiaryForm from '../components/SimpleDiaryForm'
+import SimpleDiaryList from '../components/SimpleDiaryList'
 import GameRecord from '../components/GameRecord'
 import GameRecordList from '../components/GameRecordList'
 import PerformanceChart from '../components/PerformanceChart'
@@ -64,8 +63,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   const { getUserTeams, isInitialized } = useTeam()
   const [showTeamManagement, setShowTeamManagement] = useState(false)
   const [showDiaryForm, setShowDiaryForm] = useState(false)
-  const [editingDiary, setEditingDiary] = useState(null)
-  const [viewingDiary, setViewingDiary] = useState(null)
   const [showGameRecord, setShowGameRecord] = useState(false)
   const [editingGame, setEditingGame] = useState(null)
   const [showPracticeForm, setShowPracticeForm] = useState(false)
@@ -245,39 +242,22 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   const handleSaveDiary = (diaryData) => {
     setMyPageData(prev => {
       const diaries = prev.diaries || []
-      if (editingDiary) {
-        // 編集の場合
-        return {
-          ...prev,
-          diaries: diaries.map(d => d.id === diaryData.id ? diaryData : d)
-        }
-      } else {
-        // 新規作成の場合
-        return {
-          ...prev,
-          diaries: [...diaries, diaryData]
-        }
+      // 新規作成の場合
+      return {
+        ...prev,
+        diaries: [...diaries, diaryData]
       }
     })
     setShowDiaryForm(false)
-    setEditingDiary(null)
-  }
-
-  const handleEditDiary = (diary) => {
-    setEditingDiary(diary)
-    setShowDiaryForm(true)
-    setViewingDiary(null)
   }
 
   const handleDeleteDiary = (diaryId) => {
-    setMyPageData(prev => ({
-      ...prev,
-      diaries: (prev.diaries || []).filter(d => d.id !== diaryId)
-    }))
-  }
-
-  const handleViewDiary = (diary) => {
-    setViewingDiary(diary)
+    if (window.confirm('この日記を削除しますか？')) {
+      setMyPageData(prev => ({
+        ...prev,
+        diaries: (prev.diaries || []).filter(d => d.id !== diaryId)
+      }))
+    }
   }
 
   /**
@@ -385,47 +365,43 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                   )}
                 </div>
                 
-                {/* 日記機能 */}
-                <div className="diary-list-section">
-                  <h4>練習日記</h4>
-                  <button 
-                    onClick={() => setShowDiaryForm(true)}
-                    className="btn-secondary"
-                  >
-                    日記を書く
-                  </button>
-                  <DiaryList 
-                    diaries={myPageData.diaries || []}
-                    onEdit={(diary) => {
-                      setEditingDiary(diary)
-                      setShowDiaryForm(true)
+              </div>
+              
+              {/* 日記リスト */}
+              <SimpleDiaryList
+                diaries={myPageData.diaries || []}
+                onDelete={handleDeleteDiary}
+              />
+              
+              {/* フローティングアクションボタン */}
+              <button
+                className="diary-fab"
+                onClick={() => setShowDiaryForm(true)}
+                title="日記を書く"
+              >
+                <span className="fab-icon">✏️</span>
+              </button>
+              
+              {/* 試合記録セクション */}
+              <div className="game-record-section">
+                <div className="section-header">
+                  <h3>⚾ 試合記録</h3>
+                  <button
+                    onClick={() => {
+                      setEditingGame(null)
+                      setShowGameRecord(true)
                     }}
-                    onView={(diary) => setViewingDiary(diary)}
-                    onDelete={handleDeleteDiary}
-                  />
+                    className="btn-primary"
+                  >
+                    試合記録を追加
+                  </button>
                 </div>
                 
-                {/* 試合記録セクション */}
-                <div className="game-record-section">
-                  <div className="section-header">
-                    <h3>⚾ 試合記録</h3>
-                    <button
-                      onClick={() => {
-                        setEditingGame(null)
-                        setShowGameRecord(true)
-                      }}
-                      className="btn-primary"
-                    >
-                      試合記録を追加
-                    </button>
-                  </div>
-                  
-                  <GameRecordList
-                    records={myPageData.games || []}
-                    onEdit={handleEditGame}
-                    onDelete={handleDeleteGame}
-                  />
-                </div>
+                <GameRecordList
+                  records={myPageData.games || []}
+                  onEdit={handleEditGame}
+                  onDelete={handleDeleteGame}
+                />
               </div>
             </>
           )}
@@ -701,20 +677,13 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
         />
       )}
       
-      {/* 日記フォームモーダル */}
+      {/* 日記フォーム */}
       {showDiaryForm && (
-        <div className="modal-overlay" onClick={() => setShowDiaryForm(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <DiaryForm
-              onSave={handleSaveDiary}
-              onCancel={() => {
-                setShowDiaryForm(false)
-                setEditingDiary(null)
-              }}
-              editingDiary={editingDiary}
-            />
-          </div>
-        </div>
+        <SimpleDiaryForm
+          onSave={handleSaveDiary}
+          onCancel={() => setShowDiaryForm(false)}
+          selectedDate={selectedDate}
+        />
       )}
       
       {/* 試合記録フォームモーダル */}
@@ -747,16 +716,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
             />
           </div>
         </div>
-      )}
-      
-      
-      {/* 日記詳細モーダル */}
-      {viewingDiary && (
-        <DiaryView
-          diary={viewingDiary}
-          onClose={() => setViewingDiary(null)}
-          onEdit={handleEditDiary}
-        />
       )}
     </div>
   )

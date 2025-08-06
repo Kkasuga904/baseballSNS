@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react'
 import './InstallPWA.css'
 
 function InstallPWA() {
+  // 開発環境では完全に無効化
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return null
+  }
+  
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [showInstallButton, setShowInstallButton] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
   const [isStandalone, setIsStandalone] = useState(false)
 
   useEffect(() => {
-    // 開発環境ではPWAインストール機能を無効化
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      console.log('開発環境のため、PWAインストール機能は無効です')
-      return
-    }
     
     // Check if running on iOS
     const isIOSDevice = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase())

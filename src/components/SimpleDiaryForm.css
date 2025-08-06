@@ -1,0 +1,104 @@
+.simple-diary-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.diary-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-arrow {
+  font-weight: 300;
+}
+
+.diary-date-info {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.done-button {
+  background: #007bff;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 20px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.done-button:hover {
+  background: #0056b3;
+}
+
+.done-button:disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.diary-content-area {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.diary-textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.6;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.diary-textarea::placeholder {
+  color: #999;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .diary-form-header {
+    padding: 12px;
+  }
+  
+  .diary-content-area {
+    padding: 16px;
+  }
+  
+  .diary-textarea {
+    font-size: 18px;
+  }
+}
