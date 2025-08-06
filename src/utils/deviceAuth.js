@@ -22,8 +22,12 @@ export const getDeviceId = () => {
 
 // デバイスユーザー情報を作成
 export const createDeviceUser = (deviceId) => {
-  // 特定のデバイスIDまたは環境で管理者権限を付与
-  const isAdminDevice = true; // このPCは管理者として設定
+  // PCかモバイルかを判定
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const isPC = !isMobile;
+  
+  // PCのみ管理者権限を付与
+  const isAdminDevice = isPC;
   
   return {
     id: deviceId,
@@ -32,6 +36,7 @@ export const createDeviceUser = (deviceId) => {
     isAnonymous: true,
     isAdmin: isAdminDevice,
     deviceId: deviceId,
+    deviceType: isMobile ? 'mobile' : 'pc',
     createdAt: new Date().toISOString()
   };
 };
