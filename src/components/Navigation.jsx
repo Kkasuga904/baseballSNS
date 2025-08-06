@@ -352,22 +352,22 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
       {/* メインナビゲーションバー */}
       <nav className="navigation">
         <div className="nav-items">
-          {/* タイムライン - MVP段階では不要 */}
-          {/* <Link
-            to="/"
-            className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}
-          >
-            <span className="nav-icon">🏠</span>
-            <span className="nav-label">タイムライン</span>
-          </Link> */}
-          
           {/* Diary（練習記録） */}
           <Link
             to="/mypage"
-            className={`nav-item ${location.pathname === '/mypage' ? 'active' : ''}`}
+            className={`nav-item ${location.pathname === '/mypage' && !location.search.includes('tab=home') ? 'active' : ''}`}
           >
             <span className="nav-icon">📓</span>
             <span className="nav-label">Diary</span>
+          </Link>
+          
+          {/* ホーム画面に追加 */}
+          <Link
+            to="/mypage?tab=home"
+            className={`nav-item ${location.pathname === '/mypage' && location.search.includes('tab=home') ? 'active' : ''}`}
+          >
+            <span className="nav-icon">📲</span>
+            <span className="nav-label">ホーム画面に追加</span>
           </Link>
           
           {/* Calendar（練習カレンダー） - 統合されるためコメントアウト */}

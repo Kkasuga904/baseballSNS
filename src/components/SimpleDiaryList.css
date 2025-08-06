@@ -211,7 +211,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .diary-fab:hover {
@@ -251,7 +251,10 @@
   }
   
   .diary-fab {
-    bottom: 90px;
+    bottom: 70px;
     right: 16px;
+    width: 56px;
+    height: 56px;
+    display: flex;
   }
 }

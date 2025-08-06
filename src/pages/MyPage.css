@@ -48,6 +48,106 @@
   border-bottom: 3px solid #2e7d46;
 }
 
+/* ホームセクション */
+.home-section {
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.install-guide {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.install-guide h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.install-subtitle {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.install-instructions {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.install-instructions h3 {
+  font-size: 18px;
+  color: #007bff;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.install-instructions h3:first-child {
+  margin-top: 0;
+}
+
+.install-steps {
+  margin-left: 20px;
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.install-steps li {
+  color: #333;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.icon-box {
+  display: inline-block;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+.install-benefits {
+  background: #e3f2fd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.install-benefits h4 {
+  font-size: 16px;
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+.install-benefits ul {
+  list-style: none;
+  padding: 0;
+}
+
+.install-benefits li {
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 6px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.install-benefits li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #4caf50;
+  font-weight: bold;
+}
+
 .tab-button.active::after {
   content: '';
   position: absolute;

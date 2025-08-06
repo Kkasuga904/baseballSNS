@@ -14,8 +14,8 @@
  * - 練習動画の管理
  */
 
-import React, { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useMemo, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../App'
 import { useTeam } from '../contexts/TeamContext'
 import PracticeStats from '../components/PracticeStats'
@@ -60,13 +60,37 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   // 認証情報を取得
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   const { getUserTeams, isInitialized } = useTeam()
   const [showTeamManagement, setShowTeamManagement] = useState(false)
   const [showDiaryForm, setShowDiaryForm] = useState(false)
   const [showGameRecord, setShowGameRecord] = useState(false)
   const [editingGame, setEditingGame] = useState(null)
   const [showPracticeForm, setShowPracticeForm] = useState(false)
-  const [activeTab, setActiveTab] = useState('diary') // タブの状態管理
+  const [activeTab, setActiveTab] = useState(() => {
+    // 初期タブをURLパラメータから設定
+    const params = new URLSearchParams(location.search)
+    const tab = params.get('tab')
+    if (tab === 'home' || tab === 'install') {
+      return 'home'
+    } else if (tab) {
+      return tab
+    }
+    return 'diary'
+  })
+  
+  // URLパラメータからタブを設定
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const tab = params.get('tab')
+    if (tab === 'home' || tab === 'install') {
+      setActiveTab('home')
+    } else if (tab) {
+      setActiveTab(tab)
+    } else {
+      setActiveTab('diary')
+    }
+  }, [location.search])
   
   // ユーザーの所属チーム一覧を取得（ユーザー情報を明示的に渡す）
   const userTeams = React.useMemo(() => {
@@ -319,19 +343,53 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           className={`tab-button ${activeTab === 'stats' ? 'active' : ''}`}
           onClick={() => setActiveTab('stats')}
         >
-          📊 Stats
+          📊 測定
         </button>
         <button 
           className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
           onClick={() => setActiveTab('settings')}
         >
-          ⚙️ Settings
+          ⚙️ 設定
         </button>
       </div>
       
       <div className="mypage-layout">
         <div className="mypage-main">
           {/* タブコンテンツ */}
+          {activeTab === 'home' && (
+            <div className="home-section">
+              <div className="install-guide">
+                <h2>📱 ホーム画面に追加</h2>
+                <p className="install-subtitle">BaseLogをアプリのように使えます</p>
+                
+                <div className="install-instructions">
+                  <h3>iPhoneの場合（Safari）</h3>
+                  <ol className="install-steps">
+                    <li>下部の共有ボタン <span className="icon-box">□↑</span> をタップ</li>
+                    <li>「ホーム画面に追加」を選択</li>
+                    <li>名前を確認して「追加」をタップ</li>
+                  </ol>
+                  
+                  <h3>Androidの場合（Chrome）</h3>
+                  <ol className="install-steps">
+                    <li>右上のメニュー <span className="icon-box">⋮</span> をタップ</li>
+                    <li>「ホーム画面に追加」を選択</li>
+                    <li>名前を確認して「追加」をタップ</li>
+                  </ol>
+                  
+                  <div className="install-benefits">
+                    <h4>✨ メリット</h4>
+                    <ul>
+                      <li>アプリのようにワンタップで起動</li>
+                      <li>全画面表示で快適に使える</li>
+                      <li>オフラインでも一部機能が使える</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
           {activeTab === 'diary' && (
             <>
               {/* 練習記録フォームへのボタン - 日記アプリなので非表示 */}

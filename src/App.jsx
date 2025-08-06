@@ -59,7 +59,7 @@ export const useAuth = hasFirebaseConfig ? useFirebaseAuth : (hasSupabaseConfig 
 
 // コンポーネントのインポート
 import Navigation from './components/Navigation'
-import MobileNavigation from './components/MobileNavigation'
+// import MobileNavigation from './components/MobileNavigation' // フッター削除
 // import Timeline from './pages/Timeline' // タイムライン機能は一時的に無効化
 import MyPage from './pages/MyPage'
 import CalendarView from './pages/CalendarView'
@@ -540,8 +540,8 @@ function AppContent() {
           } />
         </Routes>
         
-        {/* モバイル用固定ナビゲーション（ログイン時のみ表示） */}
-        {user && <MobileNavigation />}
+        {/* モバイル用固定ナビゲーション削除 */}
+        {/* {user && <MobileNavigation />} */}
         
         {/* フッター */}
         <Footer />
