@@ -268,6 +268,7 @@ function InstallGuide() {
           </div>
         </div>
       </div>
+      )}
     </div>
   )
 }
