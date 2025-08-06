@@ -45,7 +45,8 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
     <div className="simple-diary-form">
       <div className="diary-form-header">
         <button className="back-button" onClick={onCancel}>
-          <span className="back-arrow">‹</span>
+          <span className="back-arrow">←</span>
+          <span className="back-text">戻る</span>
         </button>
         <div className="diary-date-info">
           {dateStr}({dayStr}) {timeStr}

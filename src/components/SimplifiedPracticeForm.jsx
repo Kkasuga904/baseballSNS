@@ -225,8 +225,8 @@ function SimplifiedPracticeForm({ onSubmit, selectedDate, onClose }) {
               />
             </div>
             
-            {/* 練習メニュー（オプション） */}
-            <div className="form-group">
+            {/* 練習メニュー（オプション） - 一時的にコメントアウト */}
+            {/* <div className="form-group">
               <label>練習メニュー（複数選択可）</label>
               <div className="menu-chips">
                 {commonMenuItems[formData.category]?.map(item => (
@@ -244,7 +244,7 @@ function SimplifiedPracticeForm({ onSubmit, selectedDate, onClose }) {
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
             
             {/* 詳細設定の表示/非表示 */}
             <button

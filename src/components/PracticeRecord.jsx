@@ -96,7 +96,8 @@ function PracticeRecord({ practiceData }) {
           <p>🌿 今日はしっかり休養しました</p>
         </div>
 
-        <div className="practice-condition">
+        {/* 体調表示を一時的にコメントアウト */}
+        {/* <div className="practice-condition">
           <span className="condition-label">体調:</span>
           <div className="condition-stars">
             {[...Array(5)].map((_, i) => (
@@ -105,7 +106,7 @@ function PracticeRecord({ practiceData }) {
               </span>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {note && (
           <div className="practice-reflection">
@@ -167,7 +168,8 @@ function PracticeRecord({ practiceData }) {
       </div>
 
       <div className="practice-stats">
-        <div className="practice-condition">
+        {/* 体調表示を一時的にコメントアウト */}
+        {/* <div className="practice-condition">
           <span className="condition-label">体調:</span>
           <div className="condition-stars">
             {[...Array(5)].map((_, i) => (
@@ -176,7 +178,7 @@ function PracticeRecord({ practiceData }) {
               </span>
             ))}
           </div>
-        </div>
+        </div> */}
         
         {intensity && (
           <div className="practice-intensity">

@@ -216,56 +216,68 @@ function ProfileSetupTabs() {
 
                   <div className="form-section">
                     <h3>生年月日（任意）</h3>
-                    <div style={{marginBottom: '20px', padding: '10px', background: '#ffebee', border: '2px dashed #f44336', borderRadius: '4px'}}>
-                      <p style={{color: '#d32f2f', fontSize: '14px', marginBottom: '10px'}}>
-                        【テスト用シンプル入力フィールド】
-                      </p>
-                      <input
-                        type="text"
-                        value={formData.birthDateInput || ''}
-                        onChange={(e) => {
-                          console.log('テスト onChange:', e.target.value);
-                          setFormData(prev => ({...prev, birthDateInput: e.target.value}));
-                        }}
-                        onFocus={() => console.log('テスト フォーカス')}
-                        onClick={() => console.log('テスト クリック')}
-                        placeholder="テスト入力 - ここに入力できるか確認"
-                        style={{
-                          width: '100%',
-                          padding: '10px',
-                          border: '3px solid red',
-                          fontSize: '16px',
-                          backgroundColor: 'white',
-                          color: 'black',
-                          outline: 'none',
-                          boxSizing: 'border-box'
-                        }}
-                      />
-                      <p style={{color: '#757575', fontSize: '12px', marginTop: '5px'}}>
-                        入力値: "{formData.birthDateInput || '空'}"
-                      </p>
-                    </div>
-                    
                     <div className="birth-date-single-input">
-                      <p style={{fontSize: '12px', color: '#666', marginBottom: '5px'}}>
-                        【本来の入力フィールド（デバッグ中）】
-                      </p>
                       <input
                         type="text"
                         placeholder="19951225 (年月日で8桁)"
                         maxLength="8"
                         value={formData.birthDateInput || ''}
                         onChange={(e) => {
+                          console.log('入力:', e.target.value);
                           const input = e.target.value.replace(/\D/g, '');
-                          console.log('本番 onChange:', input);
-                          if (input.length <= 8) {
-                            setFormData(prev => ({...prev, birthDateInput: input}));
+                          setFormData(prev => ({
+                            ...prev,
+                            birthDateInput: input
+                          }));
+                          
+                          // 8桁の場合、日付として解析・バリデーション
+                          if (input.length === 8) {
+                            const year = input.substring(0, 4);
+                            const month = input.substring(4, 6);
+                            const day = input.substring(6, 8);
+                            
+                            const yearNum = parseInt(year);
+                            const monthNum = parseInt(month);
+                            const dayNum = parseInt(day);
+                            
+                            const currentYear = new Date().getFullYear();
+                            if (yearNum >= 1900 && yearNum <= currentYear && 
+                                monthNum >= 1 && monthNum <= 12 && 
+                                dayNum >= 1 && dayNum <= 31) {
+                              
+                              // 実際の日付として有効かチェック
+                              const testDate = new Date(yearNum, monthNum - 1, dayNum);
+                              if (testDate.getFullYear() === yearNum && 
+                                  testDate.getMonth() === (monthNum - 1) && 
+                                  testDate.getDate() === dayNum) {
+                                
+                                setFormData(prev => ({
+                                  ...prev,
+                                  birthYear: year,
+                                  birthMonth: monthNum,
+                                  birthDay: dayNum,
+                                  birthDate: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+                                }));
+                              }
+                            }
                           }
                         }}
                         className="birth-single-input"
                       />
                       <div className="birth-format-hint">
-                        例: 1995年12月25日 → 19951225
+                        {formData.birthDateInput && formData.birthDateInput.length === 8 ? (
+                          formData.birthDate ? (
+                            <span style={{ color: '#10b981' }}>
+                              ✓ {formData.birthYear}年{formData.birthMonth}月{formData.birthDay}日
+                            </span>
+                          ) : (
+                            <span style={{ color: '#ef4444' }}>
+                              ✗ 無効な日付です
+                            </span>
+                          )
+                        ) : (
+                          <span>例: 1995年12月25日 → 19951225</span>
+                        )}
                       </div>
                     </div>
                   </div>

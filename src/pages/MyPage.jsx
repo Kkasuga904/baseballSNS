@@ -301,27 +301,25 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   // コンポーネントのレンダリング
   return (
     <div className="mypage">
-      <h2>📓 Diary - 練習記録</h2>
-      
       {/* タブナビゲーション */}
       <div className="tab-navigation">
         <button 
           className={`tab-button ${activeTab === 'diary' ? 'active' : ''}`}
           onClick={() => setActiveTab('diary')}
         >
-          📝 Diary（練習記録）
+          📝 Diary
         </button>
         <button 
           className={`tab-button ${activeTab === 'calendar' ? 'active' : ''}`}
           onClick={() => setActiveTab('calendar')}
         >
-          📅 Calendar（練習カレンダー）
+          📅 Calendar
         </button>
         <button 
           className={`tab-button ${activeTab === 'stats' ? 'active' : ''}`}
           onClick={() => setActiveTab('stats')}
         >
-          📊 Stats（測定記録）
+          📊 Stats
         </button>
         <button 
           className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
@@ -336,8 +334,8 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           {/* タブコンテンツ */}
           {activeTab === 'diary' && (
             <>
-              {/* 練習記録フォームへのボタン */}
-              <div className="diary-section">
+              {/* 練習記録フォームへのボタン - 日記アプリなので非表示 */}
+              {/* <div className="diary-section">
                 <div className="section-header">
                   <h3>📝 練習記録</h3>
                   <button 
@@ -348,7 +346,6 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                   </button>
                 </div>
                 
-                {/* 最近の練習記録 */}
                 <div className="recent-practices">
                   <h4>最近の練習記録</h4>
                   {posts.filter(p => p.type === 'practice').length > 0 ? (
@@ -364,8 +361,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                     <p>練習記録がありません</p>
                   )}
                 </div>
-                
-              </div>
+              </div> */}
               
               {/* 日記リスト */}
               <SimpleDiaryList
@@ -382,8 +378,8 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 <span className="fab-icon">✏️</span>
               </button>
               
-              {/* 試合記録セクション */}
-              <div className="game-record-section">
+              {/* 試合記録セクション - 日記アプリなので非表示 */}
+              {/* <div className="game-record-section">
                 <div className="section-header">
                   <h3>⚾ 試合記録</h3>
                   <button
@@ -402,7 +398,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                   onEdit={handleEditGame}
                   onDelete={handleDeleteGame}
                 />
-              </div>
+              </div> */}
             </>
           )}
           

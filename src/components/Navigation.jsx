@@ -266,6 +266,8 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
    * @param {TouchEvent} e - タッチイベント
    */
   const handleTouchStart = (e) => {
+    e.preventDefault() // デフォルトのタッチ動作を防ぐ
+    e.stopPropagation() // イベントの伝播を防ぐ
     const touch = e.touches[0]
     setIsDragging(true)
     setDragStart({
@@ -282,19 +284,22 @@ function Navigation({ posts = [], onDateClick, schedules = [] }) {
   const handleTouchMove = (e) => {
     if (!isDragging) return
     
+    e.preventDefault() // デフォルトのスクロールを防ぐ
+    e.stopPropagation() // イベントの伝播を防ぐ
+    
     const touch = e.touches[0]
     const newX = touch.clientX - dragStart.x
     const newY = touch.clientY - dragStart.y
     
-    const calendarWidth = window.innerWidth < 480 ? 260 : 300
+    const calendarWidth = 280 // モバイル用の幅
     const isMobile = window.innerWidth <= 768
     
-    // PCの場合は画面外も許可、モバイルは画面内に制限
+    // モバイルの場合は画面内に制限
     let finalX, finalY
     if (isMobile) {
       const maxX = window.innerWidth - calendarWidth - 10
       const maxY = window.innerHeight - 200
-      finalX = Math.max(0, Math.min(newX, maxX))
+      finalX = Math.max(10, Math.min(newX, maxX))
       finalY = Math.max(60, Math.min(newY, maxY))
     } else {
       const maxX = window.innerWidth - 100

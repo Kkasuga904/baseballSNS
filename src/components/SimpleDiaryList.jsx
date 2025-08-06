@@ -112,7 +112,8 @@ function SimpleDiaryList({ diaries = [], onDelete }) {
                     </div>
                   </div>
                   
-                  {onDelete && (
+                  {/* Delete ボタンを一時的にコメントアウト */}
+                  {/* {onDelete && (
                     <button
                       className="diary-delete-btn"
                       onClick={(e) => {
@@ -122,7 +123,7 @@ function SimpleDiaryList({ diaries = [], onDelete }) {
                     >
                       Delete
                     </button>
-                  )}
+                  )} */}
                 </div>
               )
             })}

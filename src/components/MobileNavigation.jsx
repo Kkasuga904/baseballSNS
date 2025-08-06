@@ -22,15 +22,15 @@ function MobileNavigation() {
         <span className="mobile-nav-label">タイムライン</span>
       </Link> */}
       
-      {/* Diary（練習記録） */}
-      <Link
+      {/* Diary（練習記録） - 現在メインページなので一時的に非表示 */}
+      {/* <Link
         to="/mypage"
         className={`mobile-nav-item ${location.pathname === '/mypage' ? 'active' : ''}`}
         onClick={handleNavClick}
       >
         <span className="mobile-nav-icon">📓</span>
         <span className="mobile-nav-label">Diary</span>
-      </Link>
+      </Link> */}
       
       {/* プロフィール - MVP段階では不要 */}
       {/* <Link
