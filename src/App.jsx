@@ -81,9 +81,9 @@ import CompactLogin from './components/CompactLogin'
 import ProfileSetup from './components/ProfileSetup'
 import ForgotPassword from './components/ForgotPassword'
 import ProtectedRoute from './components/ProtectedRoute'
-import InstallPWA from './components/InstallPWA'
+// import InstallPWA from './components/InstallPWA' // インストールボタン削除
 import Footer from './components/Footer'
-import PWAInstallBanner from './components/PWAInstallBanner'
+// import PWAInstallBanner from './components/PWAInstallBanner' // インストールバナー削除
 import OfflineIndicator from './components/OfflineIndicator'
 import { TeamProvider } from './contexts/TeamContext'
 import { PostProvider } from './contexts/PostContext'
@@ -409,10 +409,10 @@ function AppContent() {
           selectedDate={selectedDate}
         />
         
-        {/* PWAインストールボタン */}
-        <InstallPWA />
+        {/* PWAインストールボタン削除 */}
+        {/* <InstallPWA /> */}
         
-        {/* PWAインストールバナー（一時的に無効化） */}
+        {/* PWAインストールバナー削除 */}
         {/* <PWAInstallBanner /> */}
         
         {/* オフラインインジケーター */}

@@ -114,6 +114,20 @@
   margin: 0 4px;
 }
 
+.install-note {
+  background: #fff3e0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.install-note p {
+  color: #666;
+  font-size: 13px;
+  margin: 4px 0;
+}
+
 .install-benefits {
   background: #e3f2fd;
   border-radius: 8px;

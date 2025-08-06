@@ -363,26 +363,24 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 <p className="install-subtitle">BaseLogをアプリのように使えます</p>
                 
                 <div className="install-instructions">
-                  <h3>iPhoneの場合（Safari）</h3>
+                  <h3>ホーム画面に追加するには：</h3>
                   <ol className="install-steps">
                     <li>下部の共有ボタン <span className="icon-box">□↑</span> をタップ</li>
                     <li>「ホーム画面に追加」を選択</li>
-                    <li>名前を確認して「追加」をタップ</li>
+                    <li>「追加」をタップ</li>
                   </ol>
                   
-                  <h3>Androidの場合（Chrome）</h3>
-                  <ol className="install-steps">
-                    <li>右上のメニュー <span className="icon-box">⋮</span> をタップ</li>
-                    <li>「ホーム画面に追加」を選択</li>
-                    <li>名前を確認して「追加」をタップ</li>
-                  </ol>
+                  <div className="install-note">
+                    <p>※ Safariブラウザでアクセスしてください</p>
+                    <p>※ Androidの場合はChromeのメニュー <span className="icon-box">⋮</span> から追加できます</p>
+                  </div>
                   
                   <div className="install-benefits">
                     <h4>✨ メリット</h4>
                     <ul>
-                      <li>アプリのようにワンタップで起動</li>
-                      <li>全画面表示で快適に使える</li>
-                      <li>オフラインでも一部機能が使える</li>
+                      <li>アプリアイコンから直接起動</li>
+                      <li>全画面表示で使いやすい</li>
+                      <li>通知機能対応（今後実装予定）</li>
                     </ul>
                   </div>
                 </div>
