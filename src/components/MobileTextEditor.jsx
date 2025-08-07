@@ -3,6 +3,7 @@ import './MobileTextEditor.css'
 
 function MobileTextEditor({ content, onChange, placeholder }) {
   const editorRef = useRef(null)
+  const toolbarRef = useRef(null)
   const [currentStyle, setCurrentStyle] = useState({
     bold: false,
     italic: false,
@@ -10,6 +11,7 @@ function MobileTextEditor({ content, onChange, placeholder }) {
     fontSize: 'normal'
   })
   const [cursorPosition, setCursorPosition] = useState(0)
+  const [keyboardHeight, setKeyboardHeight] = useState(0)
 
   // コンテンツの初期化
   useEffect(() => {
@@ -28,6 +30,60 @@ function MobileTextEditor({ content, onChange, placeholder }) {
       }
     }
   }, [content])
+
+  // キーボードの高さを検出してツールバー位置を調整
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.visualViewport) {
+        const viewportHeight = window.visualViewport.height
+        const windowHeight = window.innerHeight
+        const keyboardHeight = windowHeight - viewportHeight
+        
+        if (toolbarRef.current) {
+          if (keyboardHeight > 100) {
+            // キーボードが表示されている
+            toolbarRef.current.style.bottom = `${keyboardHeight}px`
+          } else {
+            // キーボードが非表示
+            toolbarRef.current.style.bottom = '0'
+          }
+        }
+      }
+    }
+
+    // Visual Viewport API を使用
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize)
+      window.visualViewport.addEventListener('scroll', handleResize)
+    }
+
+    // フォーカス時にキーボードの高さを調整
+    const handleFocus = () => {
+      setTimeout(handleResize, 300)
+    }
+
+    const handleBlur = () => {
+      if (toolbarRef.current) {
+        toolbarRef.current.style.bottom = '0'
+      }
+    }
+
+    if (editorRef.current) {
+      editorRef.current.addEventListener('focus', handleFocus)
+      editorRef.current.addEventListener('blur', handleBlur)
+    }
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize)
+        window.visualViewport.removeEventListener('scroll', handleResize)
+      }
+      if (editorRef.current) {
+        editorRef.current.removeEventListener('focus', handleFocus)
+        editorRef.current.removeEventListener('blur', handleBlur)
+      }
+    }
+  }, [])
 
   // カーソル位置の取得と保存
   const saveCursorPosition = () => {
@@ -156,7 +212,7 @@ function MobileTextEditor({ content, onChange, placeholder }) {
   return (
     <div className="mobile-text-editor">
       {/* モバイル用ツールバー（キーボードの上に表示） */}
-      <div className="mobile-toolbar">
+      <div className="mobile-toolbar" ref={toolbarRef}>
         <div className="toolbar-scroll">
           <button
             className={`toolbar-btn ${currentStyle.fontSize === 'large' ? 'active' : ''}`}

@@ -8,14 +8,14 @@
 /* モバイル用ツールバー */
 .mobile-toolbar {
   position: fixed;
-  bottom: 0;
+  bottom: env(keyboard-inset-height, 0);
   left: 0;
   right: 0;
-  background: #ffffff;
-  border-top: 1px solid #e5e7eb;
+  background: #f5f5f5;
+  border-top: 1px solid #d1d5db;
   z-index: 100;
-  padding: 8px 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  padding: 6px 0;
+  transition: bottom 0.3s ease;
 }
 
 .toolbar-scroll {
@@ -33,13 +33,13 @@
 
 /* ツールバーボタン */
 .toolbar-btn {
-  min-width: 44px;
-  height: 44px;
-  padding: 0 12px;
-  background: #f3f4f6;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  min-width: 40px;
+  height: 36px;
+  padding: 0 10px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
   font-weight: 600;
   color: #374151;
   cursor: pointer;
@@ -63,23 +63,23 @@
 
 /* テキストサイズボタン */
 .text-large {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 }
 
 .text-medium {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 }
 
 .text-normal {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* ツールバー区切り線 */
 .toolbar-divider {
   width: 1px;
-  height: 28px;
+  height: 24px;
   background: #d1d5db;
   margin: 0 4px;
   align-self: center;
@@ -96,7 +96,7 @@
   outline: none;
   overflow-y: auto;
   min-height: 300px;
-  padding-bottom: 70px; /* ツールバーの高さ分の余白 */
+  padding-bottom: 60px; /* ツールバーの高さ分の余白 */
   -webkit-text-size-adjust: 100%;
   -webkit-user-select: text;
   user-select: text;
