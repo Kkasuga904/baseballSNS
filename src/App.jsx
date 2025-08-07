@@ -72,17 +72,19 @@ try {
 import Navigation from './components/Navigation'
 // import MobileNavigation from './components/MobileNavigation' // フッター削除
 // import Timeline from './pages/Timeline' // タイムライン機能は一時的に無効化
-import MyPage from './pages/MyPage'
-import CalendarView from './pages/CalendarView'
-import Profile from './pages/Profile'
-import Settings from './pages/Settings'
-import Disclaimer from './pages/Disclaimer'
-import PrivacyPolicy from './pages/PrivacyPolicy'
-import TermsOfService from './pages/TermsOfService'
-import PracticeRecordPage from './pages/PracticeRecordPage'
-import Measurements from './pages/Measurements'
-import TeamsPage from './pages/TeamsPage'
-import InstallGuide from './pages/InstallGuide'
+
+// 動的インポートでコード分割
+const MyPage = React.lazy(() => import('./pages/MyPage'))
+const CalendarView = React.lazy(() => import('./pages/CalendarView'))
+const Profile = React.lazy(() => import('./pages/Profile'))
+const Settings = React.lazy(() => import('./pages/Settings'))
+const Disclaimer = React.lazy(() => import('./pages/Disclaimer'))
+const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'))
+const TermsOfService = React.lazy(() => import('./pages/TermsOfService'))
+const PracticeRecordPage = React.lazy(() => import('./pages/PracticeRecordPage'))
+const Measurements = React.lazy(() => import('./pages/Measurements'))
+const TeamsPage = React.lazy(() => import('./pages/TeamsPage'))
+const InstallGuide = React.lazy(() => import('./pages/InstallGuide'))
 // MVP版ではチーム機能は無効化
 // import TeamDetail from './pages/TeamDetail'
 // import Teams from './pages/Teams'
@@ -439,50 +441,51 @@ function AppContent() {
         <OfflineIndicator isOnline={isOnline} pendingCount={pendingSync.length} />
         
         {/* ルーティング設定 */}
-        <Routes>
-          {/* メール認証関連ルート（保留） */}
-          {/* デバイス認証ではログイン画面は不要のためコメントアウト */}
-          {/*
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/profile-setup" element={<ProfileSetup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          */}
-          
-          {/* タイムライン（ホーム画面） - ログイン必須 */}
-          {/* <Route path="/" element={
-            <ProtectedRoute>
-              <Timeline posts={posts} addPost={addPost} />
-            </ProtectedRoute>
-          } /> */}
-          
-          {/* ホーム画面（デフォルト） - デバイス認証で自動ログイン */}
-          <Route path="/" element={
-            <MyPage 
-                posts={posts}
-                myPageData={myPageData}
-                setMyPageData={updateMyPageData}
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-                addPost={addPost}
-              />
-          } />
-          
-          {/* マイページ */}
-          <Route path="/mypage" element={
+        <React.Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            {/* メール認証関連ルート（保留） */}
+            {/* デバイス認証ではログイン画面は不要のためコメントアウト */}
+            {/*
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/profile-setup" element={<ProfileSetup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            */}
+            
+            {/* タイムライン（ホーム画面） - ログイン必須 */}
+            {/* <Route path="/" element={
+              <ProtectedRoute>
+                <Timeline posts={posts} addPost={addPost} />
+              </ProtectedRoute>
+            } /> */}
+            
+            {/* ホーム画面（デフォルト） - デバイス認証で自動ログイン */}
+            <Route path="/" element={
               <MyPage 
-                posts={posts}
-                myPageData={myPageData}
-                setMyPageData={updateMyPageData}
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-                addPost={addPost}
-              />
-          } />
-          
-          {/* インストールガイド */}
-          <Route path="/install" element={<InstallGuide />} />
+                  posts={posts}
+                  myPageData={myPageData}
+                  setMyPageData={updateMyPageData}
+                  selectedDate={selectedDate}
+                  setSelectedDate={setSelectedDate}
+                  addPost={addPost}
+                />
+            } />
+            
+            {/* マイページ */}
+            <Route path="/mypage" element={
+                <MyPage 
+                  posts={posts}
+                  myPageData={myPageData}
+                  setMyPageData={updateMyPageData}
+                  selectedDate={selectedDate}
+                  setSelectedDate={setSelectedDate}
+                  addPost={addPost}
+                />
+            } />
+            
+            {/* インストールガイド */}
+            <Route path="/install" element={<InstallGuide />} />
           
           {/* カレンダー画面 */}
           <Route path="/calendar" element={
@@ -538,7 +541,8 @@ function AppContent() {
                 setMyPageData={updateMyPageData}
               />
           } />
-        </Routes>
+          </Routes>
+        </React.Suspense>
         
         {/* モバイル用固定ナビゲーション削除 */}
         {/* {user && <MobileNavigation />} */}

@@ -63,6 +63,9 @@ export default defineConfig({
      * publicディレクトリのファイルはそのままコピー
      */
     assetsInlineLimit: 0, // インライン化を無効化
+    
+    // チャンクサイズ警告の閾値を1MBに設定
+    chunkSizeWarningLimit: 1000,
     /**
      * Rollupのオプション
      * Rollupは内部で使用されるバンドラー
@@ -83,6 +86,9 @@ export default defineConfig({
          */
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
+          'chart': ['chart.js', 'react-chartjs-2'],
+          'utils': ['react-hot-toast', 'react-icons'],
         },
         // キャッシュバスティング用のファイル名設定
         entryFileNames: 'assets/[name].[hash].js',
