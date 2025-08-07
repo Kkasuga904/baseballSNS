@@ -87,8 +87,7 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
-          'chart': ['chart.js', 'react-chartjs-2'],
-          'utils': ['react-hot-toast', 'react-icons'],
+          'editor': ['@tiptap/react', '@tiptap/starter-kit', '@tiptap/extension-image', '@tiptap/extension-underline', '@tiptap/extension-youtube'],
         },
         // キャッシュバスティング用のファイル名設定
         entryFileNames: 'assets/[name].[hash].js',
