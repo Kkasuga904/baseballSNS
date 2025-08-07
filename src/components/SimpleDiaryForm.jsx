@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import SimpleTextEditor from './SimpleTextEditor'
+import MobileTextEditor from './MobileTextEditor'
 import { useAutoSaveForm } from '../hooks/useAutoSave'
 import './SimpleDiaryForm.css'
 
 function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
   const [content, setContent] = useState('')
-  const [useSimpleEditor, setUseSimpleEditor] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  // モバイル検出
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent))
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   
   // 選択された日付または現在の日時を取得
   const now = new Date()
@@ -87,19 +98,17 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
       </div>
       
       <div className="diary-content-area">
-        {useSimpleEditor ? (
-          <SimpleTextEditor
+        {isMobile ? (
+          <MobileTextEditor
             content={content}
             onChange={setContent}
             placeholder="今日の練習内容を記録..."
           />
         ) : (
-          <textarea
-            className="diary-textarea"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+          <SimpleTextEditor
+            content={content}
+            onChange={setContent}
             placeholder="今日の練習内容を記録..."
-            autoFocus
           />
         )}
       </div>

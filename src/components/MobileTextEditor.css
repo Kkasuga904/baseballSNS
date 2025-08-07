@@ -1,0 +1,202 @@
+.mobile-text-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+/* モバイル用ツールバー */
+.mobile-toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  z-index: 100;
+  padding: 8px 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-scroll {
+  display: flex;
+  gap: 4px;
+  padding: 0 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.toolbar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ツールバーボタン */
+.toolbar-btn {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toolbar-btn:active {
+  transform: scale(0.95);
+  background: #e5e7eb;
+}
+
+.toolbar-btn.active {
+  background: #2e7d46;
+  color: white;
+}
+
+/* テキストサイズボタン */
+.text-large {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.text-medium {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.text-normal {
+  font-size: 14px;
+}
+
+/* ツールバー区切り線 */
+.toolbar-divider {
+  width: 1px;
+  height: 28px;
+  background: #d1d5db;
+  margin: 0 4px;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+/* エディタ本体 */
+.mobile-editor-content {
+  flex: 1;
+  padding: 16px;
+  font-size: 18px !important;
+  line-height: 1.8;
+  color: #1f2937;
+  outline: none;
+  overflow-y: auto;
+  min-height: 300px;
+  padding-bottom: 70px; /* ツールバーの高さ分の余白 */
+  -webkit-text-size-adjust: 100%;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* プレースホルダー */
+.mobile-editor-content:empty::before {
+  content: attr(placeholder);
+  color: #9ca3af;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+/* エディタ内の要素スタイル */
+.mobile-editor-content h1 {
+  font-size: 24px !important;
+  font-weight: bold;
+  margin: 16px 0 12px 0;
+  line-height: 1.4;
+}
+
+.mobile-editor-content h2 {
+  font-size: 20px !important;
+  font-weight: bold;
+  margin: 14px 0 10px 0;
+  line-height: 1.4;
+}
+
+.mobile-editor-content p {
+  margin: 8px 0;
+  font-size: 18px !important;
+}
+
+.mobile-editor-content ul,
+.mobile-editor-content ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.mobile-editor-content li {
+  margin: 6px 0;
+  font-size: 18px !important;
+  line-height: 1.6;
+}
+
+.mobile-editor-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 12px 0;
+  border-radius: 8px;
+}
+
+/* フォントサイズの調整 */
+.mobile-editor-content font[size="7"] {
+  font-size: 24px !important;
+  font-weight: bold;
+}
+
+.mobile-editor-content font[size="5"] {
+  font-size: 20px !important;
+  font-weight: 600;
+}
+
+.mobile-editor-content font[size="3"] {
+  font-size: 16px !important;
+}
+
+/* 選択時のハイライト */
+.mobile-editor-content::selection {
+  background: rgba(46, 125, 70, 0.2);
+}
+
+/* キーボードが表示されたときの調整 */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .mobile-toolbar {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* タブレット対応 */
+@media (min-width: 768px) {
+  .mobile-toolbar {
+    display: none;
+  }
+  
+  .mobile-editor-content {
+    padding-bottom: 16px;
+  }
+}
+
+/* 大文字変換の問題を防ぐ */
+.mobile-editor-content {
+  text-transform: none !important;
+}
+
+/* 自動補正を無効化 */
+.mobile-editor-content[contenteditable] {
+  -webkit-autocomplete: off;
+  -webkit-autocorrect: off;
+  -webkit-autocapitalize: off;
+  -webkit-spellcheck: false;
+}
