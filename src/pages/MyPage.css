@@ -57,9 +57,9 @@
   
   .tab-button {
     flex: 0 0 auto;
-    min-width: 90px;
-    padding: 14px 12px;
-    font-size: 14px;
+    min-width: 100px;
+    padding: 14px 8px;
+    font-size: 13px;
   }
   
   /* スクロール可能であることを示すグラデーション */
@@ -576,8 +576,9 @@
   }
   
   .tab-button {
-    font-size: 12px;
-    padding: 12px 8px;
+    font-size: 11px;
+    padding: 12px 6px;
+    min-width: 80px;
   }
   
   .selected-date-records,

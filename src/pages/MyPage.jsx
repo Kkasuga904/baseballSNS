@@ -377,7 +377,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           className={`tab-button ${activeTab === 'stats' ? 'active' : ''}`}
           onClick={() => setActiveTab('stats')}
         >
-          📊 測定
+          📊 身体測定・記録管理
         </button>
         <button 
           className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
@@ -508,8 +508,8 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           
           {activeTab === 'stats' && (
             <div className="stats-section">
-              <h3>📊 測定記録</h3>
-              <p>体重・球速・肩の柔軟性などピッチャー特化情報</p>
+              <h3>📊 身体測定・記録管理</h3>
+              <p>身体能力や野球技術の測定結果を記録・管理できます。<br />定期的に測定することで、成長の推移をグラフで確認できます。</p>
               
               <div className="install-prompt-card">
                 <h4>📱 アプリとして使う</h4>
