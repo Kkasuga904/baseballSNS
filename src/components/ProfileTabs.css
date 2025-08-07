@@ -348,3 +348,30 @@
     font-size: 14px;
   }
 }
+/* 身体測定記録タブ */
+.measurements-section {
+  padding: 20px;
+}
+
+.measurements-placeholder {
+  text-align: center;
+  padding: 40px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.measurements-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: #2e7d46;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.measurements-link:hover {
+  background: #1e5631;
+}

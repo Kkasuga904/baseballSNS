@@ -50,6 +50,13 @@ function ProfileTabs({ profile, user, isOwnProfile, getCategoryLabel, getPositio
           <span className="tab-icon">👤</span>
           リアル部活
         </button>
+        <button
+          className={`main-tab ${activeTab === 'measurements' ? 'active' : ''}`}
+          onClick={() => setActiveTab('measurements')}
+        >
+          <span className="tab-icon">📊</span>
+          身体測定記録
+        </button>
       </div>
 
       {/* プロフィールタブのサブタブ */}
@@ -95,6 +102,17 @@ function ProfileTabs({ profile, user, isOwnProfile, getCategoryLabel, getPositio
               <h3>📊 練習記録タイムライン</h3>
               <p>練習の記録や成果がここに表示されます</p>
               <p className="coming-soon">Coming Soon...</p>
+            </div>
+          </div>
+        )}
+        
+        {/* 身体測定記録タブ */}
+        {activeTab === 'measurements' && (
+          <div className="measurements-section">
+            <div className="measurements-placeholder">
+              <h3>📊 身体測定・記録管理</h3>
+              <p>身体測定記録を管理します</p>
+              <p className="coming-soon">この機能はマイページの「身体測定・記録管理」タブでご利用ください</p>
             </div>
           </div>
         )}

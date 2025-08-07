@@ -37,6 +37,7 @@ import GameRecordList from '../components/GameRecordList'
 import PerformanceChart from '../components/PerformanceChart'
 import PracticeCalendar from '../components/PracticeCalendar'
 import PracticeForm from '../components/PracticeForm'
+import MeasurementsContent from '../components/MeasurementsContent'
 import { TeamRoleLabels } from '../models/team'
 import './MyPage.css'
 
@@ -508,21 +509,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           
           {activeTab === 'stats' && (
             <div className="stats-section">
-              <h3>📊 身体測定・記録管理</h3>
-              <p>身体能力や野球技術の測定結果を記録・管理できます。<br />定期的に測定することで、成長の推移をグラフで確認できます。</p>
-              
-              <div className="install-prompt-card">
-                <h4>📱 アプリとして使う</h4>
-                <p>ホーム画面に追加して、より便利に記録管理</p>
-                <button 
-                  className="btn-primary"
-                  onClick={() => navigate('/install')}
-                >
-                  インストール方法を見る
-                </button>
-              </div>
-              
-              {/* 測定データの表示をここに追加 */}
+              <MeasurementsContent />
             </div>
           )}
           
