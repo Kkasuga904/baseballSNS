@@ -167,7 +167,8 @@
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: flex-end;
+  gap: 2px;
 }
 
 .single-input-group,
@@ -179,16 +180,15 @@
 }
 
 .card-input {
-  flex: 1;
-  padding: 6px 10px;
+  padding: 6px 8px;
   border: 2px solid #e5e7eb;
   border-radius: 6px;
   font-size: 14px;
   background: white;
   color: #1f2937;
-  text-align: right;
-  min-width: 60px;
-  max-width: 100px;
+  text-align: center;
+  min-width: 50px;
+  max-width: 80px;
   -webkit-appearance: none;
   -moz-appearance: textfield;
 }
@@ -210,26 +210,32 @@
 }
 
 .input-unit {
-  font-size: 13px;
+  font-size: 12px;
   color: #6b7280;
   font-weight: 400;
   white-space: nowrap;
-  min-width: fit-content;
+  flex-shrink: 0;
+  padding: 0 2px;
 }
 
 .rm-input-group {
-  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
 }
 
 .rm-x {
   color: #9ca3af;
   font-weight: 500;
   font-size: 14px;
-  padding: 0 2px;
+  padding: 0 4px;
+  flex-shrink: 0;
 }
 
 .rm-count {
-  max-width: 60px;
+  max-width: 50px;
+  min-width: 40px;
 }
 
 /* レガシースタイルの互換性維持 */
