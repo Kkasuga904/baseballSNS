@@ -415,14 +415,27 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 <div className="install-instructions">
                   <h3>ホーム画面に追加するには：</h3>
                   <ol className="install-steps">
-                    <li>下部の共有ボタン <span className="icon-box">□↑</span> をタップ</li>
+                    <li>下部の共有ボタン 
+                      <svg className="ios-share-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3L12 15" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"/>
+                        <path d="M12 3L7 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M12 3L17 8" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M19 12V20C19 20.5523 18.5523 21 18 21H6C5.44772 21 5 20.5523 5 20V12" stroke="#007AFF" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                      をタップ</li>
                     <li>「ホーム画面に追加」を選択</li>
                     <li>「追加」をタップ</li>
                   </ol>
                   
                   <div className="install-note">
                     <p>※ Safariブラウザでアクセスしてください</p>
-                    <p>※ Androidの場合はChromeのメニュー <span className="icon-box">⋮</span> から追加できます</p>
+                    <p>※ Androidの場合はChromeのメニュー 
+                      <svg className="android-menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="5" r="2" fill="#5F6368"/>
+                        <circle cx="12" cy="12" r="2" fill="#5F6368"/>
+                        <circle cx="12" cy="19" r="2" fill="#5F6368"/>
+                      </svg>
+                      から追加できます</p>
                   </div>
                   
                   <div className="install-benefits">

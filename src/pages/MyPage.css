@@ -1007,6 +1007,36 @@
   color: #666;
 }
 
+/* 共有アイコンのスタイル */
+.ios-share-icon,
+.android-menu-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+.ios-share-icon {
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 2px;
+}
+
+.android-menu-icon {
+  margin: 0 2px;
+}
+
+/* インストールガイドのスタイル */
+.install-steps li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.install-note p {
+  display: flex;
+  align-items: center;
+}
+
 /* モバイル対応 */
 @media (max-width: 768px) {
   .team-details-section {
