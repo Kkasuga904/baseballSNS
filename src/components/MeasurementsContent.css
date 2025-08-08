@@ -78,12 +78,11 @@
 /* 新規測定フォーム - モバイル最適化版 */
 .new-measurement-form {
   background: linear-gradient(to bottom, #fafbfc, #f3f4f6);
-  border-radius: 0;
+  border-radius: 12px;
   padding: 16px;
-  margin: -16px;
-  height: calc(100vh - 200px);
   display: flex;
   flex-direction: column;
+  min-height: 400px;
 }
 
 .new-measurement-form h4 {
@@ -135,7 +134,8 @@
   gap: 10px;
   margin-bottom: 16px;
   padding: 4px;
-  flex: 1;
+  min-height: 300px;
+  max-height: 500px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -715,37 +715,30 @@
 @media (max-width: 768px) {
   .measurements-content {
     padding: 0;
-    height: 100vh;
-    overflow: hidden;
   }
   
   .new-measurement-form {
-    border-radius: 0;
-    margin: 0;
+    border-radius: 12px;
+    margin: 10px;
     padding: 12px;
-    height: calc(100vh - 120px);
-    display: flex;
-    flex-direction: column;
   }
   
   .form-row {
     border-radius: 12px;
     margin-bottom: 12px;
-    flex-shrink: 0;
   }
   
   .measurement-inputs-mobile {
     gap: 8px;
     padding: 2px;
-    flex: 1;
-    min-height: 0;
+    max-height: 400px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
   
   .measurement-input-card {
     padding: 10px;
-    flex-shrink: 0;
+    min-height: 44px;
   }
   
   .card-header {
@@ -769,7 +762,6 @@
     padding: 14px 20px;
     font-size: 15px;
     border-radius: 12px;
-    flex-shrink: 0;
     margin-top: 12px;
   }
   
