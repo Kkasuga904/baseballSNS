@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import SimpleTextEditor from './SimpleTextEditor'
+import MobileTextEditor from './MobileTextEditor2'
 import { useAutoSaveForm } from '../hooks/useAutoSave'
 import './SimpleDiaryForm.css'
 
 function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
   const [content, setContent] = useState('')
-  const [useSimpleEditor, setUseSimpleEditor] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  // モバイル検出
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent))
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   
   // 選択された日付または現在の日時を取得
   const now = new Date()
@@ -25,18 +36,16 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
     }
   }, [])
   
-  // 日付表示用の文字列を生成
-  const dateStr = targetDate.toLocaleDateString('en-US', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric'
-  })
-  const dayStr = targetDate.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()
-  const timeStr = now.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true
-  })
+  // 日付表示用の文字列を生成（日本語表記）
+  const year = targetDate.getFullYear()
+  const month = targetDate.getMonth() + 1
+  const day = targetDate.getDate()
+  const weekdays = ['日', '月', '火', '水', '木', '金', '土']
+  const weekday = weekdays[targetDate.getDay()]
+  const hour = now.getHours()
+  const minute = now.getMinutes().toString().padStart(2, '0')
+  
+  const dateStr = `${year}年${month}月${day}日(${weekday}) ${hour}:${minute}`
 
   const handleSave = () => {
     if (content.trim()) {
@@ -75,7 +84,7 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
           <span className="back-text">戻る</span>
         </button>
         <div className="diary-date-info">
-          {dateStr}({dayStr}) {timeStr}
+          {dateStr}
         </div>
         <button 
           className="done-button"
@@ -87,19 +96,17 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
       </div>
       
       <div className="diary-content-area">
-        {useSimpleEditor ? (
-          <SimpleTextEditor
+        {isMobile ? (
+          <MobileTextEditor
             content={content}
             onChange={setContent}
             placeholder="今日の練習内容を記録..."
           />
         ) : (
-          <textarea
-            className="diary-textarea"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+          <SimpleTextEditor
+            content={content}
+            onChange={setContent}
             placeholder="今日の練習内容を記録..."
-            autoFocus
           />
         )}
       </div>

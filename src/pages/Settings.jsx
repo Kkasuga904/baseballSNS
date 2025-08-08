@@ -45,6 +45,11 @@ function Settings() {
     timeFormat: profile?.settings?.timeFormat || '24h'
   });
   
+  // 管理者モード設定
+  const [isAdminMode, setIsAdminMode] = useState(
+    localStorage.getItem('baseballSNS_forceAdmin') === 'true'
+  );
+  
   // ドリルメニュー設定
   const [drillMenuSettings, setDrillMenuSettings] = useState(() => {
     const saved = localStorage.getItem('allPracticeCategories');
@@ -270,6 +275,37 @@ function Settings() {
             />
             メールアドレスを公開
           </label>
+        </div>
+      </div>
+      
+      <div className="settings-section">
+        <h2>管理者設定</h2>
+        <div className="setting-item">
+          <label>
+            <input
+              type="checkbox"
+              checked={isAdminMode}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setIsAdminMode(checked);
+                if (checked) {
+                  localStorage.setItem('baseballSNS_forceAdmin', 'true');
+                  setMessage('管理者モードを有効にしました。ページを再読み込みしてください。');
+                } else {
+                  localStorage.removeItem('baseballSNS_forceAdmin');
+                  setMessage('管理者モードを無効にしました。ページを再読み込みしてください。');
+                }
+                // 3秒後にページを自動リロード
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1500);
+              }}
+            />
+            管理者モードを有効にする
+          </label>
+          <p className="setting-description">
+            管理者モードを有効にすると、特別な機能が使用できます。
+          </p>
         </div>
       </div>
       

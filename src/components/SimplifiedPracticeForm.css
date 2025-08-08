@@ -105,9 +105,10 @@
 
 /* カテゴリーグリッド */
 .category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
+  justify-content: flex-start;
 }
 
 .category-button {
@@ -121,16 +122,21 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
+  width: 90px;
+  height: 80px;
+  flex-shrink: 0;
 }
 
 .category-button:hover {
   background: #e9ecef;
+  transform: scale(1.02);
 }
 
 .category-button.selected {
   background: #007bff;
   color: white;
   border-color: #007bff;
+  transform: scale(1.0);
 }
 
 .category-icon {

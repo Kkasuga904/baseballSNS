@@ -1,7 +1,6 @@
 import React, { useState, useEffect, memo, useCallback, useMemo } from 'react'
 import { useAuth } from '../App'
 import { useLocation } from 'react-router-dom'
-import MeasurementChart from '../components/MeasurementChart'
 import './Measurements.css'
 
 const Measurements = memo(function Measurements() {
@@ -82,36 +81,23 @@ const Measurements = memo(function Measurements() {
     // デフォルト値を返す
     return {
       athletic: {
-        height: { label: '身長', unit: 'cm', icon: '📏', hasRM: false },
-        weight: { label: '体重', unit: 'kg', icon: '⚖️', hasRM: false },
-        bodyFat: { label: '体脂肪率', unit: '%', icon: '📊', hasRM: false },
-        muscle: { label: '筋肉量', unit: 'kg', icon: '💪', hasRM: false },
-        sprint50m: { label: '50m走', unit: '秒', icon: '🏃', hasRM: false },
-        sprint30m: { label: '30m走', unit: '秒', icon: '🏃', hasRM: false },
-        longJump: { label: '立ち幅跳び', unit: 'cm', icon: '🦵', hasRM: false },
-        benchPress: { label: 'ベンチプレス', unit: 'kg', icon: '💪', hasRM: true },
-        squat: { label: 'スクワット', unit: 'kg', icon: '🦵', hasRM: true },
+        sprint10m: { label: '10m走', unit: '秒', icon: '🏃', hasRM: false },
+        pulldownSpeed: { label: 'プルダウン球速', unit: 'km/h', icon: '⚡', hasRM: false },
         deadlift: { label: 'デッドリフト', unit: 'kg', icon: '🏋️', hasRM: true },
-        chinUp: { label: '懸垂', unit: '回', icon: '💪', hasRM: false },
-        pushUp: { label: '腕立て伏せ', unit: '回', icon: '💪', hasRM: false },
-        sitUp: { label: '腹筋', unit: '回', icon: '🏋️', hasRM: false },
-        flexibility: { label: '前屈', unit: 'cm', icon: '🧘', hasRM: false },
-        gripStrength: { label: '握力', unit: 'kg', icon: '✊', hasRM: false },
-        backStrength: { label: '背筋力', unit: 'kg', icon: '💪', hasRM: false }
+        benchPress: { label: 'ベンチプレス', unit: 'kg', icon: '💪', hasRM: true },
+        tripleJump: { label: '3段跳び', unit: 'cm', icon: '🦘', hasRM: false },
+        longJump: { label: '立ち幅跳び', unit: 'cm', icon: '🦵', hasRM: false },
+        squat: { label: 'スクワット', unit: 'kg', icon: '🦵', hasRM: true },
+        hipSplit: { label: '股割り', unit: 'cm', icon: '🧘', hasRM: false },
+        mbThrow: { label: 'MBスロー', unit: 'm', icon: '🏐', hasRM: false },
+        clean: { label: 'クリーン', unit: 'kg', icon: '🏋️', hasRM: true },
+        pitchSpeed: { label: '球速', unit: 'km/h', icon: '⚾', hasRM: false }
       },
       baseball: {
-        pitchSpeed: { label: '球速', unit: 'km/h', icon: '⚾', hasRM: false },
-        battingSpeed: { label: '打球速度', unit: 'km/h', icon: '⚾', hasRM: false },
-        throwingDistance: { label: '遠投', unit: 'm', icon: '🎯', hasRM: false },
-        baseRunning: { label: '塁間走', unit: '秒', icon: '🏃', hasRM: false },
-        homeToFirst: { label: '一塁到達', unit: '秒', icon: '🏃', hasRM: false },
-        battingAverage: { label: '打率', unit: '', icon: '📊', hasRM: false },
-        homeRuns: { label: '本塁打', unit: '本', icon: '🚀', hasRM: false },
-        rbi: { label: '打点', unit: '点', icon: '📈', hasRM: false },
-        stolenBases: { label: '盗塁', unit: '個', icon: '💨', hasRM: false },
-        era: { label: '防御率', unit: '', icon: '🛡️', hasRM: false },
-        strikeouts: { label: '奪三振', unit: '個', icon: '🔥', hasRM: false },
-        fieldingPercentage: { label: '守備率', unit: '', icon: '🧤', hasRM: false }
+        battingSpeed: { label: '打球速度', unit: 'km/h', icon: '⚾' },
+        pitchSpeed: { label: '球速', unit: 'km/h', icon: '⚾' },
+        baseRunning: { label: '塁間走', unit: '秒', icon: '🏃' },
+        homeRunDistance: { label: '飛距離', unit: 'm', icon: '🚀' }
       }
     }
   })
@@ -183,8 +169,6 @@ const Measurements = memo(function Measurements() {
       const defaultItems = {
         athletic: {
           sprint10m: { label: '10m走', unit: '秒', icon: '🏃', hasRM: false },
-          sprint30m: { label: '30m走', unit: '秒', icon: '🏃', hasRM: false },
-          sprint50m: { label: '50m走', unit: '秒', icon: '🏃', hasRM: false },
           pulldownSpeed: { label: 'プルダウン球速', unit: 'km/h', icon: '⚡', hasRM: false },
           deadlift: { label: 'デッドリフト', unit: 'kg', icon: '🏋️', hasRM: true },
           benchPress: { label: 'ベンチプレス', unit: 'kg', icon: '💪', hasRM: true },
@@ -194,26 +178,13 @@ const Measurements = memo(function Measurements() {
           hipSplit: { label: '股割り', unit: 'cm', icon: '🧘', hasRM: false },
           mbThrow: { label: 'MBスロー', unit: 'm', icon: '🏐', hasRM: false },
           clean: { label: 'クリーン', unit: 'kg', icon: '🏋️', hasRM: true },
-          chinUp: { label: '懸垂', unit: '回', icon: '💪', hasRM: false },
-          pushUp: { label: '腕立て伏せ', unit: '回', icon: '💪', hasRM: false },
-          sitUp: { label: '腹筋', unit: '回', icon: '🏋️', hasRM: false },
-          flexibility: { label: '前屈', unit: 'cm', icon: '🧘', hasRM: false },
-          gripStrength: { label: '握力', unit: 'kg', icon: '✊', hasRM: false },
-          backStrength: { label: '背筋力', unit: 'kg', icon: '💪', hasRM: false }
+          pitchSpeed: { label: '球速', unit: 'km/h', icon: '⚾', hasRM: false }
         },
         baseball: {
           battingSpeed: { label: '打球速度', unit: 'km/h', icon: '⚾', hasRM: false },
           pitchSpeed: { label: '球速', unit: 'km/h', icon: '⚾', hasRM: false },
           baseRunning: { label: '塁間走', unit: '秒', icon: '🏃', hasRM: false },
-          homeRunDistance: { label: '飛距離', unit: 'm', icon: '🚀', hasRM: false },
-          throwingDistance: { label: '遠投', unit: 'm', icon: '🎯', hasRM: false },
-          battingAverage: { label: '打率', unit: '', icon: '📊', hasRM: false },
-          onBasePercentage: { label: '出塁率', unit: '', icon: '📈', hasRM: false },
-          sluggingPercentage: { label: '長打率', unit: '', icon: '📉', hasRM: false },
-          fieldingPercentage: { label: '守備率', unit: '', icon: '🧤', hasRM: false },
-          strikeouts: { label: '奪三振', unit: '個', icon: '🔥', hasRM: false },
-          era: { label: '防御率', unit: '', icon: '🛡️', hasRM: false },
-          walks: { label: '四球', unit: '個', icon: '🚶', hasRM: false }
+          homeRunDistance: { label: '飛距離', unit: 'm', icon: '🚀', hasRM: false }
         }
       }
       setMeasurementItems(defaultItems)
@@ -316,11 +287,7 @@ const Measurements = memo(function Measurements() {
       
       <div className="measurements-page" onClick={(e) => e.stopPropagation()}>
         <div className="measurements-container">
-          <h1>📊 身体測定・記録管理</h1>
-          <p className="page-description">
-            身体能力や野球技術の測定結果を記録・管理できます。
-            定期的に測定することで、成長の推移をグラフで確認できます。
-          </p>
+          <h1>測定結果</h1>
         
         {/* 表示モード切り替え */}
         <div className="view-mode-tabs" onClick={(e) => e.stopPropagation()}>
@@ -553,16 +520,14 @@ const Measurements = memo(function Measurements() {
             <label>
               測定日:
               <input
-                type="date"
+                type="text"
                 value={newMeasurement.date}
-                onChange={(e) => {
-                  setNewMeasurement({
-                    ...newMeasurement,
-                    date: e.target.value
-                  })
+                readOnly
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
                 }}
                 className="date-input"
-                max={new Date().toISOString().split('T')[0]}
               />
             </label>
           </div>
@@ -752,12 +717,58 @@ const Measurements = memo(function Measurements() {
             ) : (
               <>
                 {/* グラフ表示 */}
-                <MeasurementChart
-                  data={getItemHistory(activeCategory, selectedItem)}
-                  unit={measurementItems[activeCategory][selectedItem].unit}
-                  label={measurementItems[activeCategory][selectedItem].label}
-                  icon={measurementItems[activeCategory][selectedItem].icon}
-                />
+                <div className="graph-container">
+                  <h4>推移グラフ</h4>
+                  <div className="simple-graph">
+                    {(() => {
+                      const history = getItemHistory(activeCategory, selectedItem)
+                      const maxValue = Math.max(...history.map(h => parseFloat(h.value)))
+                      const minValue = Math.min(...history.map(h => parseFloat(h.value)))
+                      const range = maxValue - minValue || 1
+                      
+                      return (
+                        <div className="graph-area">
+                          <div className="y-axis">
+                            <span>{maxValue}</span>
+                            <span>{((maxValue + minValue) / 2).toFixed(1)}</span>
+                            <span>{minValue}</span>
+                          </div>
+                          <div className="graph-points">
+                            {history.map((record, index) => {
+                              const percentage = ((parseFloat(record.value) - minValue) / range) * 100
+                              const isImproved = index > 0 && parseFloat(record.value) > parseFloat(history[index - 1].value)
+                              
+                              return (
+                                <div key={index} className="graph-point-container" style={{ left: `${(index / (history.length - 1)) * 100}%` }}>
+                                  <div 
+                                    className={`graph-point ${isImproved ? 'improved' : ''}`}
+                                    style={{ bottom: `${percentage}%` }}
+                                    title={`${record.date}: ${record.value}`}
+                                  >
+                                    <span className="point-value">{record.value}</span>
+                                  </div>
+                                  {index < history.length - 1 && (
+                                    <svg className="graph-line" style={{ bottom: `${percentage}%` }}>
+                                      <line
+                                        x1="50%"
+                                        y1="50%"
+                                        x2={`${((index + 1) / (history.length - 1) - index / (history.length - 1)) * 100 * (history.length - 1)}%`}
+                                        y2={`${50 - (((parseFloat(history[index + 1].value) - minValue) / range * 100) - percentage)}%`}
+                                        stroke={isImproved ? '#4caf50' : '#ff9800'}
+                                        strokeWidth="2"
+                                      />
+                                    </svg>
+                                  )}
+                                  <span className="graph-date">{record.date.split('-').slice(1).join('/')}</span>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )
+                    })()}
+                  </div>
+                </div>
                 
                 {/* 履歴リスト */}
                 <div className="item-history-list">

@@ -1,0 +1,359 @@
+.mobile-text-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+/* モバイル用ツールバー */
+.mobile-toolbar {
+  position: fixed;
+  bottom: env(keyboard-inset-height, 0);
+  left: 0;
+  right: 0;
+  background: #f5f5f5;
+  border-top: 1px solid #d1d5db;
+  z-index: 100;
+  padding: 6px 0;
+  transition: bottom 0.3s ease;
+}
+
+.toolbar-scroll {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.toolbar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ツールバーボタン */
+.toolbar-btn {
+  min-width: 44px;
+  height: 40px;
+  padding: 0 12px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ホバー時 */
+.toolbar-btn:hover:not(.active) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.toolbar-btn:active {
+  transform: scale(0.95);
+  background: #e5e7eb;
+}
+
+/* アクティブ状態（すべての画面サイズで優先度最大） */
+.mobile-text-editor .mobile-toolbar .toolbar-btn.active,
+.diary-content-area .mobile-toolbar .toolbar-btn.active,
+.simple-diary-form .mobile-toolbar .toolbar-btn.active,
+.simple-diary-form .diary-content-area .mobile-toolbar .toolbar-btn.active,
+.mobile-toolbar .toolbar-btn.active,
+.toolbar-btn.active {
+  background-color: #2e7d46 !important;
+  color: white !important;
+  border-color: #2e7d46 !important;
+  box-shadow: 0 2px 4px rgba(46, 125, 70, 0.3) !important;
+}
+
+/* アクティブボタンのホバー時 */
+.toolbar-btn.active:hover {
+  background-color: #246639 !important;
+  border-color: #246639 !important;
+}
+
+/* テキストサイズボタン */
+.text-large {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.text-medium {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.text-normal {
+  font-size: 14px;
+}
+
+/* ツールバー区切り線 */
+.toolbar-divider {
+  width: 1px;
+  height: 28px;
+  background: #d1d5db;
+  margin: 0 6px;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+/* エディタ本体 */
+.mobile-editor-content {
+  flex: 1;
+  padding: 16px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #1f2937;
+  outline: none;
+  overflow-y: auto;
+  min-height: 300px;
+  padding-bottom: 60px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-user-select: text;
+  user-select: text;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* プレースホルダー */
+.mobile-editor-content:empty::before {
+  content: attr(placeholder);
+  color: #9ca3af;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+/* エディタ内の基本要素スタイル */
+.mobile-editor-content h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 16px 0 12px 0;
+  line-height: 1.4;
+}
+
+.mobile-editor-content h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 14px 0 10px 0;
+  line-height: 1.4;
+}
+
+.mobile-editor-content p {
+  margin: 8px 0;
+}
+
+.mobile-editor-content ul,
+.mobile-editor-content ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.mobile-editor-content li {
+  margin: 6px 0;
+  line-height: 1.6;
+}
+
+.mobile-editor-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 12px 0;
+  border-radius: 8px;
+}
+
+/* インラインスタイルのspan要素 - 優先度を下げて、styleで制御できるように */
+.mobile-editor-content span {
+  /* インラインstyleが優先される */
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* インラインスタイルによるサイズ指定 - !importantを削除 */
+.mobile-editor-content span[style*="font-size: 28px"] {
+  line-height: 1.5;
+}
+
+.mobile-editor-content span[style*="font-size: 22px"] {
+  line-height: 1.5;
+}
+
+.mobile-editor-content span[style*="font-size: 18px"] {
+  line-height: 1.6;
+}
+
+/* 太文字スタイル - 基本設定 */
+.mobile-editor-content b,
+.mobile-editor-content strong {
+  font-weight: 700;
+}
+
+/* 太文字のspan要素 */
+.mobile-editor-content span[style*="font-weight: bold"] {
+  font-weight: 700;
+}
+
+/* 斜体スタイル */
+.mobile-editor-content i,
+.mobile-editor-content em {
+  font-style: italic;
+}
+
+.mobile-editor-content span[style*="font-style: italic"] {
+  font-style: italic;
+}
+
+/* 下線スタイル */
+.mobile-editor-content u {
+  text-decoration: underline;
+}
+
+.mobile-editor-content span[style*="text-decoration: underline"] {
+  text-decoration: underline;
+}
+
+/* デスクトップ・全画面モード専用のスタイル */
+@media (min-width: 769px) {
+  .mobile-toolbar {
+    position: sticky;
+    bottom: 0;
+    padding: 10px 0;
+  }
+  
+  .toolbar-btn {
+    min-width: 48px;
+    height: 44px;
+    padding: 0 14px;
+    font-size: 17px;
+  }
+  
+  /* デスクトップでも必ずアクティブ状態を表示 */
+  .mobile-toolbar .toolbar-btn.active,
+  .simple-diary-form .mobile-toolbar .toolbar-btn.active {
+    background-color: #2e7d46 !important;
+    color: white !important;
+    border-color: #2e7d46 !important;
+    box-shadow: 0 2px 4px rgba(46, 125, 70, 0.3) !important;
+  }
+  
+  .mobile-editor-content {
+    padding: 20px;
+    font-size: 18px;
+    min-height: 400px;
+  }
+}
+
+/* fontタグのサポート（旧バージョン互換） */
+.mobile-editor-content font[size="7"] {
+  font-size: 28px;
+  line-height: 1.5;
+}
+
+.mobile-editor-content font[size="5"] {
+  font-size: 22px;
+  line-height: 1.5;
+}
+
+.mobile-editor-content font[size="3"] {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* fontタグ内の太文字 */
+.mobile-editor-content font b,
+.mobile-editor-content font strong {
+  font-weight: 700;
+}
+
+/* 選択時のハイライト */
+.mobile-editor-content::selection {
+  background: rgba(46, 125, 70, 0.2);
+}
+
+/* キーボードが表示されたときの調整 */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .mobile-toolbar {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* タブレット・PC対応（画面幅768px以上） */
+@media (min-width: 768px) {
+  .mobile-toolbar {
+    position: static;
+    bottom: auto;
+    border-top: none;
+    border-bottom: 1px solid #d1d5db;
+    margin-bottom: 10px;
+    background: #f5f5f5;
+  }
+  
+  .mobile-editor-content {
+    padding-bottom: 16px;
+  }
+}
+
+/* デスクトップ画面（画面幅1024px以上）での最適化 */
+@media (min-width: 1024px) {
+  .mobile-text-editor {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  .mobile-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .toolbar-scroll {
+    justify-content: center;
+  }
+  
+  .mobile-editor-content {
+    min-height: 400px;
+    padding: 20px;
+  }
+  
+  /* PCでもアクティブボタンを緑色に */
+  .mobile-toolbar .toolbar-btn.active {
+    background: #2e7d46 !important;
+    color: white !important;
+    border-color: #2e7d46 !important;
+  }
+}
+
+/* 大文字変換の問題を防ぐ */
+.mobile-editor-content {
+  text-transform: none;
+}
+
+/* 自動補正を無効化 */
+.mobile-editor-content[contenteditable] {
+  -webkit-autocomplete: off;
+  -webkit-autocorrect: off;
+  -webkit-autocapitalize: off;
+  -webkit-spellcheck: false;
+}
+
+/* ネストされた要素での優先度調整 */
+.mobile-editor-content span span {
+  /* 子要素のspanはインラインスタイルを継承 */
+  font-weight: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  text-decoration: inherit;
+}

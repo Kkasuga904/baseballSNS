@@ -77,33 +77,34 @@ function SimpleDiaryList({ diaries = [], onDelete }) {
           </div>
         ) : (
         <div className="no-diaries">
-          <p>まだ日記がありません</p>
-          <p className="hint">右下のペンボタンから日記を書きましょう</p>
+          <p className="no-diaries-title">まだ日記がありません</p>
+          <p className="no-diaries-hint">✏️ 右下のボタンから新しい日記を書きましょう</p>
         </div>
         )
       ) : (
         sortedGroups.map(group => (
           <div key={group.date.toISOString()} className="diary-date-group">
             <div className="diary-date-header">
-              <span className="date-month">{group.date.toLocaleDateString('en-US', { month: 'numeric' })}/</span>
-              <span className="date-year">{group.date.getFullYear()}</span>
+              <span className="date-month">{group.date.getMonth() + 1}月</span>
+              <span className="date-year">{group.date.getFullYear()}年</span>
             </div>
             
             {group.items.map(diary => {
               const createdAt = new Date(diary.createdAt || diary.date)
-              const dayOfWeek = createdAt.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()
+              const weekdays = ['日', '月', '火', '水', '木', '金', '土']
+              const dayOfWeek = weekdays[createdAt.getDay()]
               const dayOfMonth = createdAt.getDate()
-              const time = createdAt.toLocaleTimeString('en-US', {
+              const time = createdAt.toLocaleTimeString('ja-JP', {
                 hour: 'numeric',
                 minute: '2-digit',
-                hour12: true
+                hour12: false
               })
               
               return (
                 <div key={diary.id} className="diary-item">
                   <div className="diary-item-header">
                     <div className="diary-day-info">
-                      <div className="day-of-week">{dayOfWeek}</div>
+                      <div className="day-of-week">{dayOfWeek}曜日</div>
                       <div className="day-of-month">{dayOfMonth}</div>
                     </div>
                     <div className="diary-content-preview">

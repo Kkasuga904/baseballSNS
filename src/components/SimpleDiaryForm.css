@@ -136,3 +136,27 @@
     font-size: 18px;
   }
 }
+
+/* デスクトップ全画面表示時の最適化 */
+@media (min-width: 1024px) {
+  .simple-diary-form {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 100%;
+  }
+  
+  .diary-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+  }
+  
+  .diary-content-area > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}

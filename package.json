@@ -34,6 +34,7 @@
     "@babel/preset-env": "^7.28.0",
     "@vitejs/plugin-react": "^4.7.0",
     "core-js": "^3.44.0",
+    "sharp": "^0.34.3",
     "terser": "^5.43.1",
     "vite": "^6.3.5"
   }

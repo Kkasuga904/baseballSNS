@@ -1,32 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
-  <\!-- 背景 (緑のグラデーション) -->
+  <!-- 背景 (緑のグラデーション) -->
   <defs>
-    <linearGradient id="bgGrad" x1="0%%" y1="0%%" x2="100%%" y2="100%%">
-      <stop offset="0%%" style="stop-color:#4a7c4e;stop-opacity:1" />
-      <stop offset="100%%" style="stop-color:#2e7d46;stop-opacity:1" />
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a7c4e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2e7d46;stop-opacity:1" />
     </linearGradient>
     <filter id="shadow">
       <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.2"/>
     </filter>
   </defs>
   
-  <\!-- 背景円 -->
+  <!-- 背景円 -->
   <circle cx="256" cy="256" r="240" fill="url(#bgGrad)"/>
   
-  <\!-- 野球ボール -->
-  <g transform="translate(256, 256)">
-    <\!-- ボール本体 -->
-    <circle cx="0" cy="0" r="100" fill="white" filter="url(#shadow)"/>
+  <!-- 野球バット -->
+  <g transform="translate(256, 256) rotate(-45)">
+    <!-- バットのグリップ部分（茶色） -->
+    <rect x="-120" y="-8" width="80" height="16" rx="4" fill="#8b4513" filter="url(#shadow)"/>
     
-    <\!-- 縫い目 (赤い糸) -->
-    <path d="M -70 -40 Q -50 -20, -30 -40 Q -10 -60, 10 -40 Q 30 -20, 50 -40 Q 70 -60, 70 -40" 
-          fill="none" stroke="#d32f2f" stroke-width="3" stroke-linecap="round"/>
-    <path d="M -70 40 Q -50 20, -30 40 Q -10 60, 10 40 Q 30 20, 50 40 Q 70 60, 70 40" 
-          fill="none" stroke="#d32f2f" stroke-width="3" stroke-linecap="round"/>
+    <!-- グリップテープ（黒） -->
+    <rect x="-115" y="-6" width="30" height="12" fill="#2c2c2c"/>
+    <rect x="-100" y="-6" width="5" height="12" fill="#4a4a4a"/>
+    <rect x="-92" y="-6" width="5" height="12" fill="#4a4a4a"/>
+    <rect x="-84" y="-6" width="5" height="12" fill="#4a4a4a"/>
+    
+    <!-- バットの中間部分 -->
+    <rect x="-40" y="-10" width="60" height="20" rx="4" fill="#d4a373" filter="url(#shadow)"/>
+    
+    <!-- バットの打撃部分（太い部分） -->
+    <ellipse cx="80" cy="0" rx="100" ry="18" fill="#f5deb3" filter="url(#shadow)"/>
+    
+    <!-- 木目模様 -->
+    <line x1="-40" y1="-5" x2="140" y2="-5" stroke="#c9a66b" stroke-width="1" opacity="0.5"/>
+    <line x1="-40" y1="0" x2="140" y2="0" stroke="#c9a66b" stroke-width="1" opacity="0.5"/>
+    <line x1="-40" y1="5" x2="140" y2="5" stroke="#c9a66b" stroke-width="1" opacity="0.5"/>
+    
+    <!-- ブランドマーク部分 -->
+    <rect x="60" y="-6" width="40" height="12" fill="#8b6914" opacity="0.3" rx="2"/>
   </g>
   
-  <\!-- BaseLogテキスト -->
+  <!-- BaseLogテキスト -->
   <text x="256" y="400" font-family="sans-serif" font-size="60" font-weight="bold" 
         text-anchor="middle" fill="white">BaseLog</text>
 </svg>

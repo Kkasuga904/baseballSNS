@@ -2,69 +2,38 @@
   <!-- Green background circle -->
   <circle cx="256" cy="256" r="256" fill="#2e7d46"/>
   
-  <!-- Baseball -->
-  <g transform="translate(200, 256)">
-    <!-- Baseball white circle -->
-    <circle cx="0" cy="0" r="90" fill="white" stroke="black" stroke-width="6"/>
+  <!-- Baseball Bat -->
+  <g transform="translate(256, 256) rotate(-45)">
+    <!-- Bat grip (brown) -->
+    <rect x="-140" y="-10" width="90" height="20" rx="5" fill="#8b4513" stroke="#5d2f0b" stroke-width="2"/>
     
-    <!-- Baseball stitches (left side) -->
-    <path d="M -30 -75 Q -20 -65, -20 -50 Q -20 -35, -30 -25 Q -20 -15, -20 0 Q -20 15, -30 25 Q -20 35, -20 50 Q -20 65, -30 75" 
-          fill="none" stroke="#ff4444" stroke-width="5" stroke-linecap="round"/>
+    <!-- Grip tape (black) -->
+    <rect x="-135" y="-8" width="35" height="16" fill="#2c2c2c"/>
+    <rect x="-115" y="-8" width="6" height="16" fill="#4a4a4a"/>
+    <rect x="-105" y="-8" width="6" height="16" fill="#4a4a4a"/>
+    <rect x="-95" y="-8" width="6" height="16" fill="#4a4a4a"/>
     
-    <!-- Baseball stitches (right side) -->
-    <path d="M 30 -75 Q 20 -65, 20 -50 Q 20 -35, 30 -25 Q 20 -15, 20 0 Q 20 15, 30 25 Q 20 35, 20 50 Q 20 65, 30 75" 
-          fill="none" stroke="#ff4444" stroke-width="5" stroke-linecap="round"/>
+    <!-- Bat middle section -->
+    <rect x="-50" y="-12" width="70" height="24" rx="5" fill="#d4a373" stroke="#a67c52" stroke-width="2"/>
     
-    <!-- Stitch cross marks -->
-    <g stroke="#ff4444" stroke-width="3" stroke-linecap="round">
-      <!-- Left side crosses -->
-      <path d="M -25 -60 L -15 -55 M -25 -55 L -15 -60"/>
-      <path d="M -25 -40 L -15 -35 M -25 -35 L -15 -40"/>
-      <path d="M -25 -20 L -15 -15 M -25 -15 L -15 -20"/>
-      <path d="M -25 0 L -15 5 M -25 5 L -15 0"/>
-      <path d="M -25 20 L -15 25 M -25 25 L -15 20"/>
-      <path d="M -25 40 L -15 45 M -25 45 L -15 40"/>
-      <path d="M -25 60 L -15 65 M -25 65 L -15 60"/>
-      
-      <!-- Right side crosses -->
-      <path d="M 15 -60 L 25 -55 M 15 -55 L 25 -60"/>
-      <path d="M 15 -40 L 25 -35 M 15 -35 L 25 -40"/>
-      <path d="M 15 -20 L 25 -15 M 15 -15 L 25 -20"/>
-      <path d="M 15 0 L 25 5 M 15 5 L 25 0"/>
-      <path d="M 15 20 L 25 25 M 15 25 L 25 20"/>
-      <path d="M 15 40 L 25 45 M 15 45 L 25 40"/>
-      <path d="M 15 60 L 25 65 M 15 65 L 25 60"/>
-    </g>
+    <!-- Bat barrel (hitting area) -->
+    <ellipse cx="100" cy="0" rx="120" ry="22" fill="#f5deb3" stroke="#d4a373" stroke-width="2"/>
+    
+    <!-- Wood grain lines -->
+    <line x1="-50" y1="-6" x2="180" y2="-6" stroke="#c9a66b" stroke-width="1.5" opacity="0.4"/>
+    <line x1="-50" y1="0" x2="180" y2="0" stroke="#c9a66b" stroke-width="1.5" opacity="0.4"/>
+    <line x1="-50" y1="6" x2="180" y2="6" stroke="#c9a66b" stroke-width="1.5" opacity="0.4"/>
+    
+    <!-- Brand mark area -->
+    <rect x="70" y="-8" width="50" height="16" fill="#8b6914" opacity="0.3" rx="3"/>
+    
+    <!-- Shine effect on barrel -->
+    <ellipse cx="100" cy="-5" rx="80" ry="8" fill="white" opacity="0.2"/>
   </g>
   
-  <!-- Pencil -->
-  <g transform="translate(280, 190) rotate(45)">
-    <!-- Pencil body (orange gradient) -->
-    <defs>
-      <linearGradient id="pencilGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" style="stop-color:#ff9944;stop-opacity:1" />
-        <stop offset="50%" style="stop-color:#ffaa44;stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#ff8833;stop-opacity:1" />
-      </linearGradient>
-    </defs>
-    <rect x="-20" y="0" width="40" height="120" fill="url(#pencilGradient)" stroke="black" stroke-width="4" rx="2"/>
-    
-    <!-- Orange eraser top -->
-    <rect x="-20" y="-25" width="40" height="25" rx="8" fill="#ff6633" stroke="black" stroke-width="4"/>
-    
-    <!-- Pencil wood -->
-    <path d="M -20 120 L -20 140 L 0 150 L 20 140 L 20 120 Z" fill="#f4d1a6" stroke="black" stroke-width="4"/>
-    
-    <!-- Pencil lead -->
-    <path d="M -8 140 L 0 150 L 8 140 Z" fill="#2c3e50" stroke="black" stroke-width="4"/>
-    
-    <!-- Metal band -->
-    <rect x="-20" y="110" width="40" height="10" fill="#c0c0c0" stroke="black" stroke-width="3"/>
-  </g>
-  
-  <!-- BB text -->
-  <g transform="translate(350, 380)">
-    <text x="0" y="0" font-family="Arial Black, sans-serif" font-size="90" font-weight="900" 
-          fill="white" text-anchor="middle" dominant-baseline="middle" style="letter-spacing: -5px;">BB</text>
+  <!-- BL text (BaseLog) -->
+  <g transform="translate(256, 380)">
+    <text x="0" y="0" font-family="Arial Black, sans-serif" font-size="80" font-weight="900" 
+          fill="white" text-anchor="middle" dominant-baseline="middle" style="letter-spacing: -3px;">BL</text>
   </g>
 </svg>

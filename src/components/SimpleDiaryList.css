@@ -1,6 +1,6 @@
 .simple-diary-list {
   padding: 0;
-  max-width: 600px;
+  max-width: 800px;  /* 600px -> 800px に拡大 */
   margin: 0 auto;
   pointer-events: auto;
   background: white;
@@ -62,13 +62,23 @@
 
 .no-diaries {
   text-align: center;
-  padding: 60px 20px;
+  padding: 120px 20px;
   color: #666;
   margin: 20px;
 }
 
-.no-diaries p {
-  margin: 0 0 8px 0;
+.no-diaries-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 16px 0;
+}
+
+.no-diaries-hint {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .hint {
@@ -218,32 +228,42 @@
   position: fixed;
   bottom: 80px;
   right: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #00D4E4;
+  width: auto;
+  min-width: 72px;
+  height: 72px;
+  border-radius: 36px;
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF4458 100%);
   border: none;
-  box-shadow: 0 4px 12px rgba(0, 212, 228, 0.35);
+  box-shadow: 0 6px 20px rgba(255, 68, 88, 0.4);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 12px;
+  padding: 0 24px;
   transition: all 0.3s;
   z-index: 1000;
 }
 
 .diary-fab:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(34, 211, 238, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(255, 68, 88, 0.5);
 }
 
 .diary-fab:active {
-  transform: scale(0.95);
+  transform: translateY(-1px) scale(0.98);
 }
 
 .fab-icon {
-  font-size: 24px;
+  font-size: 28px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.fab-label {
+  font-size: 16px;
+  font-weight: 600;
   color: white;
+  white-space: nowrap;
 }
 
 /* モバイル対応 */

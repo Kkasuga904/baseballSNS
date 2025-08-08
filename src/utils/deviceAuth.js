@@ -29,12 +29,18 @@ export const createDeviceUser = (deviceId) => {
     // 例: 'device_12345678-90ab-cdef-1234-567890abcdef'
   ];
   
-  // 環境変数でも管理者を判定（ローカル開発環境用）
-  const isLocalAdmin = window.location.hostname === 'localhost' && 
-                      window.location.port === '3000';
+  // 管理者モードの強制設定を確認
+  const forceAdmin = localStorage.getItem('baseballSNS_forceAdmin') === 'true';
   
-  // 特定のデバイスIDまたはローカル開発環境の場合のみ管理者
-  const isAdminDevice = ADMIN_DEVICE_IDS.includes(deviceId) || isLocalAdmin;
+  // URLパラメータでも管理者モードを設定可能
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') === 'true') {
+    localStorage.setItem('baseballSNS_forceAdmin', 'true');
+    console.log('管理者モードを有効にしました');
+  }
+  
+  // 特定のデバイスIDまたは強制設定の場合のみ管理者（本番環境でも有効）
+  const isAdminDevice = ADMIN_DEVICE_IDS.includes(deviceId) || forceAdmin;
   
   // 初回作成時にデバイスIDをコンソールに表示（管理者設定用）
   if (!localStorage.getItem('deviceIdLogged')) {
