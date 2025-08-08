@@ -398,7 +398,7 @@ const MeasurementsContent = memo(function MeasurementsContent() {
                               }
                             })
                           }}
-                          placeholder="0"
+                          placeholder=""
                           className="card-input"
                         />
                         <span className="input-unit">{item.unit}</span>
@@ -417,7 +417,7 @@ const MeasurementsContent = memo(function MeasurementsContent() {
                               }
                             })
                           }}
-                          placeholder="0"
+                          placeholder=""
                           className="card-input rm-count"
                         />
                         <span className="input-unit">回</span>
@@ -439,7 +439,7 @@ const MeasurementsContent = memo(function MeasurementsContent() {
                               }
                             })
                           }}
-                          placeholder="0"
+                          placeholder=""
                           className="card-input"
                         />
                         <span className="input-unit">{item.unit}</span>

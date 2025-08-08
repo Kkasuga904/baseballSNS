@@ -337,58 +337,10 @@ function MobileTextEditor({ content, onChange, placeholder }) {
     }
   }
 
-  // Enterキー処理
+  // Enterキー処理 - シンプルに改行を処理
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      // スタイルが設定されている場合のみ特別処理
-      if (inputStyles.fontSize !== 'normal' || inputStyles.bold || inputStyles.italic || inputStyles.underline) {
-        e.preventDefault()
-        
-        console.log('Enter key - inputStyles before:', inputStyles)
-        
-        // 改行を挿入
-        document.execCommand('insertHTML', false, '<br>')
-        
-        // 現在の入力スタイルを維持
-        setTimeout(() => {
-          const selection = window.getSelection()
-          if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0)
-            const span = document.createElement('span')
-            
-            // 現在のスタイルを適用
-            const sizes = {
-              'large': '28px',
-              'medium': '22px',
-              'normal': '18px'
-            }
-            span.style.fontSize = sizes[inputStyles.fontSize]
-            
-            if (inputStyles.bold) span.style.fontWeight = 'bold'
-            if (inputStyles.italic) span.style.fontStyle = 'italic'
-            if (inputStyles.underline) span.style.textDecoration = 'underline'
-            
-            span.innerHTML = '&#8203;'
-            range.insertNode(span)
-            
-            // カーソルをスパン内に移動
-            const newRange = document.createRange()
-            newRange.selectNodeContents(span)
-            newRange.collapse(false)
-            selection.removeAllRanges()
-            selection.addRange(newRange)
-            
-            console.log('Enter key - Created new span with styles:', {
-              fontSize: span.style.fontSize,
-              fontWeight: span.style.fontWeight,
-              fontStyle: span.style.fontStyle,
-              textDecoration: span.style.textDecoration
-            })
-          }
-        }, 10)
-      }
-      // スタイルがない場合は通常の改行動作（デフォルト動作）
-    }
+    // Enterキーの処理は削除（デフォルトの動作に任せる）
+    // contentEditableのデフォルト動作で改行が処理される
   }
 
   return (
