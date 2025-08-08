@@ -16,12 +16,25 @@ const MeasurementsContent = memo(function MeasurementsContent() {
     }
   })
   
-  // 新規測定データ入力用
+  // 新規測定データ入力用（テスト用サンプルデータ付き）
   const [newMeasurement, setNewMeasurement] = useState({
     date: new Date().toISOString().split('T')[0],
     category: 'athletic',
-    items: {},
-    rms: {} // RM値を格納
+    items: {
+      bodyFat: '18.5',
+      muscle: '58',
+      sprint50m: '6.9',
+      benchPress: '80',
+      squat: '120',
+      deadlift: '150',
+      chinUp: '12',
+      pushUp: '30'
+    },
+    rms: {
+      benchPress: '5',
+      squat: '8',
+      deadlift: '5'
+    } // RM値を格納
   })
   
   // 測定項目の定義（カスタマイズ可能）
@@ -103,12 +116,25 @@ const MeasurementsContent = memo(function MeasurementsContent() {
     
     setMeasurements(updatedMeasurements)
     
-    // フォームリセット
+    // フォームリセット（テスト用サンプルデータを再設定）
     setNewMeasurement({
       date: new Date().toISOString().split('T')[0],
       category: newMeasurement.category,
-      items: {},
-      rms: {}
+      items: newMeasurement.category === 'athletic' ? {
+        bodyFat: '18.5',
+        muscle: '58',
+        sprint50m: '6.9',
+        benchPress: '80',
+        squat: '120',
+        deadlift: '150',
+        chinUp: '12',
+        pushUp: '30'
+      } : {},
+      rms: newMeasurement.category === 'athletic' ? {
+        benchPress: '5',
+        squat: '8',
+        deadlift: '5'
+      } : {}
     })
     
     // 通知を表示
@@ -253,7 +279,21 @@ const MeasurementsContent = memo(function MeasurementsContent() {
               setNewMeasurement({
                 ...newMeasurement,
                 category: 'athletic',
-                items: {}
+                items: {
+                  bodyFat: '18.5',
+                  muscle: '58',
+                  sprint50m: '6.9',
+                  benchPress: '80',
+                  squat: '120',
+                  deadlift: '150',
+                  chinUp: '12',
+                  pushUp: '30'
+                },
+                rms: {
+                  benchPress: '5',
+                  squat: '8',
+                  deadlift: '5'
+                }
               })
             }}
           >
@@ -267,7 +307,8 @@ const MeasurementsContent = memo(function MeasurementsContent() {
               setNewMeasurement({
                 ...newMeasurement,
                 category: 'baseball',
-                items: {}
+                items: {},
+                rms: {}
               })
             }}
           >
