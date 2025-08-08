@@ -337,10 +337,56 @@ function MobileTextEditor({ content, onChange, placeholder }) {
     }
   }
 
-  // Enterキー処理 - シンプルに改行を処理
+  // Enterキー処理 - スタイルを保持しながら改行
   const handleKeyDown = (e) => {
-    // Enterキーの処理は削除（デフォルトの動作に任せる）
-    // contentEditableのデフォルト動作で改行が処理される
+    if (e.key === 'Enter') {
+      // スタイルが設定されている場合は改行後もスタイルを維持
+      if (inputStyles.fontSize !== 'normal' || inputStyles.bold || inputStyles.italic || inputStyles.underline) {
+        e.preventDefault()
+        
+        // 改行を挿入
+        const selection = window.getSelection()
+        const range = selection.getRangeAt(0)
+        
+        // 改行要素を作成
+        const br = document.createElement('br')
+        range.insertNode(br)
+        
+        // 新しい行用のspanを作成（現在のスタイルを維持）
+        const newSpan = document.createElement('span')
+        const sizes = {
+          'large': '28px',
+          'medium': '22px',
+          'normal': '18px'
+        }
+        
+        if (inputStyles.fontSize !== 'normal') {
+          newSpan.style.fontSize = sizes[inputStyles.fontSize]
+        }
+        if (inputStyles.bold) newSpan.style.fontWeight = 'bold'
+        if (inputStyles.italic) newSpan.style.fontStyle = 'italic'
+        if (inputStyles.underline) newSpan.style.textDecoration = 'underline'
+        
+        // ゼロ幅スペースを入れてカーソル位置を確保
+        newSpan.innerHTML = '&#8203;'
+        
+        // 改行の後にspanを挿入
+        br.parentNode.insertBefore(newSpan, br.nextSibling)
+        
+        // カーソルを新しいspanに移動
+        const newRange = document.createRange()
+        newRange.selectNodeContents(newSpan)
+        newRange.collapse(false)
+        selection.removeAllRanges()
+        selection.addRange(newRange)
+        
+        // 変更を通知
+        if (editorRef.current) {
+          onChange(editorRef.current.innerHTML)
+        }
+      }
+      // スタイルがない場合は通常の改行（デフォルト動作）
+    }
   }
 
   return (

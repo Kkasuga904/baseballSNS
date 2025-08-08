@@ -373,7 +373,12 @@ const MeasurementsContent = memo(function MeasurementsContent() {
               </label>
             </div>
             
+            {/* 測定項目のリスト表示 - デバッグ情報付き */}
             <div className="measurement-inputs-mobile">
+              <div style={{fontSize: '12px', color: '#666', marginBottom: '8px'}}>
+                {activeCategory === 'athletic' ? '運動能力' : '野球技術'} - 
+                全{Object.keys(measurementItems[activeCategory]).length}項目
+              </div>
               {Object.entries(measurementItems[activeCategory]).map(([key, item]) => (
                 <div key={key} className="measurement-input-card">
                   <div className="card-header">

@@ -131,7 +131,8 @@
   gap: 10px;
   margin-bottom: 16px;
   padding: 4px;
-  overflow-y: visible;
+  background: rgba(200, 200, 200, 0.1); /* デバッグ用背景色 */
+  min-height: 100px; /* 最小高さを確保 */
 }
 
 .measurement-input-card {
@@ -142,6 +143,7 @@
   background: white;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
+  min-height: 50px; /* 最小高さを確保 */
 }
 
 .card-header {
