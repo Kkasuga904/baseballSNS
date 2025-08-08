@@ -80,9 +80,6 @@
   background: linear-gradient(to bottom, #fafbfc, #f3f4f6);
   border-radius: 12px;
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  min-height: 400px;
 }
 
 .new-measurement-form h4 {
@@ -134,10 +131,7 @@
   gap: 10px;
   margin-bottom: 16px;
   padding: 4px;
-  min-height: 300px;
-  max-height: 500px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-y: visible;
 }
 
 .measurement-input-card {
@@ -714,12 +708,11 @@
 /* レスポンシブ対応 - モバイルファースト強化 */
 @media (max-width: 768px) {
   .measurements-content {
-    padding: 0;
+    padding: 10px;
   }
   
   .new-measurement-form {
     border-radius: 12px;
-    margin: 10px;
     padding: 12px;
   }
   
@@ -731,9 +724,6 @@
   .measurement-inputs-mobile {
     gap: 8px;
     padding: 2px;
-    max-height: 400px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
   
   .measurement-input-card {

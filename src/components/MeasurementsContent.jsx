@@ -374,8 +374,6 @@ const MeasurementsContent = memo(function MeasurementsContent() {
             </div>
             
             <div className="measurement-inputs-mobile">
-              {/* デバッグ: 項目数を確認 */}
-              {console.log(`Rendering ${activeCategory} items:`, Object.keys(measurementItems[activeCategory]).length, measurementItems[activeCategory])}
               {Object.entries(measurementItems[activeCategory]).map(([key, item]) => (
                 <div key={key} className="measurement-input-card">
                   <div className="card-header">
