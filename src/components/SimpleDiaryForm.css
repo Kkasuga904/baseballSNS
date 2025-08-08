@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: 8px 12px;
   border-bottom: 1px solid #d4e8d4;
   background: linear-gradient(to right, #f5faf5, #eef7ee);
   box-shadow: 0 2px 4px rgba(0, 100, 0, 0.08);
@@ -127,15 +127,29 @@
 /* モバイル対応 */
 @media (max-width: 768px) {
   .diary-form-header {
-    padding: 12px;
+    padding: 8px;
   }
   
   .diary-content-area {
-    padding: 16px;
+    padding: 12px;
+    margin-top: 8px;
   }
   
   .diary-textarea {
     font-size: 18px;
+  }
+  
+  .back-button {
+    padding: 6px 12px;
+    height: 36px;
+    font-size: 14px;
+    margin-right: 8px;
+    min-width: 80px;
+  }
+  
+  .done-button {
+    padding: 6px 16px;
+    font-size: 14px;
   }
 }
 

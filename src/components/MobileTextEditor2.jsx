@@ -340,15 +340,16 @@ function MobileTextEditor({ content, onChange, placeholder }) {
   // Enterキー処理
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault()
-      
-      console.log('Enter key - inputStyles before:', inputStyles)
-      
-      // 改行を挿入
-      document.execCommand('insertHTML', false, '<br>')
-      
-      // 現在の入力スタイルを維持
+      // スタイルが設定されている場合のみ特別処理
       if (inputStyles.fontSize !== 'normal' || inputStyles.bold || inputStyles.italic || inputStyles.underline) {
+        e.preventDefault()
+        
+        console.log('Enter key - inputStyles before:', inputStyles)
+        
+        // 改行を挿入
+        document.execCommand('insertHTML', false, '<br>')
+        
+        // 現在の入力スタイルを維持
         setTimeout(() => {
           const selection = window.getSelection()
           if (selection.rangeCount > 0) {
@@ -386,6 +387,7 @@ function MobileTextEditor({ content, onChange, placeholder }) {
           }
         }, 10)
       }
+      // スタイルがない場合は通常の改行動作（デフォルト動作）
     }
   }
 
