@@ -78,7 +78,11 @@ const MeasurementsContent = memo(function MeasurementsContent() {
   
   // 測定データ追加
   const addMeasurement = useCallback(() => {
-    const hasData = Object.keys(newMeasurement.items).some(key => newMeasurement.items[key])
+    // 空文字列でない値があるかチェック
+    const hasData = Object.keys(newMeasurement.items).some(key => {
+      const value = newMeasurement.items[key]
+      return value !== '' && value !== undefined && value !== null
+    })
     if (!hasData) {
       alert('測定データを入力してください')
       return
