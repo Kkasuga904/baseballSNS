@@ -128,21 +128,21 @@
 .measurement-inputs-mobile {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
-  padding: 2px;
+  gap: 3px;
+  margin-bottom: 12px;
+  padding: 0;
   min-height: 100px;
 }
 
 .measurement-input-card {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
+  gap: 6px;
+  padding: 6px 8px;
   background: white;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #e5e7eb;
-  min-height: 44px;
+  min-height: 38px;
 }
 
 .card-header {
@@ -188,14 +188,14 @@
 }
 
 .card-input {
-  padding: 5px 6px;
+  padding: 6px 8px;
   border: 1.5px solid #e5e7eb;
   border-radius: 6px;
   font-size: 14px;
   background: white;
   color: #1f2937;
   text-align: center;
-  width: 55px;
+  width: 65px;
   -webkit-appearance: none;
   -moz-appearance: textfield;
 }
@@ -218,22 +218,25 @@
 
 .input-unit {
   font-size: 11px;
-  color: #6b7280;
+  color: #9ca3af;
   font-weight: 400;
   white-space: nowrap;
   flex-shrink: 0;
+  background: rgba(243, 244, 246, 0.5);
+  padding: 2px 4px;
+  border-radius: 3px;
 }
 
 .rm-x {
-  color: #9ca3af;
-  font-weight: 500;
+  color: #d1d5db;
+  font-weight: 400;
   font-size: 12px;
   padding: 0 2px;
   flex-shrink: 0;
 }
 
 .rm-count {
-  width: 45px;
+  width: 55px;
 }
 
 /* レガシースタイルの互換性維持 */
@@ -729,40 +732,41 @@
   }
   
   .measurement-inputs-mobile {
-    gap: 5px;
+    gap: 2px;
     padding: 0;
   }
   
   .measurement-input-card {
-    padding: 8px;
-    min-height: 40px;
+    padding: 5px 6px;
+    min-height: 36px;
   }
   
   .card-header {
-    min-width: 80px;
-    gap: 4px;
+    min-width: 75px;
+    gap: 3px;
   }
   
   .card-icon {
-    font-size: 16px;
+    font-size: 15px;
   }
   
   .card-label {
-    font-size: 12px;
+    font-size: 11px;
   }
   
   .card-input {
     font-size: 13px;
-    padding: 4px 5px;
-    width: 48px;
+    padding: 5px 6px;
+    width: 58px;
   }
   
   .rm-count {
-    width: 40px;
+    width: 48px;
   }
   
   .input-unit {
     font-size: 10px;
+    padding: 1px 3px;
   }
   
   .rm-x {
