@@ -130,7 +130,9 @@ function AppContent() {
   const [selectedDate, setSelectedDate] = useState(null)
   
   // アプリケーションのローディング状態
-  const [isAppLoading, setIsAppLoading] = useState(true)
+  // モバイルでは初期状態をfalseにして即座に表示
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  const [isAppLoading, setIsAppLoading] = useState(!isMobile)
   
   /**
    * マイページ専用データの状態管理
@@ -395,10 +397,13 @@ function AppContent() {
 
   // ローディング状態の初期化
   useEffect(() => {
-    // 初期化処理が完了したらローディングを解除
-    setTimeout(() => {
-      setIsAppLoading(false)
-    }, 500)
+    // モバイルの場合は既にfalseなのでスキップ
+    if (!isMobile && isAppLoading) {
+      // デスクトップは少し待つ
+      setTimeout(() => {
+        setIsAppLoading(false)
+      }, 300)
+    }
 
     // PWAアイコンを更新（キャッシュ対策）
     updatePWAIcon()
