@@ -67,34 +67,8 @@ function MobileTextEditor({ content, onChange, placeholder }) {
     }
   }, [])
 
-  // キーボードの高さを検出してツールバー位置を調整
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.visualViewport) {
-        const viewportHeight = window.visualViewport.height
-        const windowHeight = window.innerHeight
-        const keyboardHeight = windowHeight - viewportHeight
-        
-        if (toolbarRef.current) {
-          if (keyboardHeight > 100) {
-            toolbarRef.current.style.bottom = `${keyboardHeight}px`
-          } else {
-            toolbarRef.current.style.bottom = '0'
-          }
-        }
-      }
-    }
-
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleResize)
-    }
-
-    return () => {
-      if (window.visualViewport) {
-        window.visualViewport.removeEventListener('resize', handleResize)
-      }
-    }
-  }, [])
+  // キーボード検出は不要に（stickyポジションで対応）
+  // ツールバーは常にエディタの上部に固定
 
   // スタイル適用（改善版）
   const applyStyle = (type, value = null) => {

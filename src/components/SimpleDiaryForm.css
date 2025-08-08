@@ -100,9 +100,11 @@
 
 .diary-content-area {
   flex: 1;
-  padding: 20px;
+  padding: 0;
   overflow-y: auto;
   background: linear-gradient(to bottom, #f8fdf8, #f0f8f0);
+  display: flex;
+  flex-direction: column;
 }
 
 .diary-textarea {

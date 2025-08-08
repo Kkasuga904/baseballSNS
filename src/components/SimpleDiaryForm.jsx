@@ -95,14 +95,18 @@ function SimpleDiaryForm({ onSave, onCancel, selectedDate }) {
         </button>
       </div>
       
+      {/* 日記入力エリア */}
       <div className="diary-content-area">
+        {/* モバイルとPCで異なるエディタを表示 */}
         {isMobile ? (
+          // モバイル用エディタ（ツールバー付き）
           <MobileTextEditor
             content={content}
-            onChange={setContent}
+            onChange={setContent} // 入力内容が変更されたらstateを更新
             placeholder="今日の練習内容を記録..."
           />
         ) : (
+          // PC用エディタ（シンプルなテキストエリア）
           <SimpleTextEditor
             content={content}
             onChange={setContent}

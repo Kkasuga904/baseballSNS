@@ -3,19 +3,20 @@
   flex-direction: column;
   height: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 /* モバイル用ツールバー */
 .mobile-toolbar {
-  position: fixed;
-  bottom: env(keyboard-inset-height, 0);
+  position: sticky;
+  top: 0;
   left: 0;
   right: 0;
   background: #f5f5f5;
-  border-top: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
   z-index: 100;
   padding: 6px 0;
-  transition: bottom 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .toolbar-scroll {
@@ -116,7 +117,8 @@
   outline: none;
   overflow-y: auto;
   min-height: 300px;
-  padding-bottom: 60px;
+  padding-bottom: 20px;
+  padding-top: 20px;
   -webkit-text-size-adjust: 100%;
   -webkit-user-select: text;
   user-select: text;
@@ -282,20 +284,19 @@
 }
 
 /* キーボードが表示されたときの調整 */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
+@supports (padding-top: env(safe-area-inset-top)) {
   .mobile-toolbar {
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
   }
 }
 
 /* タブレット・PC対応（画面幅768px以上） */
 @media (min-width: 768px) {
   .mobile-toolbar {
-    position: static;
-    bottom: auto;
-    border-top: none;
+    position: sticky;
+    top: 0;
     border-bottom: 1px solid #d1d5db;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     background: #f5f5f5;
   }
   

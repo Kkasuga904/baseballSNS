@@ -62,16 +62,18 @@ import './MyPage.css'
 function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDate, addPost }) {
   // 認証情報を取得
   const { user } = useAuth() // signOutは不要
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { getUserTeams, isInitialized } = useTeam()
+  const navigate = useNavigate() // ページ遷移用
+  const location = useLocation() // 現在のURL情報
+  const { getUserTeams, isInitialized } = useTeam() // チーム情報
+  // 各モーダルの表示状態を管理
   const [showTeamManagement, setShowTeamManagement] = useState(false)
-  const [showDiaryForm, setShowDiaryForm] = useState(false)
+  const [showDiaryForm, setShowDiaryForm] = useState(false) // 日記フォームの表示
   const [showGameRecord, setShowGameRecord] = useState(false)
   const [editingGame, setEditingGame] = useState(null)
   const [showPracticeForm, setShowPracticeForm] = useState(false)
+  // アクティブなタブを管理（初期値はURLパラメータから取得）
   const [activeTab, setActiveTab] = useState(() => {
-    // 初期タブをURLパラメータから設定
+    // URLのクエリパラメータを解析（例: ?tab=diary）
     const params = new URLSearchParams(location.search)
     const tab = params.get('tab')
     if (tab === 'home' || tab === 'install') {
@@ -79,7 +81,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
     } else if (tab) {
       return tab
     }
-    return 'diary'
+    return 'diary' // デフォルトは日記タブ
   })
   
   // URLパラメータからタブを設定
@@ -97,15 +99,17 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   
   // コンポーネントマウント時にLocalStorageからデータを読み込む
   useEffect(() => {
+    // localStorageから保存済みの日記と練習記録を読み込み
     const loadedDiaries = storageService.loadDiaries()
     const loadedPracticeRecords = storageService.loadPracticeRecords()
     
+    // stateを更新（既存のデータを保持しつつ追加）
     setMyPageData(prev => ({
       ...prev,
       diaries: loadedDiaries,
       practiceRecords: loadedPracticeRecords
     }))
-  }, [])
+  }, []) // 初回マウント時のみ実行
   
   // ユーザーの所属チーム一覧を取得（ユーザー情報を明示的に渡す）
   const userTeams = React.useMemo(() => {
@@ -286,14 +290,16 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
   }
 
   /**
-   * 日記関連のハンドラー
+   * 日記保存ハンドラー
+   * @param {Object} diaryData - 保存する日記データ
    */
   const handleSaveDiary = (diaryData) => {
     setMyPageData(prev => {
       const diaries = prev.diaries || []
+      // 新しい日記を配列に追加
       const updatedDiaries = [...diaries, diaryData]
       
-      // LocalStorageに保存
+      // LocalStorageに永続化
       storageService.saveDiaries(updatedDiaries)
       
       return {
@@ -301,15 +307,22 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
         diaries: updatedDiaries
       }
     })
+    // フォームを閉じる
     setShowDiaryForm(false)
   }
 
+  /**
+   * 日記削除ハンドラー
+   * @param {string|number} diaryId - 削除する日記のID
+   */
   const handleDeleteDiary = (diaryId) => {
+    // 確認ダイアログを表示
     if (window.confirm('この日記を削除しますか？')) {
       setMyPageData(prev => {
+        // 指定ID以外の日記をフィルタリング
         const updatedDiaries = (prev.diaries || []).filter(d => d.id !== diaryId)
         
-        // LocalStorageから削除
+        // LocalStorageからも削除
         storageService.deleteDiary(diaryId)
         
         return {
@@ -363,6 +376,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
     <div className="mypage">
       {/* タブナビゲーション */}
       <div className="tab-navigation">
+        {/* 日記タブ */}
         <button 
           className={`tab-button ${activeTab === 'diary' ? 'active' : ''}`}
           onClick={() => setActiveTab('diary')}
@@ -424,6 +438,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
             </div>
           )}
           
+          {/* 日記タブのコンテンツ */}
           {activeTab === 'diary' && (
             <>
               {/* 練習記録フォームへのボタン - 日記アプリなので非表示 */}
@@ -455,16 +470,16 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
                 </div>
               </div> */}
               
-              {/* 日記リスト */}
+              {/* 日記リストコンポーネント */}
               <SimpleDiaryList
-                diaries={myPageData.diaries || []}
-                onDelete={handleDeleteDiary}
+                diaries={myPageData.diaries || []} // 全日記データを渡す
+                onDelete={handleDeleteDiary}       // 削除ハンドラー
               />
               
-              {/* フローティングアクションボタン */}
+              {/* フローティングアクションボタン（右下の赤いボタン） */}
               <button
                 className="diary-fab"
-                onClick={() => setShowDiaryForm(true)}
+                onClick={() => setShowDiaryForm(true)} // クリックで日記フォームを表示
                 title="日記を書く"
               >
                 <span className="fab-icon">✏️</span>
@@ -777,12 +792,12 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
         />
       )}
       
-      {/* 日記フォーム */}
+      {/* 日記フォームモーダル */}
       {showDiaryForm && (
         <SimpleDiaryForm
-          onSave={handleSaveDiary}
-          onCancel={() => setShowDiaryForm(false)}
-          selectedDate={selectedDate}
+          onSave={handleSaveDiary}                // 保存時の処理
+          onCancel={() => setShowDiaryForm(false)} // キャンセル時の処理
+          selectedDate={selectedDate}              // 選択された日付
         />
       )}
       
