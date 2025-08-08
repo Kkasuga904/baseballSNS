@@ -39,7 +39,7 @@ import PracticeCalendar from '../components/PracticeCalendar'
 import PracticeForm from '../components/PracticeForm'
 import MeasurementsContent from '../components/MeasurementsContent'
 import { TeamRoleLabels } from '../models/team'
-import Measurements from './Measurements'
+// import Measurements from './Measurements' // MeasurementsContentを使用するためコメントアウト
 import './MyPage.css'
 
 /**
@@ -526,7 +526,7 @@ function MyPage({ posts, myPageData, setMyPageData, selectedDate, setSelectedDat
           
           {activeTab === 'stats' && (
             <div className="stats-section">
-              <Measurements />
+              <MeasurementsContent />
             </div>
           )}
           
