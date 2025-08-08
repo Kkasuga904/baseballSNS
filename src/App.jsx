@@ -11,7 +11,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import LoadingSpinner from './components/LoadingSpinner'
-import InstallPrompt from './components/InstallPrompt'
+// import InstallPrompt from './components/InstallPrompt' // モバイルホーム追加ポップアップ無効化
 
 // 認証システムの選択
 // デバイス認証をデフォルトで使用
@@ -550,8 +550,8 @@ function AppContent() {
         {/* フッター */}
         <Footer />
         
-        {/* PWAインストールプロンプト */}
-        <InstallPrompt />
+        {/* PWAインストールプロンプト - 無効化 */}
+        {/* <InstallPrompt /> */}
     </div>
   )
 }

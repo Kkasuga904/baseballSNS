@@ -1,0 +1,669 @@
+.measurements-content {
+  padding: 0;
+}
+
+.measurements-content h3 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.page-description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* 表示モード切り替えタブ */
+.view-mode-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.view-mode-tab {
+  flex: 1;
+  padding: 10px 16px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-mode-tab:hover {
+  background: #e5e7eb;
+}
+
+.view-mode-tab.active {
+  background: #2e7d46;
+  color: white;
+}
+
+/* カテゴリータブ */
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.category-tab {
+  flex: 1;
+  padding: 8px 16px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-tab:hover {
+  border-color: #2e7d46;
+  background: #f0fdf4;
+}
+
+.category-tab.active {
+  background: #2e7d46;
+  border-color: #2e7d46;
+  color: white;
+}
+
+/* 新規測定フォーム */
+.new-measurement-form {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.new-measurement-form h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}
+
+.form-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.date-input {
+  padding: 6px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* 測定入力項目 */
+.measurement-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.measurement-input-item {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.item-icon {
+  font-size: 18px;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.measurement-input,
+.rm-input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.measurement-input:focus,
+.rm-input:focus {
+  outline: none;
+  border-color: #2e7d46;
+}
+
+.unit {
+  font-size: 13px;
+  color: #6b7280;
+  min-width: fit-content;
+}
+
+.rm-separator {
+  color: #9ca3af;
+  font-weight: bold;
+}
+
+.rm-input {
+  max-width: 60px;
+}
+
+/* 追加ボタン */
+.add-button {
+  width: 100%;
+  padding: 12px 20px;
+  background: #2e7d46;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-button:hover {
+  background: #1e5631;
+  transform: translateY(-1px);
+}
+
+/* 測定履歴 */
+.measurement-history h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.measurement-history h5 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 600;
+}
+
+/* 最新値表示 */
+.latest-values {
+  margin-bottom: 24px;
+}
+
+.latest-values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.latest-value-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.2s;
+}
+
+.latest-value-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.value-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.value-icon {
+  font-size: 20px;
+}
+
+.value-label {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.value-content {
+  margin-bottom: 8px;
+}
+
+.value-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.value-date {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.no-value {
+  font-size: 13px;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.history-button {
+  width: 100%;
+  padding: 4px 8px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.history-button:hover {
+  background: #e5e7eb;
+}
+
+/* 全履歴リスト */
+.all-history {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.history-date {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.delete-button {
+  padding: 4px 12px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-button:hover {
+  background: #dc2626;
+}
+
+.history-data {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.data-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.data-icon {
+  font-size: 16px;
+}
+
+.data-label {
+  color: #6b7280;
+}
+
+.data-value {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.no-data {
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+  padding: 20px;
+}
+
+/* 履歴モーダル */
+.history-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.history-modal {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+.item-history-list {
+  margin-top: 20px;
+}
+
+.item-history-list h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.item-history-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.entry-date {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.entry-value {
+  color: #1f2937;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* 通知 */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1001;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 項目編集モード */
+.item-edit-mode {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.item-edit-mode h4 {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.item-edit-mode h5 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 600;
+}
+
+/* 新規項目追加フォーム */
+.add-item-form {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.item-form-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.item-input {
+  flex: 1;
+  min-width: 120px;
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.item-input-icon {
+  width: 60px;
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.rm-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.rm-checkbox input {
+  margin: 0;
+}
+
+.add-item-button {
+  padding: 8px 16px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-item-button:hover {
+  background: #059669;
+}
+
+/* 既存項目リスト */
+.existing-items {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.item-row .item-icon {
+  font-size: 20px;
+  min-width: 28px;
+  text-align: center;
+}
+
+.item-row .item-label {
+  flex: 1;
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.item-row .item-unit {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.rm-badge {
+  padding: 2px 6px;
+  background: #fbbf24;
+  color: white;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.delete-item-button {
+  padding: 4px 12px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-item-button:hover {
+  background: #dc2626;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .item-form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .item-input,
+  .item-input-icon {
+    width: 100%;
+  }
+  
+  .add-item-button {
+    width: 100%;
+  }
+  
+  .measurement-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .latest-values-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  .history-data {
+    grid-template-columns: 1fr;
+  }
+  
+  .history-modal {
+    max-height: 90vh;
+  }
+}

@@ -4,13 +4,20 @@ import './MobileTextEditor.css'
 function MobileTextEditor({ content, onChange, placeholder }) {
   const editorRef = useRef(null)
   const toolbarRef = useRef(null)
+<<<<<<< HEAD
   const [inputStyles, setInputStyles] = useState({
+=======
+  const [currentStyle, setCurrentStyle] = useState({
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
     bold: false,
     italic: false,
     underline: false,
     fontSize: 'normal'
   })
+<<<<<<< HEAD
   const [lastActiveStyle, setLastActiveStyle] = useState(null)
+=======
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
   const [cursorPosition, setCursorPosition] = useState(0)
   const [keyboardHeight, setKeyboardHeight] = useState(0)
 
@@ -92,6 +99,7 @@ function MobileTextEditor({ content, onChange, placeholder }) {
     if (sel.rangeCount > 0) {
       const range = sel.getRangeAt(0)
       setCursorPosition(range.startOffset)
+<<<<<<< HEAD
       // カーソル位置の推測で状態を上書きしない
     }
   }
@@ -250,12 +258,42 @@ function MobileTextEditor({ content, onChange, placeholder }) {
       
       onChange(editorRef.current.innerHTML)
       }, 10) // setTimeout の終了
+=======
+    }
+  }
+
+  // スタイルの適用（カーソル位置から入力される文字に適用）
+  const toggleStyle = (styleType, value = null) => {
+    const newStyle = { ...currentStyle }
+    
+    switch (styleType) {
+      case 'bold':
+        newStyle.bold = !newStyle.bold
+        break
+      case 'italic':
+        newStyle.italic = !newStyle.italic
+        break
+      case 'underline':
+        newStyle.underline = !newStyle.underline
+        break
+      case 'fontSize':
+        newStyle.fontSize = value
+        break
+    }
+    
+    setCurrentStyle(newStyle)
+    
+    // フォーカスを戻す
+    if (editorRef.current) {
+      editorRef.current.focus()
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
     }
   }
 
   // テキスト入力時の処理
   const handleInput = (e) => {
     if (editorRef.current) {
+<<<<<<< HEAD
       onChange(editorRef.current.innerHTML)
       saveCursorPosition()
       
@@ -320,6 +358,49 @@ function MobileTextEditor({ content, onChange, placeholder }) {
           selection.addRange(newRange)
         }
       }, 10)
+=======
+      // 入力された文字に現在のスタイルを適用
+      const selection = window.getSelection()
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0)
+        
+        // 最後に入力された文字を取得
+        if (e.inputType === 'insertText' || e.inputType === 'insertCompositionText') {
+          // スタイルを適用する処理
+          applyCurrentStyle()
+        }
+      }
+      
+      onChange(editorRef.current.innerHTML)
+      saveCursorPosition()
+    }
+  }
+
+  // 現在のスタイルを適用
+  const applyCurrentStyle = () => {
+    const selection = window.getSelection()
+    if (selection.rangeCount === 0) return
+
+    // スタイルコマンドを適用
+    if (currentStyle.bold) {
+      document.execCommand('bold', false, null)
+    }
+    if (currentStyle.italic) {
+      document.execCommand('italic', false, null)
+    }
+    if (currentStyle.underline) {
+      document.execCommand('underline', false, null)
+    }
+    
+    // フォントサイズの適用
+    if (currentStyle.fontSize !== 'normal') {
+      const sizeMap = {
+        'large': '7',
+        'medium': '5',
+        'small': '3'
+      }
+      document.execCommand('fontSize', false, sizeMap[currentStyle.fontSize])
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
     }
   }
 
@@ -370,6 +451,7 @@ function MobileTextEditor({ content, onChange, placeholder }) {
       <div className="mobile-toolbar" ref={toolbarRef}>
         <div className="toolbar-scroll">
           <button
+<<<<<<< HEAD
             className={`toolbar-btn ${inputStyles.fontSize === 'large' ? 'active' : ''}`}
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
@@ -377,11 +459,16 @@ function MobileTextEditor({ content, onChange, placeholder }) {
               e.stopPropagation()
               toggleStyle('fontSize', 'large')
             }}
+=======
+            className={`toolbar-btn ${currentStyle.fontSize === 'large' ? 'active' : ''}`}
+            onClick={() => toggleStyle('fontSize', 'large')}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             <span className="text-large">A</span>
           </button>
           <button
+<<<<<<< HEAD
             className={`toolbar-btn ${inputStyles.fontSize === 'medium' ? 'active' : ''}`}
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
@@ -389,11 +476,16 @@ function MobileTextEditor({ content, onChange, placeholder }) {
               e.stopPropagation()
               toggleStyle('fontSize', 'medium')
             }}
+=======
+            className={`toolbar-btn ${currentStyle.fontSize === 'medium' ? 'active' : ''}`}
+            onClick={() => toggleStyle('fontSize', 'medium')}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             <span className="text-medium">A</span>
           </button>
           <button
+<<<<<<< HEAD
             className={`toolbar-btn ${inputStyles.fontSize === 'normal' ? 'active' : ''}`}
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
@@ -401,6 +493,10 @@ function MobileTextEditor({ content, onChange, placeholder }) {
               e.stopPropagation()
               toggleStyle('fontSize', 'normal')
             }}
+=======
+            className={`toolbar-btn ${currentStyle.fontSize === 'normal' ? 'active' : ''}`}
+            onClick={() => toggleStyle('fontSize', 'normal')}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             <span className="text-normal">A</span>
@@ -409,6 +505,7 @@ function MobileTextEditor({ content, onChange, placeholder }) {
           <div className="toolbar-divider" />
           
           <button
+<<<<<<< HEAD
             className={`toolbar-btn ${inputStyles.bold ? 'active' : ''}`}
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
@@ -416,11 +513,16 @@ function MobileTextEditor({ content, onChange, placeholder }) {
               e.stopPropagation()
               toggleStyle('bold')
             }}
+=======
+            className={`toolbar-btn ${currentStyle.bold ? 'active' : ''}`}
+            onClick={() => toggleStyle('bold')}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             <strong>B</strong>
           </button>
           <button
+<<<<<<< HEAD
             className={`toolbar-btn ${inputStyles.italic ? 'active' : ''}`}
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
@@ -428,11 +530,16 @@ function MobileTextEditor({ content, onChange, placeholder }) {
               e.stopPropagation()
               toggleStyle('italic')
             }}
+=======
+            className={`toolbar-btn ${currentStyle.italic ? 'active' : ''}`}
+            onClick={() => toggleStyle('italic')}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             <em>I</em>
           </button>
           <button
+<<<<<<< HEAD
             className={`toolbar-btn ${inputStyles.underline ? 'active' : ''}`}
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
@@ -440,6 +547,10 @@ function MobileTextEditor({ content, onChange, placeholder }) {
               e.stopPropagation()
               toggleStyle('underline')
             }}
+=======
+            className={`toolbar-btn ${currentStyle.underline ? 'active' : ''}`}
+            onClick={() => toggleStyle('underline')}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             <u>U</u>
@@ -449,24 +560,32 @@ function MobileTextEditor({ content, onChange, placeholder }) {
           
           <button
             className="toolbar-btn"
+<<<<<<< HEAD
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
               insertList('bullet')
             }}
+=======
+            onClick={() => insertList('bullet')}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             •
           </button>
           <button
             className="toolbar-btn"
+<<<<<<< HEAD
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
               insertList('number')
             }}
+=======
+            onClick={() => insertList('number')}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             1.
@@ -476,12 +595,16 @@ function MobileTextEditor({ content, onChange, placeholder }) {
           
           <button
             className="toolbar-btn"
+<<<<<<< HEAD
             onMouseDown={(e) => e.preventDefault()}
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
               insertImage()
             }}
+=======
+            onClick={insertImage}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
             type="button"
           >
             📷
@@ -495,6 +618,7 @@ function MobileTextEditor({ content, onChange, placeholder }) {
         contentEditable
         className="mobile-editor-content"
         onInput={handleInput}
+<<<<<<< HEAD
         onFocus={() => {
           saveCursorPosition()
           // フォーカス時にスタイルを更新
@@ -522,6 +646,11 @@ function MobileTextEditor({ content, onChange, placeholder }) {
             maintainStyleAfterLineBreak()
           }
         }}
+=======
+        onFocus={saveCursorPosition}
+        onClick={saveCursorPosition}
+        onKeyUp={saveCursorPosition}
+>>>>>>> bd324152f1aaa266fe5ac8dabea71b4087509a98
         onPaste={handlePaste}
         placeholder={placeholder}
         suppressContentEditableWarning={true}
