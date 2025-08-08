@@ -29,14 +29,14 @@ function MobileTextEditor({ content, onChange, placeholder }) {
     // ツールバーの表示はinputStylesに基づくため、ここでの更新は不要
   }
 
-  // コンテンツの初期化
+  // コンテンツの初期化（初回のみ）
   useEffect(() => {
-    if (editorRef.current && content !== undefined) {
-      if (editorRef.current.innerHTML !== content) {
-        editorRef.current.innerHTML = content || ''
-      }
+    // 初回マウント時のみコンテンツを設定
+    if (editorRef.current && content !== undefined && !editorRef.current.hasAttribute('data-initialized')) {
+      editorRef.current.innerHTML = content || ''
+      editorRef.current.setAttribute('data-initialized', 'true')
     }
-  }, [content])
+  }, []) // 依存配列を空にして初回のみ実行
   
   // コンポーネントマウント確認
   useEffect(() => {
@@ -305,6 +305,7 @@ function MobileTextEditor({ content, onChange, placeholder }) {
   // 入力処理
   const handleInput = (e) => {
     if (editorRef.current) {
+      // onChangeを呼び出す（カーソル位置の保存・復元は不要）
       onChange(editorRef.current.innerHTML)
       
       // デバッグ: inputStylesの状態を確認

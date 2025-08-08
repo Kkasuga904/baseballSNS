@@ -75,121 +75,197 @@
   color: white;
 }
 
-/* 新規測定フォーム */
+/* 新規測定フォーム - モバイル最適化版 */
 .new-measurement-form {
-  background: #f9fafb;
-  border-radius: 12px;
-  padding: 20px;
+  background: linear-gradient(to bottom, #fafbfc, #f3f4f6);
+  border-radius: 0;
+  padding: 16px;
+  margin: -16px;
+  min-height: calc(100vh - 200px);
 }
 
 .new-measurement-form h4 {
-  margin: 0 0 16px 0;
-  font-size: 16px;
+  margin: 0 0 20px 0;
+  font-size: 18px;
   color: #1f2937;
+  font-weight: 600;
+  text-align: center;
 }
 
 .form-row {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .form-row label {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 8px;
   font-size: 14px;
-  color: #374151;
+  color: #6b7280;
   font-weight: 500;
 }
 
 .date-input {
-  padding: 6px 12px;
-  border: 2px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-/* 測定入力項目 */
-.measurement-inputs {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.measurement-input-item {
-  background: white;
-  border-radius: 8px;
-  padding: 12px;
-  border: 1px solid #e5e7eb;
-}
-
-.label-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: #374151;
-  font-weight: 500;
-}
-
-.item-icon {
-  font-size: 18px;
-}
-
-.input-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.measurement-input,
-.rm-input {
-  flex: 1;
-  padding: 6px 10px;
-  border: 2px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.measurement-input:focus,
-.rm-input:focus {
-  outline: none;
-  border-color: #2e7d46;
-}
-
-.unit {
-  font-size: 13px;
-  color: #6b7280;
-  min-width: fit-content;
-}
-
-.rm-separator {
-  color: #9ca3af;
-  font-weight: bold;
-}
-
-.rm-input {
-  max-width: 60px;
-}
-
-/* 追加ボタン */
-.add-button {
-  width: 100%;
-  padding: 12px 20px;
-  background: #2e7d46;
-  color: white;
+  padding: 12px 16px;
   border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
+  background: #f8f9fa;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f2937;
+  width: 100%;
+  -webkit-appearance: none;
+}
+
+.date-input:focus {
+  outline: 2px solid #2e7d46;
+  outline-offset: -2px;
+}
+
+/* 測定入力項目 - モバイルファースト改善版 */
+.measurement-inputs-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.measurement-input-card {
+  background: white;
+  border-radius: 16px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all 0.2s;
 }
 
-.add-button:hover {
-  background: #1e5631;
-  transform: translateY(-1px);
+.measurement-input-card:active {
+  transform: scale(0.98);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px 10px;
+  background: linear-gradient(to bottom, #ffffff, #fafafa);
+}
+
+.card-icon {
+  font-size: 24px;
+  filter: grayscale(0%);
+}
+
+.card-label {
+  font-size: 15px;
+  color: #1f2937;
+  font-weight: 600;
+  flex: 1;
+}
+
+.card-input-wrapper {
+  padding: 0 16px 16px;
+  background: white;
+}
+
+.single-input-group,
+.rm-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 4px 12px;
+  min-height: 52px;
+}
+
+.card-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: 500;
+  color: #1f2937;
+  padding: 8px 4px;
+  text-align: center;
+  min-width: 0;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.card-input::-webkit-inner-spin-button,
+.card-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.card-input::placeholder {
+  color: #d1d5db;
+  font-weight: 400;
+}
+
+.card-input:focus {
+  outline: none;
+}
+
+.input-unit {
+  font-size: 16px;
+  color: #6b7280;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
+.rm-input-group {
+  justify-content: space-between;
+}
+
+.rm-x {
+  color: #9ca3af;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0 4px;
+}
+
+.rm-count {
+  max-width: 80px;
+  text-align: center;
+}
+
+/* レガシースタイルの互換性維持 */
+.measurement-inputs {
+  display: none;
+}
+
+/* 追加ボタン - モバイル最適化 */
+.add-button {
+  width: 100%;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #2e7d46, #1e5631);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(46, 125, 70, 0.3);
+  margin-top: 8px;
+}
+
+.add-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 6px rgba(46, 125, 70, 0.2);
+}
+
+.add-button:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  box-shadow: none;
 }
 
 /* 測定履歴 */
@@ -635,8 +711,52 @@
   background: #dc2626;
 }
 
-/* レスポンシブ対応 */
+/* レスポンシブ対応 - モバイルファースト強化 */
 @media (max-width: 768px) {
+  .measurements-content {
+    padding: 0;
+  }
+  
+  .new-measurement-form {
+    border-radius: 0;
+    margin: -20px -16px;
+    padding: 20px 16px;
+  }
+  
+  .form-row {
+    border-radius: 12px;
+  }
+  
+  .measurement-inputs-mobile {
+    gap: 10px;
+  }
+  
+  .measurement-input-card {
+    border-radius: 12px;
+  }
+  
+  .card-header {
+    padding: 12px 14px 8px;
+  }
+  
+  .card-input-wrapper {
+    padding: 0 14px 14px;
+  }
+  
+  .card-input {
+    font-size: 18px;
+  }
+  
+  .input-unit {
+    font-size: 14px;
+  }
+  
+  .add-button {
+    padding: 14px 20px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+  
   .item-form-row {
     flex-direction: column;
     align-items: stretch;
@@ -651,10 +771,6 @@
     width: 100%;
   }
   
-  .measurement-inputs {
-    grid-template-columns: 1fr;
-  }
-  
   .latest-values-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
@@ -665,5 +781,40 @@
   
   .history-modal {
     max-height: 90vh;
+  }
+}
+
+/* タブレット向け調整 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .measurement-inputs-mobile {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* デスクトップ向け調整 */
+@media (min-width: 1025px) {
+  .measurements-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .measurement-inputs-mobile {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .measurement-input-card {
+    border-radius: 20px;
+  }
+  
+  .card-header {
+    padding: 16px 20px 12px;
+  }
+  
+  .card-input-wrapper {
+    padding: 0 20px 20px;
   }
 }

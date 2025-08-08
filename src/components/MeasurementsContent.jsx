@@ -45,6 +45,9 @@ const MeasurementsContent = memo(function MeasurementsContent() {
         sprint50m: { label: '50m走', unit: '秒', icon: '🏃' },
         sprint30m: { label: '30m走', unit: '秒', icon: '🏃' },
         longJump: { label: '立ち幅跳び', unit: 'cm', icon: '🦵' },
+        matawari: { label: '股割り', unit: 'cm', icon: '🧘' },
+        mbThrow: { label: 'MBスロー', unit: 'm', icon: '⚾' },
+        clean: { label: 'クリーン', unit: 'kg', icon: '🏋️', hasRM: true },
         benchPress: { label: 'ベンチプレス', unit: 'kg', icon: '💪', hasRM: true },
         squat: { label: 'スクワット', unit: 'kg', icon: '🦵', hasRM: true },
         deadlift: { label: 'デッドリフト', unit: 'kg', icon: '🏋️', hasRM: true },
@@ -366,63 +369,79 @@ const MeasurementsContent = memo(function MeasurementsContent() {
               </label>
             </div>
             
-            <div className="measurement-inputs">
+            <div className="measurement-inputs-mobile">
               {Object.entries(measurementItems[activeCategory]).map(([key, item]) => (
-                <div key={key} className="measurement-input-item" onClick={(e) => e.stopPropagation()}>
-                  <label onClick={(e) => e.stopPropagation()}>
-                    <div className="label-row">
-                      <span className="item-icon">{item.icon}</span>
-                      <span>{item.label}</span>
-                    </div>
-                    <div className="input-row">
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={newMeasurement.items[key] || ''}
-                        onClick={(e) => e.stopPropagation()}
-                        onFocus={(e) => e.stopPropagation()}
-                        onChange={(e) => {
-                          e.stopPropagation()
-                          setNewMeasurement({
-                            ...newMeasurement,
-                            category: activeCategory,
-                            items: {
-                              ...newMeasurement.items,
-                              [key]: e.target.value
-                            }
-                          })
-                        }}
-                        placeholder={`${item.unit}`}
-                        className="measurement-input"
-                      />
-                      <span className="unit">{item.unit}</span>
-                      {item.hasRM && (
-                        <>
-                          <span className="rm-separator">×</span>
-                          <input
-                            type="number"
-                            step="1"
-                            value={newMeasurement.rms[key] || ''}
-                            onClick={(e) => e.stopPropagation()}
-                            onFocus={(e) => e.stopPropagation()}
-                            onChange={(e) => {
-                              e.stopPropagation()
-                              setNewMeasurement({
-                                ...newMeasurement,
-                                rms: {
-                                  ...newMeasurement.rms,
-                                  [key]: e.target.value
-                                }
-                              })
-                            }}
-                            placeholder="回数"
-                            className="rm-input"
-                          />
-                          <span className="unit">RM</span>
-                        </>
-                      )}
-                    </div>
-                  </label>
+                <div key={key} className="measurement-input-card">
+                  <div className="card-header">
+                    <span className="card-icon">{item.icon}</span>
+                    <span className="card-label">{item.label}</span>
+                  </div>
+                  <div className="card-input-wrapper">
+                    {item.hasRM ? (
+                      <div className="rm-input-group">
+                        <input
+                          type="number"
+                          inputMode="decimal"
+                          step="0.1"
+                          value={newMeasurement.items[key] || ''}
+                          onChange={(e) => {
+                            setNewMeasurement({
+                              ...newMeasurement,
+                              category: activeCategory,
+                              items: {
+                                ...newMeasurement.items,
+                                [key]: e.target.value
+                              }
+                            })
+                          }}
+                          placeholder="0"
+                          className="card-input"
+                        />
+                        <span className="input-unit">{item.unit}</span>
+                        <span className="rm-x">×</span>
+                        <input
+                          type="number"
+                          inputMode="numeric"
+                          step="1"
+                          value={newMeasurement.rms[key] || ''}
+                          onChange={(e) => {
+                            setNewMeasurement({
+                              ...newMeasurement,
+                              rms: {
+                                ...newMeasurement.rms,
+                                [key]: e.target.value
+                              }
+                            })
+                          }}
+                          placeholder="0"
+                          className="card-input rm-count"
+                        />
+                        <span className="input-unit">回</span>
+                      </div>
+                    ) : (
+                      <div className="single-input-group">
+                        <input
+                          type="number"
+                          inputMode="decimal"
+                          step="0.1"
+                          value={newMeasurement.items[key] || ''}
+                          onChange={(e) => {
+                            setNewMeasurement({
+                              ...newMeasurement,
+                              category: activeCategory,
+                              items: {
+                                ...newMeasurement.items,
+                                [key]: e.target.value
+                              }
+                            })
+                          }}
+                          placeholder="0"
+                          className="card-input"
+                        />
+                        <span className="input-unit">{item.unit}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
