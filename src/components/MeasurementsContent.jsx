@@ -616,17 +616,27 @@ const MeasurementsContent = memo(function MeasurementsContent() {
                     icon={measurementItems[activeCategory][selectedItem].icon}
                   />
                   
-                  {/* 履歴リスト */}
-                  <div className="item-history-list">
+                  {/* 履歴リスト（表形式） */}
+                  <div className="item-history-table">
                     <h4>測定履歴</h4>
-                    {getItemHistory(activeCategory, selectedItem).reverse().map((record, index) => (
-                      <div key={index} className="item-history-entry">
-                        <span className="entry-date">{record.date}</span>
-                        <span className="entry-value">
-                          {record.value} {measurementItems[activeCategory][selectedItem].unit}
-                        </span>
-                      </div>
-                    ))}
+                    <table className="history-table">
+                      <thead>
+                        <tr>
+                          <th>日付</th>
+                          <th>測定値</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {getItemHistory(activeCategory, selectedItem).reverse().map((record, index) => (
+                          <tr key={index} className={index === 0 ? 'latest' : ''}>
+                            <td className="date-cell">{record.date}</td>
+                            <td className="value-cell">
+                              {record.value} {measurementItems[activeCategory][selectedItem].unit}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </>
               )}

@@ -37,26 +37,47 @@ function MeasurementChart({ data, unit, label, icon }) {
 
   return (
     <div className="chart-container">
+      {/* 重要情報をカード風に上部配置 */}
+      <div className="stats-cards">
+        <div className="stat-card primary">
+          <div className="stat-card-value">
+            {latestValue}
+            <span className="stat-unit">{unit}</span>
+          </div>
+          <div className="stat-card-label">最新値</div>
+          <div className="stat-card-date">{data[data.length - 1].date}</div>
+        </div>
+        
+        <div className={`stat-card ${change >= 0 ? 'increase' : 'decrease'}`}>
+          <div className="stat-card-value">
+            {change >= 0 ? '+' : ''}{change.toFixed(1)}
+            <span className="stat-unit">{unit}</span>
+          </div>
+          <div className="stat-card-label">変化量</div>
+          <div className="stat-card-percent">{changePercent}%</div>
+        </div>
+        
+        <div className="stat-card high">
+          <div className="stat-card-value">
+            {maxValue}
+            <span className="stat-unit">{unit}</span>
+          </div>
+          <div className="stat-card-label">最高値</div>
+        </div>
+        
+        <div className="stat-card low">
+          <div className="stat-card-value">
+            {minValue}
+            <span className="stat-unit">{unit}</span>
+          </div>
+          <div className="stat-card-label">最低値</div>
+        </div>
+      </div>
+
       <div className="chart-header">
         <div className="chart-title">
           <span className="chart-icon">{icon}</span>
           <h3>{label}</h3>
-        </div>
-        <div className="chart-stats">
-          <div className="stat-item">
-            <span className="stat-label">最新</span>
-            <span className="stat-value">{latestValue} {unit}</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-label">変化</span>
-            <span className={`stat-value ${change >= 0 ? 'positive' : 'negative'}`}>
-              {change >= 0 ? '+' : ''}{change.toFixed(1)} ({changePercent}%)
-            </span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-label">平均</span>
-            <span className="stat-value">{average.toFixed(1)} {unit}</span>
-          </div>
         </div>
       </div>
 
@@ -93,7 +114,7 @@ function MeasurementChart({ data, unit, label, icon }) {
                 strokeWidth="2"
               />
 
-              {/* 平均線 */}
+              {/* 平均線（強調） */}
               <line
                 className="average-line"
                 x1="0"
@@ -101,9 +122,20 @@ function MeasurementChart({ data, unit, label, icon }) {
                 x2="100"
                 y2={100 - ((average - minValue) / range * 100)}
                 stroke="#FF9800"
-                strokeWidth="1"
+                strokeWidth="2"
                 strokeDasharray="5,5"
+                opacity="0.8"
               />
+              <text
+                x="102"
+                y={100 - ((average - minValue) / range * 100)}
+                className="average-label"
+                fill="#FF9800"
+                fontSize="10"
+                alignmentBaseline="middle"
+              >
+                {average.toFixed(1)}
+              </text>
 
               {/* データポイント */}
               {data.map((d, i) => {
@@ -144,45 +176,21 @@ function MeasurementChart({ data, unit, label, icon }) {
           </div>
         </div>
 
-        {/* X軸（日付）ラベル */}
+        {/* X軸（日付）ラベル - 開始と終了点のみ */}
         <div className="x-axis-labels">
-          {data.map((d, i) => {
-            // 最初、中間、最後のラベルのみ表示
-            if (i === 0 || i === data.length - 1 || i === Math.floor(data.length / 2)) {
-              return (
-                <div 
-                  key={i} 
-                  className="x-label"
-                  style={{ left: `${(i / (data.length - 1)) * 100}%` }}
-                >
-                  {d.date.split('-').slice(1).join('/')}
-                </div>
-              )
-            }
-            return null
-          })}
+          <div className="x-label start">
+            {data[0].date.split('-').slice(1).join('/')}
+          </div>
+          <div className="x-label end">
+            {data[data.length - 1].date.split('-').slice(1).join('/')}
+          </div>
         </div>
       </div>
 
-      {/* 統計情報 */}
-      <div className="chart-footer">
-        <div className="chart-summary">
-          <div className="summary-item">
-            <span className="summary-icon">📈</span>
-            <span className="summary-label">最高記録</span>
-            <span className="summary-value">{maxValue} {unit}</span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-icon">📉</span>
-            <span className="summary-label">最低記録</span>
-            <span className="summary-value">{minValue} {unit}</span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-icon">📊</span>
-            <span className="summary-label">測定回数</span>
-            <span className="summary-value">{data.length}回</span>
-          </div>
-        </div>
+      {/* 測定回数を右上に小さく表示 */}
+      <div className="measurement-count">
+        <span className="count-label">測定回数</span>
+        <span className="count-value">{data.length}</span>
       </div>
     </div>
   )

@@ -1,9 +1,10 @@
 .chart-container {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  padding: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+  position: relative;
 }
 
 .no-chart-data {
@@ -19,12 +20,106 @@
   opacity: 0.5;
 }
 
+/* 重要情報カード */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.stat-card.primary {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  border: none;
+}
+
+.stat-card.increase {
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+  color: white;
+  border: none;
+}
+
+.stat-card.decrease {
+  background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+  color: white;
+  border: none;
+}
+
+.stat-card.high {
+  border-left: 4px solid #ff9800;
+}
+
+.stat-card.low {
+  border-left: 4px solid #2196F3;
+}
+
+.stat-card-value {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.stat-unit {
+  font-size: 14px;
+  font-weight: normal;
+  opacity: 0.8;
+  margin-left: 2px;
+}
+
+.stat-card-label {
+  font-size: 11px;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-card-date,
+.stat-card-percent {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* 測定回数を右上に表示 */
+.measurement-count {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  z-index: 10;
+}
+
+.count-label {
+  color: #666;
+}
+
+.count-value {
+  font-weight: bold;
+  color: #333;
+}
+
 .chart-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #eee;
 }
 
@@ -77,13 +172,13 @@
 
 .chart-body {
   position: relative;
-  margin: 20px 0;
+  margin: 12px 0;
 }
 
 .chart-grid {
   display: flex;
-  gap: 10px;
-  height: 300px;
+  gap: 8px;
+  height: 200px;
 }
 
 .y-axis-labels {
@@ -165,82 +260,103 @@
 
 .x-axis-labels {
   display: flex;
+  justify-content: space-between;
   position: relative;
-  height: 30px;
-  margin-top: 10px;
-  margin-left: 60px;
+  height: 20px;
+  margin-top: 8px;
+  margin-left: 58px;
 }
 
 .x-label {
-  position: absolute;
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
-  transform: translateX(-50%);
   white-space: nowrap;
 }
 
-.chart-footer {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid #eee;
+.x-label.start {
+  position: absolute;
+  left: 0;
 }
 
-.chart-summary {
-  display: flex;
-  justify-content: space-around;
+.x-label.end {
+  position: absolute;
+  right: 0;
 }
 
-.summary-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.summary-icon {
-  font-size: 20px;
-}
-
-.summary-label {
-  font-size: 14px;
-  color: #666;
-}
-
-.summary-value {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
+/* 平均線のラベル */
+.average-label {
+  font-size: 10px;
+  fill: #FF9800;
 }
 
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
+  .chart-container {
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .stats-cards {
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  
+  .stat-card {
+    padding: 8px;
+  }
+  
+  .stat-card-value {
+    font-size: 20px;
+  }
+  
+  .stat-unit {
+    font-size: 12px;
+  }
+  
+  .stat-card-label {
+    font-size: 10px;
+  }
+  
+  .measurement-count {
+    top: 8px;
+    right: 8px;
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+
   .chart-header {
-    flex-direction: column;
-    gap: 15px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
   }
-
-  .chart-stats {
-    width: 100%;
-    justify-content: space-between;
+  
+  .chart-title h3 {
+    font-size: 16px;
   }
-
-  .stat-item {
-    align-items: center;
+  
+  .chart-icon {
+    font-size: 20px;
   }
 
   .chart-grid {
-    height: 250px;
+    height: 180px;
+    gap: 6px;
+  }
+  
+  .chart-body {
+    margin: 8px 0;
   }
 
   .y-axis-labels {
-    width: 40px;
+    width: 35px;
+    font-size: 10px;
   }
-
-  .chart-summary {
-    flex-direction: column;
-    gap: 10px;
+  
+  .x-axis-labels {
+    margin-left: 41px;
+    font-size: 10px;
   }
-
-  .summary-item {
-    justify-content: space-between;
+  
+  .point-label {
+    font-size: 10px;
   }
 }
