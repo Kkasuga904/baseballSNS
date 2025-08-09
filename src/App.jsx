@@ -130,9 +130,8 @@ function AppContent() {
   const [selectedDate, setSelectedDate] = useState(null)
   
   // アプリケーションのローディング状態
-  // モバイルでは初期状態をfalseにして即座に表示
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  const [isAppLoading, setIsAppLoading] = useState(!isMobile)
+  // 全デバイスで初期状態をfalseにして即座に表示（初回ロード問題の修正）
+  const [isAppLoading, setIsAppLoading] = useState(false)
   
   /**
    * マイページ専用データの状態管理
