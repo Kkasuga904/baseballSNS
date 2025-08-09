@@ -5,6 +5,7 @@ import './MeasurementsContent.css'
 
 const MeasurementsContent = memo(function MeasurementsContent() {
   const { user } = useAuth()
+  const today = new Date().toISOString().split('T')[0]
   
   // 測定データの状態管理
   const [measurements, setMeasurements] = useState(() => {
@@ -16,9 +17,9 @@ const MeasurementsContent = memo(function MeasurementsContent() {
     }
   })
   
-  // 新規測定データ入力用（テスト用サンプルデータ付き）
+  // 新規測定データ入力用（当日のみテスト用サンプルデータ付き）
   const [newMeasurement, setNewMeasurement] = useState({
-    date: new Date().toISOString().split('T')[0],
+    date: today,
     category: 'athletic',
     items: {
       bodyFat: '18.5',
@@ -116,11 +117,13 @@ const MeasurementsContent = memo(function MeasurementsContent() {
     
     setMeasurements(updatedMeasurements)
     
-    // フォームリセット（テスト用サンプルデータを再設定）
+    // フォームリセット（当日のみテスト用サンプルデータを再設定）
+    const resetDate = new Date().toISOString().split('T')[0]
+    const isToday = resetDate === today
     setNewMeasurement({
-      date: new Date().toISOString().split('T')[0],
+      date: resetDate,
       category: newMeasurement.category,
-      items: newMeasurement.category === 'athletic' ? {
+      items: newMeasurement.category === 'athletic' && isToday ? {
         bodyFat: '18.5',
         muscle: '58',
         sprint50m: '6.9',
@@ -130,7 +133,7 @@ const MeasurementsContent = memo(function MeasurementsContent() {
         chinUp: '12',
         pushUp: '30'
       } : {},
-      rms: newMeasurement.category === 'athletic' ? {
+      rms: newMeasurement.category === 'athletic' && isToday ? {
         benchPress: '5',
         squat: '8',
         deadlift: '5'
@@ -276,10 +279,11 @@ const MeasurementsContent = memo(function MeasurementsContent() {
             className={`category-tab ${activeCategory === 'athletic' ? 'active' : ''}`}
             onClick={() => {
               setActiveCategory('athletic')
+              const isToday = newMeasurement.date === today
               setNewMeasurement({
                 ...newMeasurement,
                 category: 'athletic',
-                items: {
+                items: isToday ? {
                   bodyFat: '18.5',
                   muscle: '58',
                   sprint50m: '6.9',
@@ -288,12 +292,12 @@ const MeasurementsContent = memo(function MeasurementsContent() {
                   deadlift: '150',
                   chinUp: '12',
                   pushUp: '30'
-                },
-                rms: {
+                } : {},
+                rms: isToday ? {
                   benchPress: '5',
                   squat: '8',
                   deadlift: '5'
-                }
+                } : {}
               })
             }}
           >
@@ -403,9 +407,27 @@ const MeasurementsContent = memo(function MeasurementsContent() {
                   onFocus={(e) => e.stopPropagation()}
                   onChange={(e) => {
                     e.stopPropagation()
+                    const selectedDate = e.target.value
+                    const isToday = selectedDate === today
+                    
                     setNewMeasurement({
                       ...newMeasurement,
-                      date: e.target.value
+                      date: selectedDate,
+                      items: isToday && activeCategory === 'athletic' ? {
+                        bodyFat: '18.5',
+                        muscle: '58',
+                        sprint50m: '6.9',
+                        benchPress: '80',
+                        squat: '120',
+                        deadlift: '150',
+                        chinUp: '12',
+                        pushUp: '30'
+                      } : {},
+                      rms: isToday && activeCategory === 'athletic' ? {
+                        benchPress: '5',
+                        squat: '8',
+                        deadlift: '5'
+                      } : {}
                     })
                   }}
                   className="date-input"
