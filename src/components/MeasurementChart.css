@@ -20,107 +20,187 @@
   opacity: 0.5;
 }
 
-/* 重要情報カード */
-.stats-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.stat-card {
+/* ① 概要パネル */
+.summary-panel {
   background: #f8f9fa;
   border-radius: 8px;
-  padding: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
   border: 1px solid #e0e0e0;
-  position: relative;
 }
 
-.stat-card.primary {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  color: white;
-  border: none;
+.summary-main {
+  text-align: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.stat-card.increase {
-  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
-  color: white;
-  border: none;
-}
-
-.stat-card.decrease {
-  background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
-  color: white;
-  border: none;
-}
-
-.stat-card.high {
-  border-left: 4px solid #ff9800;
-}
-
-.stat-card.low {
-  border-left: 4px solid #2196F3;
-}
-
-.stat-card-value {
-  font-size: 24px;
+.summary-latest .summary-value-large {
+  font-size: 36px;
   font-weight: bold;
+  color: #1f2937;
   line-height: 1.2;
+}
+
+.summary-latest .summary-unit {
+  font-size: 20px;
+  font-weight: normal;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+.summary-latest .summary-label {
+  font-size: 12px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.summary-stat {
+  text-align: center;
+}
+
+.summary-stat-label {
+  font-size: 11px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   margin-bottom: 4px;
 }
 
-.stat-unit {
-  font-size: 14px;
+.summary-stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.summary-stat-value.positive {
+  color: #10b981;
+}
+
+.summary-stat-value.negative {
+  color: #ef4444;
+}
+
+.summary-stat-value.high {
+  color: #f59e0b;
+}
+
+.summary-stat-value.low {
+  color: #3b82f6;
+}
+
+.summary-stat-percent {
+  font-size: 12px;
   font-weight: normal;
-  opacity: 0.8;
-  margin-left: 2px;
+  color: #6b7280;
+  margin-left: 4px;
 }
 
-.stat-card-label {
-  font-size: 11px;
-  opacity: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+/* ② グラフセクション */
+.chart-section {
+  margin-bottom: 20px;
 }
 
-.stat-card-date,
-.stat-card-percent {
-  font-size: 10px;
-  opacity: 0.7;
-  margin-top: 2px;
-}
-
-/* 測定回数を右上に表示 */
-.measurement-count {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: #f0f0f0;
-  border-radius: 12px;
-  padding: 4px 8px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  z-index: 10;
-}
-
-.count-label {
-  color: #666;
-}
-
-.count-value {
-  font-weight: bold;
-  color: #333;
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
+.chart-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 12px 0;
   padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ③ 履歴セクション */
+.history-section {
+  margin-top: 20px;
+}
+
+.history-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.history-table-wrapper {
+  overflow-x: auto;
+}
+
+.history-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.history-data-table thead {
+  background: #f3f4f6;
+}
+
+.history-data-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.history-data-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.history-data-table tbody tr.latest-row {
+  background: #fef3c7;
+}
+
+.history-data-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.history-data-table tbody tr.latest-row:hover {
+  background: #fde68a;
+}
+
+.history-data-table td {
+  padding: 10px 12px;
+}
+
+.date-column {
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.value-column {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.change-column {
+  color: #6b7280;
+}
+
+.change-column.positive {
+  color: #10b981;
+}
+
+.change-column.negative {
+  color: #ef4444;
+}
+
+.change-percent {
+  font-size: 11px;
+  margin-left: 4px;
+  opacity: 0.8;
 }
 
 .chart-title {
@@ -172,7 +252,7 @@
 
 .chart-body {
   position: relative;
-  margin: 12px 0;
+  margin: 0;
 }
 
 .chart-grid {
@@ -260,27 +340,18 @@
 
 .x-axis-labels {
   display: flex;
-  justify-content: space-between;
   position: relative;
-  height: 20px;
+  height: 30px;
   margin-top: 8px;
   margin-left: 58px;
 }
 
 .x-label {
+  position: absolute;
   font-size: 11px;
   color: #666;
   white-space: nowrap;
-}
-
-.x-label.start {
-  position: absolute;
-  left: 0;
-}
-
-.x-label.end {
-  position: absolute;
-  right: 0;
+  transform: translateX(-50%);
 }
 
 /* 平均線のラベル */
@@ -296,45 +367,37 @@
     margin-bottom: 8px;
   }
   
-  .stats-cards {
-    gap: 6px;
-    margin-bottom: 8px;
+  .summary-panel {
+    padding: 12px;
+    margin-bottom: 16px;
   }
   
-  .stat-card {
-    padding: 8px;
+  .summary-main {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
   }
   
-  .stat-card-value {
-    font-size: 20px;
+  .summary-latest .summary-value-large {
+    font-size: 28px;
   }
   
-  .stat-unit {
-    font-size: 12px;
-  }
-  
-  .stat-card-label {
-    font-size: 10px;
-  }
-  
-  .measurement-count {
-    top: 8px;
-    right: 8px;
-    padding: 3px 6px;
-    font-size: 10px;
-  }
-
-  .chart-header {
-    margin-bottom: 8px;
-    padding-bottom: 6px;
-  }
-  
-  .chart-title h3 {
+  .summary-latest .summary-unit {
     font-size: 16px;
   }
   
-  .chart-icon {
-    font-size: 20px;
+  .summary-stats {
+    gap: 8px;
+  }
+  
+  .summary-stat-value {
+    font-size: 14px;
+  }
+  
+  .chart-section-title,
+  .history-section-title {
+    font-size: 13px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
   }
 
   .chart-grid {
